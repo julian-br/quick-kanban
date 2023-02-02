@@ -1,7 +1,11 @@
 import "./index.css";
 
 function App() {
-  return <div className="App bg-slate-100 h-5 text-blue-300">test</div>;
+  return (
+    <div className="font-jakarta">
+      <h1 className="font-bold text-3xl">Kanban Board</h1>
+    </div>
+  );
 }
 
 export default App;
