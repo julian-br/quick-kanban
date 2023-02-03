@@ -6,7 +6,7 @@ import Button from "./common/Button";
 export default function Navbar() {
   return (
     <div className="px-7 py-5 border-b border-slate-200 flex items-center justify-between">
-      <img src={LogoIcon} alt="Logo of the Application" />
+      <img src={LogoIcon} alt="Logo" />
       <div className="flex">
         <Button variant="primary" size="large">
           <div className="flex items-baseline">

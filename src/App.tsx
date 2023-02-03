@@ -1,3 +1,4 @@
+import ActiveBoardsDisplay from "./components/ActiveBoardsDisplay";
 import Button from "./components/common/Button";
 import Listbox from "./components/common/Listbox";
 import Navbar from "./components/Navbar";
@@ -6,10 +7,23 @@ import "./index.css";
 
 function App() {
   return (
-    <div className="font-jakarta">
+    <div className="font-jakarta min-h-screen">
       <Navbar />
-      <SideBar>
-        <div className="mx-3 bg-slate-50">
+      <div className="flex">
+        <SideBar>
+          <div className="mt-11">
+            <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
+              all boards (3)
+            </h2>
+            <ActiveBoardsDisplay
+              boardHeaders={[
+                { id: "0", name: "Marketing", isActive: true },
+                { id: "1", name: "Development", isActive: false },
+              ]}
+            />
+          </div>
+        </SideBar>
+        <div className="bg-slate-50 h-[90vh] w-full pl-7">
           <h1 className="font-bold text-3xl pt-8">Kanban Board</h1>
           <Button variant="primary" size="large">
             Test
@@ -22,7 +36,7 @@ function App() {
             <Listbox options={["test 2", "test 3"]}></Listbox>
           </div>
         </div>
-      </SideBar>
+      </div>
     </div>
   );
 }
