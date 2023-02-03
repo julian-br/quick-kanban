@@ -28,7 +28,7 @@ export default function Listbox({ options, onChange }: Props) {
         </ListBoxHeadlessUi.Button>
         <ListBoxHeadlessUi.Options
           className={
-            "absolute w-full mt-1 bg-white border-[1.4px] rounded-lg text-slate-500"
+            "absolute w-full mt-1 bg-white border-[1.4px] rounded-lg text-slate-500 z-10"
           }
         >
           {options.map((option) => (
