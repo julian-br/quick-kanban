@@ -17,7 +17,7 @@ const variantClassMap = {
 
 const sizeClassMap = {
   medium: "px-12 py-2",
-  large: "text-xl px-12 py-3",
+  large: "text-lg px-7 py-3",
 } as const;
 
 export default function Button({
@@ -29,7 +29,7 @@ export default function Button({
   return (
     <button
       {...reactButtonProps}
-      className={`rounded-3xl focus-visible:outline-none focus-visible:ring-2 ${
+      className={`rounded-full focus-visible:outline-none focus-visible:ring-2 ${
         variantClassMap[variant]
       } ${sizeClassMap[size ?? "medium"]}`}
     >

@@ -20,7 +20,7 @@ export default function Listbox({ options, onChange }: Props) {
   return (
     <ListBoxHeadlessUi value={selected} onChange={handleChange}>
       <div className="relative">
-        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border-[1.4px] hover:border-primary border-slate-300 w-full ui-open:border-primary">
+        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary border-slate-300 w-full ui-open:border-primary">
           <div className="flex justify-between items-center">
             <span>{selected}</span>
             <img src={ChivronDownIcon} />
@@ -28,7 +28,7 @@ export default function Listbox({ options, onChange }: Props) {
         </ListBoxHeadlessUi.Button>
         <ListBoxHeadlessUi.Options
           className={
-            "absolute w-full mt-1 bg-white border-[1.4px] rounded-lg text-slate-500 z-10"
+            "absolute w-full mt-1 bg-white border rounded-lg text-slate-500 z-10"
           }
         >
           {options.map((option) => (
