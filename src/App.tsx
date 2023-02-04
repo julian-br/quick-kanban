@@ -5,11 +5,14 @@ import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
 import BoardsData from "./data.json";
 import "./index.css";
+import Modal from "./components/common/Modal";
+import CreateNewBoardModal from "./components/CreateNewBoardModal";
 
 const boardsData = BoardsData.boards;
 
 function App() {
   const [activeBoardId, setActiveBoardId] = useState(boardsData[0].id);
+  const [showModal, setShowModal] = useState(false);
 
   const activeBoard = useMemo(
     () => boardsData.find((boardData) => boardData.id === activeBoardId),
@@ -46,6 +49,7 @@ function App() {
             <KanbanBoardsNav
               navEntries={boardNavEntries}
               onNavEntryClick={handleBoardNavEntryClicked}
+              onCreateNewBoardClick={() => setShowModal(true)}
             />
           </div>
         </SideBar>
@@ -58,6 +62,9 @@ function App() {
               console.log("create new board clicked")
             }
           />
+          {showModal && (
+            <CreateNewBoardModal onClose={() => setShowModal(false)} />
+          )}
         </main>
       </div>
     </div>

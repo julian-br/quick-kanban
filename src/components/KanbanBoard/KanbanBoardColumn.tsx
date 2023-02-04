@@ -14,7 +14,7 @@ export default function KanbanBoardColumn({ columnData, onTaskClick }: Props) {
     <div className="px-3 h-full w-96">
       <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6">
         <div className="flex items-center">
-          <div className="w-4 h-4 bg-cyan-400 rounded-full mr-3"></div>
+          <div className="w-4 h-4 bg-amber-300 rounded-full mr-3"></div>
           {columnData.name} ({ammountOfTask})
         </div>
       </h3>

@@ -70,12 +70,20 @@ interface BoardsNavEntry {
 interface Props {
   navEntries: BoardsNavEntry[];
   onNavEntryClick: (entryId: string) => void;
+  onCreateNewBoardClick?: () => void;
 }
 
 export default function KanbanBoardsNav({
   navEntries,
   onNavEntryClick,
+  onCreateNewBoardClick,
 }: Props) {
+  function handleCreateNewBoardClicked() {
+    if (onCreateNewBoardClick !== undefined) {
+      onCreateNewBoardClick();
+    }
+  }
+
   return (
     <div>
       <div>
@@ -88,7 +96,7 @@ export default function KanbanBoardsNav({
           />
         ))}
       </div>
-      <CreateNewBoardButton onClick={() => null} />
+      <CreateNewBoardButton onClick={handleCreateNewBoardClicked} />
     </div>
   );
 }

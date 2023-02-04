@@ -24,7 +24,6 @@ export default function SideBar({ children }: Props) {
           {isOpen ? "✖" : "|||"}
         </Button>
       </div>
-      {/* <div className="w-16"></div> */}
       <div className={isOpen ? "w-80" : "w-16"}>{isOpen && children}</div>
     </nav>
   );
