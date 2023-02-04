@@ -18,7 +18,7 @@ export default function Navbar() {
           <img
             src={VerticalEllipsisIcon}
             alt="Navbar Options"
-            className="h-6 text-primary"
+            className="h-5 text-primary"
           />
         </button>
       </div>

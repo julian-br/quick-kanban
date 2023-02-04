@@ -3,12 +3,14 @@ import BoardIconActive from "../assets/icon-board-active.svg";
 import BoardIconPrimary from "../assets/icon-board-primary.svg";
 import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 
-function BoardOption({
+function BoardNavEntry({
   title: name,
   isActive,
+  onClick,
 }: {
   title: string;
   isActive: boolean;
+  onClick: () => void;
 }) {
   const activeClassList = "text-white bg-primary";
   const notActiveClassList =
@@ -16,7 +18,8 @@ function BoardOption({
 
   return (
     <button
-      className={`w-72 py-4 font-semibold text-lg  rounded-r-full px-7 flex ${
+      onClick={onClick}
+      className={`w-72 py-3 font-semibold text-lg  rounded-r-full px-7 flex ${
         isActive ? activeClassList : notActiveClassList
       }`}
     >
@@ -45,7 +48,7 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
           className="h-5"
         />
         <div className="flex items-baseline ml-3">
-          <img src={PlusIconPrimary} alt="plus icon" className="h-3 mr-1" />
+          <img src={PlusIconPrimary} alt="plus icon" className="h-2 mr-1" />
           <span className=" text-primary">Create New Board</span>
         </div>
       </div>
@@ -53,24 +56,30 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-interface BoardHeader {
+interface BoardsNavEntryData {
   id: string;
   name: string;
   isActive: boolean;
 }
 
 interface Props {
-  boardHeaders: BoardHeader[];
+  boardNavEntries: BoardsNavEntryData[];
+  onNavEntryClick: (entryId: string) => void;
 }
 
-export default function ActiveBoardsDisplay({ boardHeaders }: Props) {
+export default function KanbanBoardsNav({
+  boardNavEntries,
+  onNavEntryClick: onNavEntryClicked,
+}: Props) {
   return (
     <div>
       <div>
-        {boardHeaders.map((boardHeader) => (
-          <BoardOption
-            title={boardHeader.name}
-            isActive={boardHeader.isActive}
+        {boardNavEntries.map((boardNavEntry) => (
+          <BoardNavEntry
+            key={boardNavEntry.id}
+            onClick={() => onNavEntryClicked(boardNavEntry.id)}
+            title={boardNavEntry.name}
+            isActive={boardNavEntry.isActive}
           />
         ))}
       </div>

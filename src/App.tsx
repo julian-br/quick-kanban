@@ -1,41 +1,59 @@
-import ActiveBoardsDisplay from "./components/ActiveBoardsDisplay";
-import Button from "./components/common/Button";
-import Listbox from "./components/common/Listbox";
+import { useMemo, useState } from "react";
+import KanbanBoardsNav from "./components/KanbanBoardsNav";
+import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
 import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
+import BoardsData from "./data.json";
 import "./index.css";
 
+const boardsData = BoardsData.boards;
+
 function App() {
+  const [activeBoardId, setActiveBoardId] = useState(boardsData[0].id);
+
+  const activeBoard = useMemo(
+    () => boardsData.find((boardData) => boardData.id === activeBoardId),
+    [activeBoardId]
+  );
+
+  const boardNavEntries = useMemo(
+    () =>
+      boardsData.map((board) => {
+        return {
+          id: board.id,
+          name: board.name,
+          isActive: activeBoardId === board.id ? true : false,
+        };
+      }),
+    [activeBoardId]
+  );
+
+  function handleBoardNavEntryClicked(id: string) {
+    setActiveBoardId(id);
+  }
+
+  const amountOfBoards = boardsData.length;
+
   return (
     <div className="font-jakarta min-h-screen">
       <Navbar />
       <div className="flex">
         <SideBar>
-          <div className="mt-11">
+          <div className="mt-7">
             <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
-              all boards (3)
+              all boards ({amountOfBoards})
             </h2>
-            <ActiveBoardsDisplay
-              boardHeaders={[
-                { id: "0", name: "Marketing", isActive: true },
-                { id: "1", name: "Development", isActive: false },
-              ]}
+            <KanbanBoardsNav
+              boardNavEntries={boardNavEntries}
+              onNavEntryClick={handleBoardNavEntryClicked}
             />
           </div>
         </SideBar>
-        <div className="bg-slate-50 h-[90vh] w-full pl-7">
-          <h1 className="font-bold text-3xl pt-8">Kanban Board</h1>
-          <Button variant="primary" size="large">
-            Test
-          </Button>
-          <Button variant="primary">Test</Button>
-          <Button variant="secondary">Test</Button>
-          <Button variant="danger">Test</Button>
-
-          <div className="mt-3">
-            <Listbox options={["test 2", "test 3"]}></Listbox>
-          </div>
-        </div>
+        <KanbanBoard
+          boardData={activeBoard!}
+          onTaskClick={(taskData) => console.log(taskData, "clicked")}
+          onCreateNewBoardClick={() => console.log("create new board clicked")}
+        />
       </div>
     </div>
   );
