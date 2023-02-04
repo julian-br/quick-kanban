@@ -13,11 +13,13 @@ const variantClassMap = {
     "bg-secondary-light text-primary font-bold hover:bg-secondary active:bg-secondary-light",
   danger:
     "bg-danger text-white font-semibold hover:bg-danger-light active:bg-danger",
+  custom: "",
 } as const;
 
 const sizeClassMap = {
-  medium: "px-7 py-2",
-  large: "text-lg px-7 py-3",
+  medium: "px-7 py-2 rounded-full",
+  large: "text-lg px-7 py-3 rounded-full",
+  custom: "",
 } as const;
 
 export default function Button({
@@ -29,9 +31,9 @@ export default function Button({
   return (
     <button
       {...reactButtonProps}
-      className={`rounded-full focus-visible:outline-none focus-visible:ring-2 ${
+      className={`focus-visible:outline-none focus-visible:ring-2 ${
         variantClassMap[variant]
-      } ${sizeClassMap[size ?? "medium"]}`}
+      } ${sizeClassMap[size ?? "medium"]} ${reactButtonProps.className}`}
     >
       {children}
     </button>

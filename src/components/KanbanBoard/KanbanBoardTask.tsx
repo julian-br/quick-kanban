@@ -1,4 +1,5 @@
 import { KanbanTaskData } from "../../types/kanbanBoard";
+import Button from "../common/Button";
 
 interface Props {
   taskData: KanbanTaskData;
@@ -13,7 +14,9 @@ export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {
 
   return (
     <div>
-      <button
+      <Button
+        variant="custom"
+        size="custom"
         onClick={() => onTaskClick(taskData)}
         className="bg-white w-full text-left pt-5 pb-7 px-5 rounded-xl shadow-md shadow-secondary-light group"
       >
@@ -23,7 +26,7 @@ export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {
         <p className="text-slate-400 text-sm font-bold">
           {amountOfCompletedSubtasks} of {amountOfSubtasks} subtasks
         </p>
-      </button>
+      </Button>
     </div>
   );
 }

@@ -1,17 +1,20 @@
 import { KanbanBoardData, KanbanTaskData } from "../../types/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import PlusIcon from "../../assets/icon-add-task.svg";
+import Button from "../common/Button";
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
     <div className="h-full w-96 mt-2 px-4">
-      <button
+      <Button
+        variant="custom"
+        size="custom"
         onClick={onClick}
         className="w-full h-[59rem] bg-[#e3eaf5c9] rounded-xl text-slate-400 mt-11 hover:text-primary"
       >
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>
-      </button>
+      </Button>
     </div>
   );
 }
@@ -42,7 +45,7 @@ export default function KanbanBoard({
   }
 
   return (
-    <div className="h-[90vh] w-full bg-slate-100 pt-7 flex px-4">
+    <div className="h-full w-full bg-slate-100 pt-7 flex px-4">
       {columnsData.map((columnData) => (
         <KanbanBoardColumn
           key={columnData.name}

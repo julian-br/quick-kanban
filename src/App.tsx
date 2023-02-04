@@ -49,11 +49,16 @@ function App() {
             />
           </div>
         </SideBar>
-        <KanbanBoard
-          boardData={activeBoard!}
-          onTaskClick={(taskData) => console.log(taskData, "clicked")}
-          onCreateNewBoardClick={() => console.log("create new board clicked")}
-        />
+
+        <main className="w-full h-full">
+          <KanbanBoard
+            boardData={activeBoard!}
+            onTaskClick={(taskData) => console.log(taskData, "clicked")}
+            onCreateNewBoardClick={() =>
+              console.log("create new board clicked")
+            }
+          />
+        </main>
       </div>
     </div>
   );
