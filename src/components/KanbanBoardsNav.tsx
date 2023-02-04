@@ -61,30 +61,30 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-interface BoardsNavEntryData {
+interface BoardsNavEntry {
   id: string;
   name: string;
   isActive: boolean;
 }
 
 interface Props {
-  boardNavEntries: BoardsNavEntryData[];
+  navEntries: BoardsNavEntry[];
   onNavEntryClick: (entryId: string) => void;
 }
 
 export default function KanbanBoardsNav({
-  boardNavEntries,
-  onNavEntryClick: onNavEntryClicked,
+  navEntries,
+  onNavEntryClick,
 }: Props) {
   return (
     <div>
       <div>
-        {boardNavEntries.map((boardNavEntry) => (
+        {navEntries.map((navEntry) => (
           <BoardNavEntry
-            key={boardNavEntry.id}
-            onClick={() => onNavEntryClicked(boardNavEntry.id)}
-            title={boardNavEntry.name}
-            isActive={boardNavEntry.isActive}
+            key={navEntry.id}
+            onClick={() => onNavEntryClick(navEntry.id)}
+            title={navEntry.name}
+            isActive={navEntry.isActive}
           />
         ))}
       </div>

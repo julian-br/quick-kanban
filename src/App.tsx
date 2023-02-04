@@ -44,7 +44,7 @@ function App() {
               all boards ({amountOfBoards})
             </h2>
             <KanbanBoardsNav
-              boardNavEntries={boardNavEntries}
+              navEntries={boardNavEntries}
               onNavEntryClick={handleBoardNavEntryClicked}
             />
           </div>
