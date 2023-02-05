@@ -55,7 +55,6 @@ export function BoardColumnsListInput({
               onClick={() => removeColumnInput(index)}
               className="hover:bg-secondary-light ml-2 rounded-lg"
               variant="custom"
-              size="custom"
             >
               <img src={CrossIcon} className="w-4 mx-2 py-3" />
             </Button>
