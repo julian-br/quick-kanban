@@ -32,9 +32,35 @@ export function getAllBoardNames() {
 }
 
 export function getBoardById(id: string) {
-  const matchingBoard = boardsData.find((board) => board.id === id);
-  if (matchingBoard === undefined) {
-    throw new Error("no board with this id");
-  }
-  return matchingBoard;
+  console.log("fetching board by id");
+  return new Promise<KanbanBoardData>((res, rej) => {
+    const matchingBoard = boardsData.find((board) => board.id === id)!;
+    if (matchingBoard === undefined) {
+      rej("no board with this id");
+    }
+    res(matchingBoard);
+  });
+}
+
+export function postBoard({
+  name,
+  columNames,
+}: {
+  name: string;
+  columNames: string[];
+}) {
+  return new Promise<KanbanBoardData>((res) => {
+    const id = parseInt(boardsData.at(-1)!.id) + 1;
+    const newBoard = {
+      id: id.toString(),
+      name,
+      columns: columNames.map((columnName) => ({
+        name: columnName,
+        tasks: [],
+      })),
+    };
+    boardsData.push(newBoard);
+    console.log("new board postet", newBoard);
+    res(newBoard);
+  });
 }

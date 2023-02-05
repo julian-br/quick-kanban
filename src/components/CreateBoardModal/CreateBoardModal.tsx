@@ -5,10 +5,14 @@ import TextInput from "../common/Input/TextInput";
 import { useState } from "react";
 import { BoardColumnsListInput } from "./BoardColumnsListInput";
 import Form, { useFormValidation } from "../common/Form";
+import { postBoard } from "../../api/kanbanBoard";
+import { useMutation } from "react-query";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);
   const [boardName, setBoardName] = useState("");
+
+  const boardDataMutation = useMutation("board", postBoard);
 
   const { formErrors, validateForm } = useFormValidation({
     boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
@@ -38,7 +42,11 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   function handleSubmit() {
     const formIsValid = validateForm();
     if (formIsValid) {
-      console.log("submit");
+      boardDataMutation.mutate({
+        name: boardName,
+        columNames: boardColumnNames,
+      });
+      onClose();
     }
   }
 
