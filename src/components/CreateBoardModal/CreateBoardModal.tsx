@@ -4,36 +4,62 @@ import TextInput from "../common/Input/TextInput";
 
 import { useState } from "react";
 import { BoardColumnsListInput } from "./BoardColumnsListInput";
-import Form from "../common/Form";
+import Form, { useFormValidation } from "../common/Form";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
-  const [columnValues, setColumnValues] = useState([""]);
+  const [boardColumnNames, setBoardColumnNames] = useState([""]);
+  const [boardName, setBoardName] = useState("");
 
-  function nameInputValidator(value: string) {
-    if (value.length === 0) {
-      return "Can't be empty";
+  const { formErrors, validateForm } = useFormValidation({
+    boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
+    boardColumnNames: validateColumnNames,
+  });
+
+  function validateColumnNames() {
+    const noColumnsProvided = boardColumnNames.length === 0;
+    if (noColumnsProvided) {
+      return "Please add at least one column.";
+    }
+
+    const hasEmptyValues =
+      boardColumnNames.filter((columnName) => columnName === "").length > 0;
+    if (hasEmptyValues) {
+      return "Please provide a name for each column.";
+    }
+
+    const columnNamesSet = new Set(boardColumnNames);
+    const hasDuplicateNames = columnNamesSet.size !== boardColumnNames.length;
+    if (hasDuplicateNames) {
+      return "Please provide a unique name for each column.";
     }
     return true;
   }
 
   function handleSubmit() {
-    console.log("submit");
+    const formIsValid = validateForm();
+    if (formIsValid) {
+      console.log("submit");
+    }
   }
 
   return (
     <Modal title="Add New Board" onClose={onClose}>
-      <Form onSubmit={handleSubmit} className="mt-7">
+      <Form onSubmit={handleSubmit} className="mt-7 flex flex-col gap-5">
         <TextInput
+          value={boardName}
+          onInput={setBoardName}
+          errorMessage={formErrors.boardName}
           name="test"
           label="Board Name"
           placeholder="e.g. Web Design"
         />
 
         <BoardColumnsListInput
-          columnValues={columnValues}
-          onColumnValuesChanged={setColumnValues}
+          columnValues={boardColumnNames}
+          onColumnValuesChanged={setBoardColumnNames}
+          errorMessage={formErrors.boardColumnNames}
         />
-        <Button type="submit" className="w-full mt-7 mb-3" variant="primary">
+        <Button type="submit" className="w-full mb-3 mt-4" variant="primary">
           Create New Board
         </Button>
       </Form>

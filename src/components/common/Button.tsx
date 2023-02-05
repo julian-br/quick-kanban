@@ -36,6 +36,7 @@ export default function Button({
   return (
     <button
       {...reactButtonProps}
+      type={reactButtonProps.type ?? "button"}
       className={`focus-visible:outline-none focus-visible:ring-2 ${variantClasses} ${sizeClasses} ${reactButtonProps.className}`}
     >
       {children}

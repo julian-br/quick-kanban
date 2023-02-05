@@ -7,11 +7,13 @@ import TextInput from "../common/Input/TextInput";
 interface Props {
   columnValues: string[];
   onColumnValuesChanged: (values: string[]) => void;
+  errorMessage?: string;
 }
 
 export function BoardColumnsListInput({
   columnValues,
   onColumnValuesChanged,
+  errorMessage,
 }: Props) {
   function addColumnInput() {
     const columnValuesCopy = [...columnValues];
@@ -31,16 +33,9 @@ export function BoardColumnsListInput({
     onColumnValuesChanged(columnValuesCopy);
   }
 
-  function boardColumnInputValidator(value: string) {
-    if (value.length === 0) {
-      return "Can't be empty";
-    }
-    return true;
-  }
-
   return (
     <div>
-      <InputLabel className="mt-5">Board Columns</InputLabel>
+      <InputLabel>Board Columns</InputLabel>
       <div className="flex flex-col gap-3">
         {columnValues.map((value, index) => (
           <div key={index} className="flex items-center">
@@ -60,6 +55,7 @@ export function BoardColumnsListInput({
           </div>
         ))}
 
+        <div className="text-danger">{errorMessage}</div>
         <Button onClick={addColumnInput} variant="secondary">
           <div>
             <span>+</span>
