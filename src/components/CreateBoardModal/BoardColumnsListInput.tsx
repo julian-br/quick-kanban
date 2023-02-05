@@ -47,7 +47,6 @@ export function BoardColumnsListInput({
             <TextInput
               value={value}
               className="w-full"
-              validator={boardColumnInputValidator}
               placeholder="e.g. Web Design"
               onInput={(value) => handleInput(index, value)}
             />

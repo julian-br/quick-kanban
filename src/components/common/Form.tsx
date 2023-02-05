@@ -2,22 +2,34 @@ import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   className?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: () => void;
 }
 
 export default function Form({
   children,
-  onSubmit,
   className: passedClassName,
+  onSubmit,
+  onChange,
 }: Props) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onSubmit(event);
   }
 
+  function handleChange() {
+    if (onChange !== undefined) {
+      onChange();
+    }
+  }
+
   return (
-    <form className={passedClassName ?? ""} onSubmit={handleSubmit}>
+    <form
+      onChange={handleChange}
+      className={passedClassName ?? ""}
+      onSubmit={handleSubmit}
+    >
       {children}
     </form>
   );

@@ -26,7 +26,6 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
         <TextInput
           name="test"
           label="Board Name"
-          validator={nameInputValidator}
           placeholder="e.g. Web Design"
         />
 
