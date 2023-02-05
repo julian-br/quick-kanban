@@ -16,7 +16,6 @@ export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {
     <div>
       <Button
         variant="custom"
-        size="custom"
         onClick={() => onTaskClick(taskData)}
         className="bg-white w-full text-left pt-5 pb-7 px-5 rounded-xl shadow-md shadow-secondary-light group"
       >

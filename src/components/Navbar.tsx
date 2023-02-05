@@ -16,7 +16,6 @@ export default function Navbar() {
         </Button>
         <Button
           variant="custom"
-          size="custom"
           className="hover:bg-secondary-light px-2 ml-3 rounded-full"
         >
           <img

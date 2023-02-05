@@ -20,7 +20,6 @@ function BoardNavEntry({
   return (
     <Button
       variant="custom"
-      size="custom"
       onClick={onClick}
       className={`w-72 py-3 font-semibold text-lg  rounded-r-full px-7 flex ${
         isActive ? activeClassList : notActiveClassList
@@ -42,7 +41,6 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
       variant="custom"
-      size="custom"
       onClick={onClick}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-secondary-light"
     >

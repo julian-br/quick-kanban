@@ -1,6 +1,5 @@
 import { KanbanBoardData, KanbanTaskData } from "../../types/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
-import PlusIcon from "../../assets/icon-add-task.svg";
 import Button from "../common/Button";
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
@@ -8,7 +7,6 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
     <div className="h-full w-96 mt-2 px-4">
       <Button
         variant="custom"
-        size="custom"
         onClick={onClick}
         className="w-full h-[59rem] bg-[#e3eaf5c9] rounded-xl text-slate-400 mt-11 hover:text-primary"
       >

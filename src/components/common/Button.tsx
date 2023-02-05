@@ -19,7 +19,6 @@ const variantClassMap = {
 const sizeClassMap = {
   medium: "px-7 py-2 rounded-full",
   large: "text-lg px-7 py-3 rounded-full",
-  custom: "",
 } as const;
 
 export default function Button({
@@ -28,12 +27,16 @@ export default function Button({
   children,
   ...reactButtonProps
 }: Props) {
+  const variantClasses = variantClassMap[variant];
+
+  // apply no sizing if the variant is custom
+  const sizeClasses =
+    variant === "custom" ? "" : sizeClassMap[size ?? "medium"];
+
   return (
     <button
       {...reactButtonProps}
-      className={`focus-visible:outline-none focus-visible:ring-2 ${
-        variantClassMap[variant]
-      } ${sizeClassMap[size ?? "medium"]} ${reactButtonProps.className}`}
+      className={`focus-visible:outline-none focus-visible:ring-2 ${variantClasses} ${sizeClasses} ${reactButtonProps.className}`}
     >
       {children}
     </button>

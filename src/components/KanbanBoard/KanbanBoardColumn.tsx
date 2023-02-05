@@ -19,7 +19,7 @@ export default function KanbanBoardColumn({ columnData, onTaskClick }: Props) {
         </div>
       </h3>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5">
         {tasksData.map((taskData) => (
           <KanbanBoardTask
             key={taskData.title}
