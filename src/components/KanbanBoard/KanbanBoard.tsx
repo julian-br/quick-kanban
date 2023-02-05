@@ -1,4 +1,4 @@
-import { KanbanBoardData, KanbanTaskData } from "../../types/kanbanBoard";
+import { KanbanBoardData, KanbanTaskData } from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../common/Button";
 

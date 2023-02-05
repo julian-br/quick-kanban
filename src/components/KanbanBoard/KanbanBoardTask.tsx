@@ -1,4 +1,4 @@
-import { KanbanTaskData } from "../../types/kanbanBoard";
+import { KanbanTaskData } from "../../api/kanbanBoard";
 import Button from "../common/Button";
 
 interface Props {

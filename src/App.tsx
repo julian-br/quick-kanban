@@ -5,23 +5,22 @@ import Navbar from "./components/Navbar";
 import SideBar from "./components/SideBar";
 import BoardsData from "./data.json";
 import "./index.css";
-import Modal from "./components/common/Modal";
 import CreateBoardModal from "./components/CreateBoardModal/CreateBoardModal";
-
-const boardsData = BoardsData.boards;
+import { getAllBoardNames, getBoardById } from "./api/kanbanBoard";
 
 function App() {
-  const [activeBoardId, setActiveBoardId] = useState(boardsData[0].id);
+  const [activeBoardId, setActiveBoardId] = useState("1");
   const [showModal, setShowModal] = useState(false);
 
   const activeBoard = useMemo(
-    () => boardsData.find((boardData) => boardData.id === activeBoardId),
+    () => getBoardById(activeBoardId),
     [activeBoardId]
   );
 
+  const allBoardNames = getAllBoardNames();
   const boardNavEntries = useMemo(
     () =>
-      boardsData.map((board) => {
+      allBoardNames.map((board) => {
         return {
           id: board.id,
           name: board.name,
@@ -35,7 +34,7 @@ function App() {
     setActiveBoardId(id);
   }
 
-  const amountOfBoards = boardsData.length;
+  const amountOfBoards = allBoardNames.length;
 
   return (
     <div className="font-jakarta min-h-screen">
