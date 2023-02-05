@@ -37,20 +37,18 @@ export default function TextInput({
   return (
     <div className={`relative ${passedClassName ?? ""}`}>
       <InputLabel>{label}</InputLabel>
-      <div>
-        <input
-          {...htmlInputProps}
-          onChange={(e) => handleInput(e.target.value)}
-          type="text"
-          className={`${
-            isValid ? "border-gray-200" : "border-danger"
-          } block w-full rounded-md text-md py-3 placeholder:text-slate-300 focus:border-primary-light`}
-          data-is-valid={isValid ? true : false}
-        />
-      </div>
+      <input
+        {...htmlInputProps}
+        onChange={(e) => handleInput(e.target.value)}
+        type="text"
+        className={`${
+          isValid ? "border-gray-200" : "border-danger"
+        } block w-full rounded-md text-md py-3 placeholder:text-slate-300 focus:border-primary-light`}
+        data-is-valid={isValid ? true : false}
+      />
 
       {!isValid && (
-        <div className="text-red-500 pointer-events-none absolute top-10 right-4">
+        <div className="text-red-500 pointer-events-none bottom-3 absolute right-4">
           {errorMessage}
         </div>
       )}

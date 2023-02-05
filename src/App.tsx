@@ -6,7 +6,7 @@ import SideBar from "./components/SideBar";
 import BoardsData from "./data.json";
 import "./index.css";
 import Modal from "./components/common/Modal";
-import CreateNewBoardModal from "./components/CreateNewBoardModal";
+import CreateBoardModal from "./components/CreateBoardModal/CreateBoardModal";
 
 const boardsData = BoardsData.boards;
 
@@ -63,7 +63,7 @@ function App() {
             }
           />
           {showModal && (
-            <CreateNewBoardModal onClose={() => setShowModal(false)} />
+            <CreateBoardModal onClose={() => setShowModal(false)} />
           )}
         </main>
       </div>
