@@ -3,8 +3,12 @@ import BoardIconActive from "../assets/icon-board-active.svg";
 import BoardIconPrimary from "../assets/icon-board-primary.svg";
 import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
-import { getBoardsOverview } from "../api/kanbanBoard";
+import {
+  getKanbanBoardsOverview,
+  kanbanBoardsOverviewKey,
+} from "../api/kanbanBoard";
 import { useLocation } from "wouter";
+import { useQuery } from "react-query";
 
 function BoardNavEntry({
   title,
@@ -70,6 +74,10 @@ export default function KanbanBoardsNav({
   activeBoardId,
   onCreateNewBoardClick,
 }: Props) {
+  const boardsOverviewQuery = useQuery(
+    kanbanBoardsOverviewKey,
+    getKanbanBoardsOverview
+  );
   const [_, setLocation] = useLocation();
 
   function handleCreateNewBoardClicked() {
@@ -82,19 +90,26 @@ export default function KanbanBoardsNav({
     setLocation("/board/" + boardId);
   }
 
-  const boardsOverview = getBoardsOverview();
+  const amountOfCreatedBoards = boardsOverviewQuery.data?.length;
 
   return (
     <div>
       <div>
-        {boardsOverview.map((boardOverview) => (
-          <BoardNavEntry
-            key={boardOverview.id}
-            onClick={() => handleNavEntryClicked(boardOverview.id)}
-            title={boardOverview.name}
-            isActive={boardOverview.id === activeBoardId}
-          />
-        ))}
+        <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
+          all boards ({amountOfCreatedBoards})
+        </h2>
+        {boardsOverviewQuery.isSuccess && (
+          <div>
+            {boardsOverviewQuery.data.map((boardOverview) => (
+              <BoardNavEntry
+                key={boardOverview.id}
+                onClick={() => handleNavEntryClicked(boardOverview.id)}
+                title={boardOverview.name}
+                isActive={boardOverview.id === activeBoardId}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <CreateNewBoardButton onClick={handleCreateNewBoardClicked} />
     </div>

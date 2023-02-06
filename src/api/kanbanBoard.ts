@@ -24,14 +24,22 @@ export interface KanbanSubtaskData {
   isCompleted: boolean;
 }
 
-export function getBoardsOverview() {
-  return boardsData.map((board) => ({
-    id: board.id,
-    name: board.name,
-  }));
+export const kanbanBoardsOverviewKey = "kanban-boards-overview";
+export function getKanbanBoardsOverview() {
+  console.log("fetching overview");
+  return new Promise<KanbanBoardData[]>((res) => {
+    const boardOverview = boardsData.map((board) => ({
+      id: board.id,
+      name: board.name,
+      columns: [],
+    }));
+
+    res(boardOverview);
+  });
 }
 
-export function getBoardById(id: string) {
+export const kanbanBoardKey = (boardId: string) => ["kanban-board", boardId];
+export function fetchKanbanBoardById(id: string) {
   console.log("fetching board by id");
   return new Promise<KanbanBoardData>((res, rej) => {
     const matchingBoard = boardsData.find((board) => board.id === id)!;
@@ -42,7 +50,7 @@ export function getBoardById(id: string) {
   });
 }
 
-export function postBoard({
+export function postKanbanBoard({
   name,
   columNames,
 }: {
@@ -50,6 +58,7 @@ export function postBoard({
   columNames: string[];
 }) {
   return new Promise<KanbanBoardData>((res) => {
+    console.log("posting board");
     const id = parseInt(boardsData.at(-1)!.id) + 1;
     const newBoard = {
       id: id.toString(),
@@ -60,7 +69,6 @@ export function postBoard({
       })),
     };
     boardsData.push(newBoard);
-    console.log("new board postet", newBoard);
     res(newBoard);
   });
 }

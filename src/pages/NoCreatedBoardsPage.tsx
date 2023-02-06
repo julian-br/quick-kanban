@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-import CreateBoardModal from "../components/CreateBoardModal/CreateBoardModal";
+import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
-import { getBoardsOverview } from "../api/kanbanBoard";
+import {
+  getKanbanBoardsOverview,
+  kanbanBoardsOverviewKey,
+} from "../api/kanbanBoard";
 import { useLocation } from "wouter";
+import { useQuery } from "react-query";
 
 export default function NoCreatedBoardsPage() {
   const [showCreateNewBoardModal, setShowCreateNewBoardModal] = useState(false);
   const [_, setLocation] = useLocation();
-  const boardsOverview = getBoardsOverview();
 
-  useEffect(() => {
-    const hasCreatedBoards = boardsOverview.length > 0;
-    if (hasCreatedBoards) {
-      setLocation("/board/" + boardsOverview[0].id);
-    }
-  }, []);
+  // redirect to an existing board if the user has already created one
+  useQuery(kanbanBoardsOverviewKey, {
+    queryFn: getKanbanBoardsOverview,
+    onSuccess: (boardsOverview) => {
+      const hasCreatedBoards = boardsOverview.length > 0;
+      if (hasCreatedBoards) {
+        setLocation("/board/" + boardsOverview[0].id);
+      }
+    },
+  });
 
   function handleCreateNewBoardClicked() {
     setShowCreateNewBoardModal(true);
