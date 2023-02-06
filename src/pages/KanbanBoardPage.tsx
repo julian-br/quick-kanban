@@ -1,58 +1,61 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
-import { getAllBoardNames, getBoardById } from "../api/kanbanBoard";
+import { useLocation, useRoute } from "wouter";
+import { getBoardsOverview, getBoardById } from "../api/kanbanBoard";
 import CreateBoardModal from "../components/CreateBoardModal/CreateBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 
-export default function KanbanBoardPage() {
-  const [activeBoardId, setActiveBoardId] = useState("1");
+interface Props {
+  urlParams: {
+    boardId: string;
+  };
+}
+
+export default function KanbanBoardPage({ urlParams }: Props) {
   const [showModal, setShowModal] = useState(false);
 
-  const activeBoardQuery = useQuery(["board", activeBoardId], () =>
-    getBoardById(activeBoardId)
+  const { boardId } = urlParams;
+
+  const activeBoardQuery = useQuery(["board", boardId], () =>
+    getBoardById(boardId)
   );
 
-  const allBoardNames = getAllBoardNames();
+  const boardsOverview = getBoardsOverview();
   const boardNavEntries = useMemo(
     () =>
-      allBoardNames.map((board) => {
+      boardsOverview.map((board) => {
         return {
           id: board.id,
           name: board.name,
-          isActive: activeBoardId === board.id ? true : false,
+          isActive: boardId === board.id ? true : false,
         };
       }),
-    [activeBoardId]
+    [boardId]
   );
 
-  function handleBoardNavEntryClicked(id: string) {
-    setActiveBoardId(id);
-  }
-
-  const amountOfBoards = allBoardNames.length;
+  const amountOfBoards = boardsOverview.length;
 
   return (
-    <div className="font-jakarta min-h-screen">
+    <>
       <Navbar />
-      <div className="flex">
+      <div className="flex flex-grow">
         <SideBar>
           <div className="mt-7">
             <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
               all boards ({amountOfBoards})
             </h2>
             <KanbanBoardsNav
-              navEntries={boardNavEntries}
-              onNavEntryClick={handleBoardNavEntryClicked}
+              activeBoardId={boardId}
               onCreateNewBoardClick={() => setShowModal(true)}
             />
           </div>
         </SideBar>
 
         {activeBoardQuery.isSuccess && (
-          <main className="w-full h-full">
+          <main className="w-full">
             <KanbanBoard
               boardData={activeBoardQuery.data}
               onTaskClick={(taskData) => console.log(taskData, "clicked")}
@@ -64,6 +67,6 @@ export default function KanbanBoardPage() {
         )}
         {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
       </div>
-    </div>
+    </>
   );
 }

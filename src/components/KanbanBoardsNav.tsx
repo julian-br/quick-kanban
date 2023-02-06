@@ -3,9 +3,11 @@ import BoardIconActive from "../assets/icon-board-active.svg";
 import BoardIconPrimary from "../assets/icon-board-primary.svg";
 import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
+import { getBoardsOverview } from "../api/kanbanBoard";
+import { useLocation } from "wouter";
 
 function BoardNavEntry({
-  title: name,
+  title,
   isActive,
   onClick,
 }: {
@@ -31,7 +33,7 @@ function BoardNavEntry({
           alt="Icon of a kanban board"
           className="h-5"
         />
-        <span className="ml-3">{name}</span>
+        <span className="ml-3">{title}</span>
       </div>
     </Button>
   );
@@ -59,38 +61,38 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-interface BoardsNavEntry {
-  id: string;
-  name: string;
-  isActive: boolean;
-}
-
 interface Props {
-  navEntries: BoardsNavEntry[];
-  onNavEntryClick: (entryId: string) => void;
+  activeBoardId: string;
   onCreateNewBoardClick?: () => void;
 }
 
 export default function KanbanBoardsNav({
-  navEntries,
-  onNavEntryClick,
+  activeBoardId,
   onCreateNewBoardClick,
 }: Props) {
+  const [_, setLocation] = useLocation();
+
   function handleCreateNewBoardClicked() {
     if (onCreateNewBoardClick !== undefined) {
       onCreateNewBoardClick();
     }
   }
 
+  function handleNavEntryClicked(boardId: string) {
+    setLocation("/board/" + boardId);
+  }
+
+  const boardsOverview = getBoardsOverview();
+
   return (
     <div>
       <div>
-        {navEntries.map((navEntry) => (
+        {boardsOverview.map((boardOverview) => (
           <BoardNavEntry
-            key={navEntry.id}
-            onClick={() => onNavEntryClick(navEntry.id)}
-            title={navEntry.name}
-            isActive={navEntry.isActive}
+            key={boardOverview.id}
+            onClick={() => handleNavEntryClicked(boardOverview.id)}
+            title={boardOverview.name}
+            isActive={boardOverview.id === activeBoardId}
           />
         ))}
       </div>

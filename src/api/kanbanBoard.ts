@@ -24,7 +24,7 @@ export interface KanbanSubtaskData {
   isCompleted: boolean;
 }
 
-export function getAllBoardNames() {
+export function getBoardsOverview() {
   return boardsData.map((board) => ({
     id: board.id,
     name: board.name,

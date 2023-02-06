@@ -4,7 +4,7 @@ import Button from "../common/Button";
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
-    <div className="h-full w-96 mt-2 px-4">
+    <div className="w-96 mt-2 px-4">
       <Button
         variant="custom"
         onClick={onClick}
