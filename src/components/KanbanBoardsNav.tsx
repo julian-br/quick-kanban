@@ -3,10 +3,7 @@ import BoardIconActive from "../assets/icon-board-active.svg";
 import BoardIconPrimary from "../assets/icon-board-primary.svg";
 import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
-import {
-  getKanbanBoardsOverview,
-  kanbanBoardsOverviewKey,
-} from "../api/kanbanBoard";
+import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
 import { useLocation } from "wouter";
 import { useQuery } from "react-query";
 
@@ -74,10 +71,7 @@ export default function KanbanBoardsNav({
   activeBoardId,
   onCreateNewBoardClick,
 }: Props) {
-  const boardsOverviewQuery = useQuery(
-    kanbanBoardsOverviewKey,
-    getKanbanBoardsOverview
-  );
+  const boardsQuery = useQuery(allKanbanBoardsKey, fetchAllKanbanBoards);
   const [_, setLocation] = useLocation();
 
   function handleCreateNewBoardClicked() {
@@ -90,7 +84,7 @@ export default function KanbanBoardsNav({
     setLocation("/board/" + boardId);
   }
 
-  const amountOfCreatedBoards = boardsOverviewQuery.data?.length;
+  const amountOfCreatedBoards = boardsQuery.data?.length;
 
   return (
     <div>
@@ -98,14 +92,14 @@ export default function KanbanBoardsNav({
         <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
-        {boardsOverviewQuery.isSuccess && (
+        {boardsQuery.isSuccess && (
           <div>
-            {boardsOverviewQuery.data.map((boardOverview) => (
+            {boardsQuery.data.map((board) => (
               <BoardNavEntry
-                key={boardOverview.id}
-                onClick={() => handleNavEntryClicked(boardOverview.id)}
-                title={boardOverview.name}
-                isActive={boardOverview.id === activeBoardId}
+                key={board.id}
+                onClick={() => handleNavEntryClicked(board.id)}
+                title={board.name}
+                isActive={board.id === activeBoardId}
               />
             ))}
           </div>

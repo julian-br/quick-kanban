@@ -1,26 +1,30 @@
-import { KanbanBoardColumnData, KanbanTaskData } from "../../api/kanbanBoard";
+import { KanbanTaskData } from "../../api/kanbanBoard";
 import KanbanBoardTask from "./KanbanBoardTask";
 
 interface Props {
-  columnData: KanbanBoardColumnData;
+  columnName: string;
+  tasks: KanbanTaskData[];
   onTaskClick: (taskData: KanbanTaskData) => void;
 }
 
-export default function KanbanBoardColumn({ columnData, onTaskClick }: Props) {
-  const ammountOfTask = columnData.tasks.length;
-  const tasksData = columnData.tasks;
+export default function KanbanBoardColumn({
+  columnName,
+  tasks,
+  onTaskClick,
+}: Props) {
+  const ammountOfTask = tasks.length;
 
   return (
     <div className="px-3 w-96">
       <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6">
         <div className="flex items-center">
           <div className="w-4 h-4 bg-amber-300 rounded-full mr-3"></div>
-          {columnData.name} ({ammountOfTask})
+          {columnName} ({ammountOfTask})
         </div>
       </h3>
 
       <div className="flex flex-col gap-5">
-        {tasksData.map((taskData) => (
+        {tasks.map((taskData) => (
           <KanbanBoardTask
             key={taskData.title}
             onTaskClick={onTaskClick}

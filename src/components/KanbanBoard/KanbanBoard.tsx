@@ -1,6 +1,12 @@
-import { KanbanBoardData, KanbanTaskData } from "../../api/kanbanBoard";
+import {
+  fetchTasksForKanbanBoard,
+  KanbanBoardData,
+  KanbanTaskData,
+  tasksForKanbanBoardKey,
+} from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../common/Button";
+import { useQuery } from "react-query";
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
@@ -18,17 +24,19 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
 }
 
 interface Props {
-  boardData: KanbanBoardData;
+  board: KanbanBoardData;
   onTaskClick?: (taskData: KanbanTaskData) => void;
   onCreateNewBoardClick?: () => void;
 }
 
 export default function KanbanBoard({
-  boardData,
+  board,
   onTaskClick,
   onCreateNewBoardClick,
 }: Props) {
-  const columnsData = boardData.columns;
+  const tasksQuery = useQuery(tasksForKanbanBoardKey(board.id), () =>
+    fetchTasksForKanbanBoard(board.id)
+  );
 
   function handleTaskClicked(taskData: KanbanTaskData) {
     if (onTaskClick !== undefined) {
@@ -42,16 +50,25 @@ export default function KanbanBoard({
     }
   }
 
+  function filterTasksByColumnName(column: string) {
+    return tasksQuery.data?.filter((task) => task.status === column) ?? [];
+  }
+
   return (
-    <div className="h-full w-full bg-grey-light pt-7 flex px-4">
-      {columnsData.map((columnData) => (
-        <KanbanBoardColumn
-          key={columnData.name}
-          onTaskClick={handleTaskClicked}
-          columnData={columnData}
-        />
-      ))}
-      <CreateNewColumnButton onClick={handleCreateNewBoardClicked} />
-    </div>
+    <>
+      {tasksQuery.isSuccess && (
+        <div className="h-full w-full bg-grey-light pt-7 flex px-4">
+          {board.columns.map((column) => (
+            <KanbanBoardColumn
+              tasks={filterTasksByColumnName(column)}
+              key={column}
+              onTaskClick={handleTaskClicked}
+              columnName={column}
+            />
+          ))}
+          <CreateNewColumnButton onClick={handleCreateNewBoardClicked} />
+        </div>
+      )}
+    </>
   );
 }

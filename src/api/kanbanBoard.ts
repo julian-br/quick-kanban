@@ -1,19 +1,17 @@
-import BoardsData from "../data.json";
-const boardsData: KanbanBoardData[] = BoardsData.boards;
+import BoardsData from "../mock-data/boardData.json";
+import TaskData from "../mock-data/tasksData.json";
+const boardsData: KanbanBoardData[] = BoardsData;
+const tasksData: KanbanTaskData[] = TaskData;
 
 export interface KanbanBoardData {
   id: string;
   name: string;
-  columns: KanbanBoardColumnData[];
-}
-
-export interface KanbanBoardColumnData {
-  name: string;
-  tasks: KanbanTaskData[];
+  columns: string[];
 }
 
 export interface KanbanTaskData {
   id: string;
+  boardId: string;
   title: string;
   description: string;
   status: string;
@@ -25,17 +23,11 @@ export interface KanbanSubtaskData {
   isCompleted: boolean;
 }
 
-export const kanbanBoardsOverviewKey = "kanban-boards-overview";
-export function getKanbanBoardsOverview() {
-  console.log("fetching overview");
+export const allKanbanBoardsKey = "kanban-boards";
+export function fetchAllKanbanBoards() {
   return new Promise<KanbanBoardData[]>((res) => {
-    const boardOverview = boardsData.map((board) => ({
-      id: board.id,
-      name: board.name,
-      columns: [],
-    }));
-
-    res(boardOverview);
+    console.warn("fetching all kanban boards" + Math.random());
+    res(boardsData);
   });
 }
 
@@ -45,39 +37,44 @@ export const kanbanBoardTaskKey = (taksId: string) => [
 ];
 export function updateTask(task: KanbanTaskData) {
   return new Promise<KanbanTaskData>((res) => {
-    const allTasks: KanbanTaskData[] = [];
-
-    boardsData.forEach((board) =>
-      board.columns.forEach((column) =>
-        column.tasks.forEach((task) => allTasks.push(task))
-      )
+    const indexOfTaskToUpdate = tasksData.findIndex(
+      (taskData) => taskData.id === task.id
     );
 
-    const matchingTask = allTasks.find((taskData) => taskData.id === task.id);
-
-    if (matchingTask === undefined) {
+    if (indexOfTaskToUpdate === -1) {
       throw new Error("task could not be updated");
     }
 
-    matchingTask.id = task.id;
-    matchingTask.description = task.description;
-    matchingTask.status = task.status;
-    matchingTask.subtasks = task.subtasks;
-    matchingTask.title = task.title;
-
-    res(matchingTask);
+    tasksData[indexOfTaskToUpdate] = task;
+    console.log("updating task", task);
+    res(task);
   });
 }
 
-export const kanbanBoardKey = (boardId: string) => ["kanban-board", boardId];
+export const kanbanBoardKey = (boardId: string) => "kanban-board" + boardId;
 export function fetchKanbanBoardById(boardId: string) {
-  console.log("fetching board by id");
+  console.log("fetching board by id", boardId);
   return new Promise<KanbanBoardData>((res) => {
     const matchingBoard = boardsData.find((board) => board.id === boardId);
     if (matchingBoard === undefined) {
       throw new Error("no board with this id");
     }
     res(matchingBoard);
+  });
+}
+
+export const tasksForKanbanBoardKey = (boardId: string) => [
+  "kanban-board",
+  "tasks",
+  boardId,
+];
+export function fetchTasksForKanbanBoard(boardId: string) {
+  return new Promise<KanbanTaskData[]>((res) => {
+    const matchingTasks = tasksData.filter(
+      (taskData) => taskData.boardId === boardId
+    );
+
+    res(matchingTasks);
   });
 }
 
@@ -94,10 +91,7 @@ export function postKanbanBoard({
     const newBoard = {
       id: id.toString(),
       name,
-      columns: columNames.map((columnName) => ({
-        name: columnName,
-        tasks: [],
-      })),
+      columns: columNames,
     };
     boardsData.push(newBoard);
     res(newBoard);

@@ -32,10 +32,6 @@ export default function KanbanBoardPage({ urlParams }: Props) {
     setSelectedTask(taskData);
   }
 
-  const boardColumnNames = activeBoardQuery.data?.columns.map(
-    (col) => col.name
-  );
-
   return (
     <>
       <Navbar />
@@ -52,7 +48,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
         {activeBoardQuery.isSuccess && (
           <main className="w-full">
             <KanbanBoard
-              boardData={activeBoardQuery.data}
+              board={activeBoardQuery.data}
               onTaskClick={handleTaskClicked}
               onCreateNewBoardClick={() =>
                 console.log("create new board clicked")
@@ -66,7 +62,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
             boardId={activeBoardQuery.data.id}
             onClose={() => setSelectedTask(undefined)}
             task={selectedTask}
-            boardColumns={boardColumnNames ?? []}
+            boardColumns={activeBoardQuery.data.columns}
           />
         )}
       </div>

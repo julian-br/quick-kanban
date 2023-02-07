@@ -4,10 +4,7 @@ import TextInput from "../common/Input/TextInput";
 import { useState } from "react";
 import { BoardColumnsListInput } from "./ColumnsListInput";
 import Form, { useFormValidation } from "../common/Form";
-import {
-  kanbanBoardsOverviewKey,
-  postKanbanBoard,
-} from "../../api/kanbanBoard";
+import { allKanbanBoardsKey, postKanbanBoard } from "../../api/kanbanBoard";
 import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "wouter";
 
@@ -16,11 +13,9 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const { invalidateQueries } = useQueryClient();
   const boardDataMutation = useMutation(postKanbanBoard, {
     onSuccess: (postedBoard) => {
       setLocation("/board/" + postedBoard.id);
-      invalidateQueries(kanbanBoardsOverviewKey);
       onClose();
     },
   });

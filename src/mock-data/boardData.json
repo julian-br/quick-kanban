@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "name": "Platform Launch",
+    "columns": ["Todo", "Doing", "Done"]
+  },
+  {
+    "id": "2",
+    "name": "Marketing Plan",
+    "columns": ["Idea", "Planning", "Done"]
+  }
+]

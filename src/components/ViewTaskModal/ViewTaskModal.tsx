@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import {
   kanbanBoardKey,
+  kanbanBoardTaskKey,
   KanbanSubtaskData,
   KanbanTaskData,
+  tasksForKanbanBoardKey,
   updateTask,
 } from "../../api/kanbanBoard";
 import Listbox from "../common/Input/Listbox";
@@ -27,7 +29,7 @@ export default function ViewTaskModal({
   const queryClient = useQueryClient();
   const taskMutation = useMutation(updateTask, {
     onSuccess: () => {
-      queryClient.invalidateQueries(kanbanBoardKey(boardId));
+      queryClient.invalidateQueries(tasksForKanbanBoardKey(boardId));
       onClose();
     },
   });

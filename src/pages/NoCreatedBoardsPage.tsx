@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../components/common/Button";
 import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
-import {
-  getKanbanBoardsOverview,
-  kanbanBoardsOverviewKey,
-} from "../api/kanbanBoard";
+import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
 import { useLocation } from "wouter";
 import { useQuery } from "react-query";
 
@@ -17,8 +14,8 @@ export default function NoCreatedBoardsPage() {
   const [_, setLocation] = useLocation();
 
   // redirect to an existing board if the user has already created one
-  useQuery(kanbanBoardsOverviewKey, {
-    queryFn: getKanbanBoardsOverview,
+  useQuery(allKanbanBoardsKey, {
+    queryFn: fetchAllKanbanBoards,
     onSuccess: (boardsOverview) => {
       const hasCreatedBoards = boardsOverview.length > 0;
       if (hasCreatedBoards) {
