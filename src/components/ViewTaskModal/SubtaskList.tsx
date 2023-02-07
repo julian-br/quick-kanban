@@ -1,7 +1,6 @@
 import { KanbanSubtaskData } from "../../api/kanbanBoard";
 import Button from "../common/Button";
 import CheckIcon from "../../assets/icon-check.svg";
-import { useState } from "react";
 
 function SubtaskListEntry({
   subtask,

@@ -59,6 +59,12 @@ export function updateTask(task: KanbanTaskData) {
       throw new Error("task could not be updated");
     }
 
+    matchingTask.id = task.id;
+    matchingTask.description = task.description;
+    matchingTask.status = task.status;
+    matchingTask.subtasks = task.subtasks;
+    matchingTask.title = task.title;
+
     res(matchingTask);
   });
 }

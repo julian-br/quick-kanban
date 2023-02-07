@@ -25,7 +25,7 @@ export default function ViewTaskModal({
 }: Props) {
   const [taskData, setTaskData] = useState(task);
   const queryClient = useQueryClient();
-  const taskMutation = useMutation(() => updateTask(taskData), {
+  const taskMutation = useMutation(updateTask, {
     onSuccess: () => {
       queryClient.invalidateQueries(kanbanBoardKey(boardId));
       onClose();
@@ -54,7 +54,7 @@ export default function ViewTaskModal({
   }
 
   function handleModalClose() {
-    taskMutation.mutate();
+    taskMutation.mutate(taskData);
   }
 
   return (
