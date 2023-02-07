@@ -4,7 +4,7 @@ import ChivronDownIcon from "../../../assets/icon-chevron-down.svg";
 interface Props {
   options: string[];
   selected?: string;
-  onChange?: (newValue?: string) => void;
+  onChange?: (newValue: string) => void;
 }
 
 export default function Listbox({ options, onChange, selected }: Props) {

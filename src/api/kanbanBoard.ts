@@ -39,28 +39,27 @@ export function getKanbanBoardsOverview() {
   });
 }
 
-export const kanbanBoardTaskKey = (boardId: string, taksId: string) => [
+export const kanbanBoardTaskKey = (taksId: string) => [
   "kanban-board-task",
-  boardId,
   taksId,
 ];
-export function updateTask(boardId: string, task: KanbanTaskData) {
+export function updateTask(task: KanbanTaskData) {
   return new Promise<KanbanTaskData>((res) => {
-    const matchingBoard = boardsData.find((board) => board.id === boardId);
-    if (matchingBoard === undefined) {
-      throw new Error("no board with this id");
+    const allTasks: KanbanTaskData[] = [];
+
+    boardsData.forEach((board) =>
+      board.columns.forEach((column) =>
+        column.tasks.forEach((task) => allTasks.push(task))
+      )
+    );
+
+    const matchingTask = allTasks.find((taskData) => taskData.id === task.id);
+
+    if (matchingTask === undefined) {
+      throw new Error("task could not be updated");
     }
 
-    matchingBoard.columns.forEach((column, colIndex) => {
-      const matchingIndex = column.tasks.findIndex(
-        (taskData) => taskData.id === task.id
-      );
-      if (matchingIndex !== undefined) {
-        matchingBoard.columns[colIndex].tasks[matchingIndex] = task;
-        res(task);
-      }
-    });
-    throw new Error("task could not be updated");
+    res(matchingTask);
   });
 }
 

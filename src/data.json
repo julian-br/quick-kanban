@@ -28,18 +28,6 @@
               ]
             },
             {
-              "id": "2",
-              "title": "Build UI for search",
-              "description": "",
-              "status": "Todo",
-              "subtasks": [
-                {
-                  "title": "Search page",
-                  "isCompleted": false
-                }
-              ]
-            },
-            {
               "id": "3",
               "title": "Build settings UI",
               "description": "",
@@ -76,66 +64,6 @@
         {
           "name": "Doing",
           "tasks": [
-            {
-              "id": "5",
-              "title": "Design settings and search pages",
-              "description": "",
-              "status": "Doing",
-              "subtasks": [
-                {
-                  "title": "Settings - Account page",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Settings - Billing page",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Search page",
-                  "isCompleted": false
-                }
-              ]
-            },
-            {
-              "id": "6",
-              "title": "Add account management endpoints",
-              "description": "",
-              "status": "Doing",
-              "subtasks": [
-                {
-                  "title": "Upgrade plan",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Cancel plan",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Update payment method",
-                  "isCompleted": false
-                }
-              ]
-            },
-            {
-              "id": "7",
-              "title": "Design onboarding flow",
-              "description": "",
-              "status": "Doing",
-              "subtasks": [
-                {
-                  "title": "Sign up page",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Sign in page",
-                  "isCompleted": false
-                },
-                {
-                  "title": "Welcome page",
-                  "isCompleted": false
-                }
-              ]
-            },
             {
               "id": "8",
               "title": "Add search enpoints",
@@ -194,50 +122,6 @@
           "name": "Done",
           "tasks": [
             {
-              "id": "20",
-              "title": "Conduct 5 wireframe tests",
-              "description": "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
-              "status": "Done",
-              "subtasks": [
-                {
-                  "title": "Complete 5 wireframe prototype tests",
-                  "isCompleted": true
-                }
-              ]
-            },
-            {
-              "id": "11",
-              "title": "Create wireframe prototype",
-              "description": "Create a greyscale clickable wireframe prototype to test our asssumptions so far.",
-              "status": "Done",
-              "subtasks": [
-                {
-                  "title": "Create clickable wireframe prototype in Balsamiq",
-                  "isCompleted": true
-                }
-              ]
-            },
-            {
-              "id": "12",
-              "title": "Review results of usability tests and iterate",
-              "description": "Keep iterating through the subtasks until we're clear on the core concepts for the app.",
-              "status": "Done",
-              "subtasks": [
-                {
-                  "title": "Meet to review notes from previous tests and plan changes",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Make changes to paper prototypes",
-                  "isCompleted": true
-                },
-                {
-                  "title": "Conduct 5 usability tests",
-                  "isCompleted": true
-                }
-              ]
-            },
-            {
               "id": "13",
               "title": "Create paper prototypes and conduct 10 usability tests with potential customers",
               "description": "Create paper prototypes and conduct 10 usability tests with potential customers. Create paper prototypes and conduct 10 usability tests with potential customers",
@@ -250,34 +134,6 @@
                 {
                   "title": "Complete 10 usability tests",
                   "isCompleted": false
-                }
-              ]
-            },
-            {
-              "id": "14",
-              "title": "Market discovery",
-              "description": "We need to define and refine our core product. Interviews will help us learn common pain points and help us define the strongest MVP.",
-              "status": "Done",
-              "subtasks": [
-                {
-                  "title": "Interview 10 prospective customers",
-                  "isCompleted": true
-                }
-              ]
-            },
-            {
-              "id": "15",
-              "title": "Competitor analysis",
-              "description": "",
-              "status": "Done",
-              "subtasks": [
-                {
-                  "title": "Find direct and indirect competitors",
-                  "isCompleted": true
-                },
-                {
-                  "title": "SWOT analysis for each competitor",
-                  "isCompleted": true
                 }
               ]
             },

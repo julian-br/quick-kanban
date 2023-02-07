@@ -1,8 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
-import { useLocation, useRoute } from "wouter";
 import {
-  getKanbanBoardsOverview,
   fetchKanbanBoardById,
   kanbanBoardKey,
   KanbanTaskData,
@@ -34,6 +32,10 @@ export default function KanbanBoardPage({ urlParams }: Props) {
     setSelectedTask(taskData);
   }
 
+  const boardColumnNames = activeBoardQuery.data?.columns.map(
+    (col) => col.name
+  );
+
   return (
     <>
       <Navbar />
@@ -59,7 +61,14 @@ export default function KanbanBoardPage({ urlParams }: Props) {
           </main>
         )}
         {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
-        {selectedTask && <ViewTaskModal task={selectedTask} />}
+        {selectedTask && activeBoardQuery.isSuccess && (
+          <ViewTaskModal
+            boardId={activeBoardQuery.data.id}
+            onClose={() => setSelectedTask(undefined)}
+            task={selectedTask}
+            boardColumns={boardColumnNames ?? []}
+          />
+        )}
       </div>
     </>
   );
