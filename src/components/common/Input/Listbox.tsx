@@ -1,17 +1,14 @@
 import { Listbox as ListBoxHeadlessUi } from "@headlessui/react";
-import { useState } from "react";
-import ChivronDownIcon from "../../assets/icon-chevron-down.svg";
+import ChivronDownIcon from "../../../assets/icon-chevron-down.svg";
 
 interface Props {
   options: string[];
+  selected?: string;
   onChange?: (newValue?: string) => void;
 }
 
-export default function Listbox({ options, onChange }: Props) {
-  const [selected, setSelected] = useState(options[0]);
-
+export default function Listbox({ options, onChange, selected }: Props) {
   function handleChange(newValue: string) {
-    setSelected(newValue);
     if (onChange !== undefined) {
       onChange(newValue);
     }
@@ -19,27 +16,23 @@ export default function Listbox({ options, onChange }: Props) {
 
   return (
     <ListBoxHeadlessUi value={selected} onChange={handleChange}>
-      <div className="relative">
-        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary border-slate-300 w-full ui-open:border-primary">
+      <div className="relative h-12 overflow-visible">
+        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary border-slate-300 w-full">
           <div className="flex justify-between items-center">
-            <span>{selected}</span>
+            <span className="block truncate">{selected}</span>
             <img src={ChivronDownIcon} />
           </div>
         </ListBoxHeadlessUi.Button>
-        <ListBoxHeadlessUi.Options
-          className={
-            "absolute w-full mt-1 bg-white border rounded-lg text-slate-500 z-10"
-          }
-        >
+        <ListBoxHeadlessUi.Options className="absolute max-h-60 w-full overflow-auto mt-1 bg-white border rounded-lg text-slate-500 z-50">
           {options.map((option) => (
             <ListBoxHeadlessUi.Option
               key={option}
               className={
-                "relative pl-5 py-2 rounded-lg hover:text-primary hover:bg-secondary-light ui-selected:text-primary ui-selected:font-semibold"
+                "realtive cursor-pointer pl-5 py-2 rounded-lg hover:text-primary hover:bg-secondary-light ui-selected:text-primary ui-selected:font-semibold"
               }
               value={option}
             >
-              {option}
+              <span className="block truncate">{option}</span>
             </ListBoxHeadlessUi.Option>
           ))}
         </ListBoxHeadlessUi.Options>

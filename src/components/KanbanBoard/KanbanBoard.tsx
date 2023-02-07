@@ -43,7 +43,7 @@ export default function KanbanBoard({
   }
 
   return (
-    <div className="h-full w-full bg-slate-100 pt-7 flex px-4">
+    <div className="h-full w-full bg-grey-light pt-7 flex px-4">
       {columnsData.map((columnData) => (
         <KanbanBoardColumn
           key={columnData.name}

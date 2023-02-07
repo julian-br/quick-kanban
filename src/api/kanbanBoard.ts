@@ -13,6 +13,7 @@ export interface KanbanBoardColumnData {
 }
 
 export interface KanbanTaskData {
+  id: string;
   title: string;
   description: string;
   status: string;
@@ -38,13 +39,38 @@ export function getKanbanBoardsOverview() {
   });
 }
 
-export const kanbanBoardKey = (boardId: string) => ["kanban-board", boardId];
-export function fetchKanbanBoardById(id: string) {
-  console.log("fetching board by id");
-  return new Promise<KanbanBoardData>((res, rej) => {
-    const matchingBoard = boardsData.find((board) => board.id === id)!;
+export const kanbanBoardTaskKey = (boardId: string, taksId: string) => [
+  "kanban-board-task",
+  boardId,
+  taksId,
+];
+export function updateTask(boardId: string, task: KanbanTaskData) {
+  return new Promise<KanbanTaskData>((res) => {
+    const matchingBoard = boardsData.find((board) => board.id === boardId);
     if (matchingBoard === undefined) {
-      rej("no board with this id");
+      throw new Error("no board with this id");
+    }
+
+    matchingBoard.columns.forEach((column, colIndex) => {
+      const matchingIndex = column.tasks.findIndex(
+        (taskData) => taskData.id === task.id
+      );
+      if (matchingIndex !== undefined) {
+        matchingBoard.columns[colIndex].tasks[matchingIndex] = task;
+        res(task);
+      }
+    });
+    throw new Error("task could not be updated");
+  });
+}
+
+export const kanbanBoardKey = (boardId: string) => ["kanban-board", boardId];
+export function fetchKanbanBoardById(boardId: string) {
+  console.log("fetching board by id");
+  return new Promise<KanbanBoardData>((res) => {
+    const matchingBoard = boardsData.find((board) => board.id === boardId);
+    if (matchingBoard === undefined) {
+      throw new Error("no board with this id");
     }
     res(matchingBoard);
   });

@@ -10,12 +10,13 @@ module.exports = {
         'jakarta': '"Plus Jakarta Sans"'
       },
       colors: {
-        'primary': '#635FC7',
+        'primary': 'hsla(242, 48%, 58%, 1)',
         'primary-light': '#A8A4FF',
         'secondary': ' hsla(242, 48%, 58%, 0.25)',
         'secondary-light': 'hsla(242, 48%, 58%, 0.1)',
         'danger': '#EA5555',
-        'danger-light': '#FF9898'
+        'danger-light': '#FF9898',
+        'grey-light': 'hsla(220, 69%, 97%, 1)'
       },
     },
   },

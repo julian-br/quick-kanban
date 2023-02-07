@@ -5,12 +5,14 @@ import {
   getKanbanBoardsOverview,
   fetchKanbanBoardById,
   kanbanBoardKey,
+  KanbanTaskData,
 } from "../api/kanbanBoard";
 import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
+import ViewTaskModal from "../components/ViewTaskModal/ViewTaskModal";
 
 interface Props {
   urlParams: {
@@ -20,12 +22,18 @@ interface Props {
 
 export default function KanbanBoardPage({ urlParams }: Props) {
   const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<KanbanTaskData>();
 
   const { boardId } = urlParams;
 
   const activeBoardQuery = useQuery(kanbanBoardKey(boardId), () =>
     fetchKanbanBoardById(boardId)
   );
+
+  function handleTaskClicked(taskData: KanbanTaskData) {
+    setSelectedTask(taskData);
+  }
+
   return (
     <>
       <Navbar />
@@ -43,7 +51,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
           <main className="w-full">
             <KanbanBoard
               boardData={activeBoardQuery.data}
-              onTaskClick={(taskData) => console.log(taskData, "clicked")}
+              onTaskClick={handleTaskClicked}
               onCreateNewBoardClick={() =>
                 console.log("create new board clicked")
               }
@@ -51,6 +59,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
           </main>
         )}
         {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
+        {selectedTask && <ViewTaskModal task={selectedTask} />}
       </div>
     </>
   );
