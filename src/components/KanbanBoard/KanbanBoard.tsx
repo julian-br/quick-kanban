@@ -1,16 +1,11 @@
-import {
-  fetchTasksForKanbanBoard,
-  KanbanBoardData,
-  KanbanTaskData,
-  tasksForKanbanBoardKey,
-} from "../../api/kanbanBoard";
+import { KanbanBoard as KanbanBoardData } from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../common/Button";
-import { useQuery } from "react-query";
+import { Task, useTasks } from "../../api/task";
 
 interface Props {
   board: KanbanBoardData;
-  onTaskClick?: (taskData: KanbanTaskData) => void;
+  onTaskClick?: (taskData: Task) => void;
   onCreateNewBoardClick?: () => void;
 }
 
@@ -19,11 +14,9 @@ export default function KanbanBoard({
   onTaskClick,
   onCreateNewBoardClick,
 }: Props) {
-  const tasksQuery = useQuery(tasksForKanbanBoardKey(board.id), () =>
-    fetchTasksForKanbanBoard(board.id)
-  );
+  const tasks = useTasks(board.id);
 
-  function handleTaskClicked(taskData: KanbanTaskData) {
+  function handleTaskClicked(taskData: Task) {
     if (onTaskClick !== undefined) {
       onTaskClick(taskData);
     }
@@ -36,12 +29,12 @@ export default function KanbanBoard({
   }
 
   function filterTasksByColumnName(column: string) {
-    return tasksQuery.data?.filter((task) => task.status === column) ?? [];
+    return tasks.data?.filter((task) => task.status === column) ?? [];
   }
 
   return (
     <>
-      {tasksQuery.isSuccess && (
+      {tasks.isSuccess && (
         <div className="h-full w-full bg-grey-light pt-7 flex px-4">
           {board.columns.map((column) => (
             <KanbanBoardColumn

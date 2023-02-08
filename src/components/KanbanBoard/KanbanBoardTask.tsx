@@ -1,9 +1,9 @@
-import { KanbanTaskData } from "../../api/kanbanBoard";
+import { Task } from "../../api/task";
 import Button from "../common/Button";
 
 interface Props {
-  taskData: KanbanTaskData;
-  onTaskClick: (taskData: KanbanTaskData) => void;
+  taskData: Task;
+  onTaskClick: (taskData: Task) => void;
 }
 
 export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {

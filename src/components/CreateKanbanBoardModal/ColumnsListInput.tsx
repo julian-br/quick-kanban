@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CrossIcon from "../../assets/icon-cross.svg";
 import Button from "../common/Button";
 import InputLabel from "../common/Input/InputLabel";

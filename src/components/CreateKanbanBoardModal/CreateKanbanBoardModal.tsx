@@ -4,8 +4,8 @@ import TextInput from "../common/Input/TextInput";
 import { useState } from "react";
 import { BoardColumnsListInput } from "./ColumnsListInput";
 import Form, { useFormValidation } from "../common/Form";
-import { allKanbanBoardsKey, postKanbanBoard } from "../../api/kanbanBoard";
-import { useMutation, useQueryClient } from "react-query";
+import { postKanbanBoard } from "../../api/kanbanBoard";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {

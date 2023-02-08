@@ -1,9 +1,9 @@
-import { KanbanSubtaskData } from "../../api/kanbanBoard";
 import Button from "../common/Button";
 import CheckIcon from "../../assets/icon-check.svg";
+import { Subtask } from "../../api/task";
 interface Props {
-  subtasks: KanbanSubtaskData[];
-  onSubtaskClick: (subtask: KanbanSubtaskData) => void;
+  subtasks: Subtask[];
+  onSubtaskClick: (subtask: Subtask) => void;
 }
 
 export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
@@ -34,7 +34,7 @@ function SubtaskListEntry({
   subtask,
   onClick,
 }: {
-  subtask: KanbanSubtaskData;
+  subtask: Subtask;
   onClick: () => void;
 }) {
   return (

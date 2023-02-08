@@ -7,14 +7,14 @@ import SideBar from "../components/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
 import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
 import { useLocation } from "wouter";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export default function NoCreatedBoardsPage() {
   const [showCreateNewBoardModal, setShowCreateNewBoardModal] = useState(false);
   const [_, setLocation] = useLocation();
 
   // redirect to an existing board if the user has already created one
-  useQuery(allKanbanBoardsKey, {
+  useQuery([allKanbanBoardsKey], {
     queryFn: fetchAllKanbanBoards,
     onSuccess: (boardsOverview) => {
       const hasCreatedBoards = boardsOverview.length > 0;

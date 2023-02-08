@@ -1,10 +1,10 @@
-import { KanbanTaskData } from "../../api/kanbanBoard";
+import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
 
 interface Props {
   columnName: string;
-  tasks: KanbanTaskData[];
-  onTaskClick: (taskData: KanbanTaskData) => void;
+  tasks: Task[];
+  onTaskClick: (taskData: Task) => void;
 }
 
 export default function KanbanBoardColumn({

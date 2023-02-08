@@ -5,7 +5,7 @@ import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
 import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
 import { useLocation } from "wouter";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 interface Props {
   activeBoardId: string;
   onCreateNewBoardClick?: () => void;
@@ -15,7 +15,10 @@ export default function KanbanBoardsNav({
   activeBoardId,
   onCreateNewBoardClick,
 }: Props) {
-  const boardsQuery = useQuery(allKanbanBoardsKey, fetchAllKanbanBoards);
+  const boardsQuery = useQuery({
+    queryKey: [allKanbanBoardsKey],
+    queryFn: fetchAllKanbanBoards,
+  });
   const [_, setLocation] = useLocation();
 
   function handleCreateNewBoardClicked() {

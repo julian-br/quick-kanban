@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
-import {
-  fetchKanbanBoardById,
-  kanbanBoardKey,
-  KanbanTaskData,
-} from "../api/kanbanBoard";
+import { useQuery } from "@tanstack/react-query";
+import { fetchKanbanBoardById, kanbanBoardKey } from "../api/kanbanBoard";
+import { Task } from "../api/task";
 import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
@@ -20,15 +17,15 @@ interface Props {
 
 export default function KanbanBoardPage({ urlParams }: Props) {
   const [showModal, setShowModal] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<KanbanTaskData>();
+  const [selectedTask, setSelectedTask] = useState<Task>();
 
   const { boardId } = urlParams;
 
-  const activeBoardQuery = useQuery(kanbanBoardKey(boardId), () =>
+  const activeBoardQuery = useQuery([kanbanBoardKey(boardId)], () =>
     fetchKanbanBoardById(boardId)
   );
 
-  function handleTaskClicked(taskData: KanbanTaskData) {
+  function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
   }
 
@@ -59,7 +56,6 @@ export default function KanbanBoardPage({ urlParams }: Props) {
         {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
         {selectedTask && activeBoardQuery.isSuccess && (
           <ViewTaskModal
-            boardId={activeBoardQuery.data.id}
             onClose={() => setSelectedTask(undefined)}
             task={selectedTask}
             boardColumns={activeBoardQuery.data.columns}

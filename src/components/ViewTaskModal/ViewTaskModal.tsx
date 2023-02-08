@@ -1,51 +1,32 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import {
-  kanbanBoardKey,
-  kanbanBoardTaskKey,
-  KanbanSubtaskData,
-  KanbanTaskData,
-  tasksForKanbanBoardKey,
-  updateTask,
-} from "../../api/kanbanBoard";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Subtask, Task, useTaskMutation } from "../../api/task";
 import Listbox from "../common/Input/Listbox";
 import Modal from "../common/Modal";
 import SubtaskList from "./SubtaskList";
 
 interface Props {
-  boardId: string;
-  task: KanbanTaskData;
+  task: Task;
   boardColumns: string[];
   onClose: () => void;
 }
 
-export default function ViewTaskModal({
-  boardId,
-  task,
-  onClose,
-  boardColumns,
-}: Props) {
+export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   const [taskData, setTaskData] = useState(task);
-  const queryClient = useQueryClient();
-  const taskMutation = useMutation(updateTask, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(tasksForKanbanBoardKey(boardId));
-      onClose();
-    },
-  });
+  const taskMutation = useTaskMutation();
 
-  function toggleSubtaskIsCompleted(subtaskToChange: KanbanSubtaskData) {
-    const modifiedSubstaskIndex = taskData.subtasks.findIndex(
-      (subtask) => subtask.title === subtaskToChange.title
+  function toggleSubtaskIsCompleted(clickedSubtask: Subtask) {
+    const clickedSubtaskIndex = taskData.subtasks.findIndex(
+      (subtask) => subtask.title === clickedSubtask.title
     )!;
 
-    const modifiedSubtask = {
-      title: subtaskToChange.title,
-      isCompleted: !subtaskToChange.isCompleted,
+    const newSubtaskData = {
+      title: clickedSubtask.title,
+      isCompleted: !clickedSubtask.isCompleted,
     };
 
     const taskDataCopy = { ...taskData };
-    taskDataCopy.subtasks[modifiedSubstaskIndex] = modifiedSubtask;
+    taskDataCopy.subtasks[clickedSubtaskIndex] = newSubtaskData;
     setTaskData(taskDataCopy);
   }
 
@@ -56,7 +37,7 @@ export default function ViewTaskModal({
   }
 
   function handleModalClose() {
-    taskMutation.mutate(taskData);
+    taskMutation.mutate(taskData, { onSuccess: onClose });
   }
 
   return (
