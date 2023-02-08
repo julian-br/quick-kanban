@@ -1,6 +1,34 @@
 import { KanbanSubtaskData } from "../../api/kanbanBoard";
 import Button from "../common/Button";
 import CheckIcon from "../../assets/icon-check.svg";
+interface Props {
+  subtasks: KanbanSubtaskData[];
+  onSubtaskClick: (subtask: KanbanSubtaskData) => void;
+}
+
+export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
+  const amountOfSubtasks = subtasks.length;
+  const amountOfFinishedSubtasks = subtasks.filter(
+    (subTask) => subTask.isCompleted === true
+  ).length;
+
+  return (
+    <>
+      <h5 className="text-slate-500 font-medium">
+        Subtasks ({amountOfFinishedSubtasks} of {amountOfSubtasks})
+      </h5>
+      <div className="flex flex-col gap-2 mt-3">
+        {subtasks.map((subtask) => (
+          <SubtaskListEntry
+            onClick={() => onSubtaskClick(subtask)}
+            key={subtask.title}
+            subtask={subtask}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
 
 function SubtaskListEntry({
   subtask,
@@ -31,34 +59,5 @@ function SubtaskListEntry({
         {subtask.title}
       </span>
     </Button>
-  );
-}
-
-interface Props {
-  subtasks: KanbanSubtaskData[];
-  onSubtaskClick: (subtask: KanbanSubtaskData) => void;
-}
-
-export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
-  const amountOfSubtasks = subtasks.length;
-  const amountOfFinishedSubtasks = subtasks.filter(
-    (subTask) => subTask.isCompleted === true
-  ).length;
-
-  return (
-    <>
-      <h5 className="text-slate-500 font-medium">
-        Subtasks ({amountOfFinishedSubtasks} of {amountOfSubtasks})
-      </h5>
-      <div className="flex flex-col gap-2 mt-3">
-        {subtasks.map((subtask) => (
-          <SubtaskListEntry
-            onClick={() => onSubtaskClick(subtask)}
-            key={subtask.title}
-            subtask={subtask}
-          />
-        ))}
-      </div>
-    </>
   );
 }
