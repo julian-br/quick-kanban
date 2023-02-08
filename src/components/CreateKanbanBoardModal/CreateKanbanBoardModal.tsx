@@ -46,7 +46,12 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
         name: boardName,
         columns: boardColumnNames,
       };
-      boardMutation.mutate(newBoard, { onSuccess: onClose });
+      boardMutation.mutate(newBoard, {
+        onSuccess: (mutatedBoard) => {
+          onClose();
+          setLocation(`/board/${mutatedBoard.id}`);
+        },
+      });
     }
   }
 
