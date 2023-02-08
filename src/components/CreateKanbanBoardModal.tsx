@@ -1,11 +1,11 @@
-import Button from "../common/Button";
-import Modal from "../common/Modal";
-import TextInput from "../common/Input/TextInput";
+import Button from "./common/Button";
+import Modal from "./common/Modal";
+import TextInput from "./common/Input/TextInput";
 import { useState } from "react";
-import { BoardColumnsListInput } from "./ColumnsListInput";
-import Form, { useFormValidation } from "../common/Form";
+import Form, { useFormValidation } from "./common/Form";
 import { useLocation } from "wouter";
-import { useKanbanBoardMutation } from "../../api/kanbanBoard";
+import { useKanbanBoardMutation } from "../api/kanbanBoard";
+import ListInput from "./common/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);
@@ -67,9 +67,12 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
           placeholder="e.g. Web Design"
         />
 
-        <BoardColumnsListInput
-          columnValues={boardColumnNames}
-          onColumnValuesChange={setBoardColumnNames}
+        <ListInput
+          title="Board Columns"
+          inputPlaceHolder="e.g Todo"
+          addButtonText="Add new Column"
+          values={boardColumnNames}
+          onChange={setBoardColumnNames}
           errorMessage={formErrors.boardColumnNames}
         />
         <Button type="submit" className="w-full mb-3 mt-4" variant="primary">

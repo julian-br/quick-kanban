@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Task } from "../api/task";
-import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
+import CreateBoardModal from "../components/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";

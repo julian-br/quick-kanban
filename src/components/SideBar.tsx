@@ -20,7 +20,7 @@ export default function SideBar({ children }: Props) {
           variant="custom"
           className="rotate-90 p-2 ml-auto mr-3 font-bold text-lg text-slate-400 rounded-lg hover:bg-secondary-light hover:text-primary"
         >
-          {isOpen ? "✖" : "|||"}
+          {"|||"}
         </Button>
       </div>
       <div className={isOpen ? "w-80" : "w-16"}>{isOpen && children}</div>
