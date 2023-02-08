@@ -6,31 +6,31 @@ import TextInput from "../common/Input/TextInput";
 
 interface Props {
   columnValues: string[];
-  onColumnValuesChanged: (values: string[]) => void;
+  onColumnValuesChange: (values: string[]) => void;
   errorMessage?: string;
 }
 
 export function BoardColumnsListInput({
   columnValues,
-  onColumnValuesChanged,
+  onColumnValuesChange,
   errorMessage,
 }: Props) {
   function addColumnInput() {
     const columnValuesCopy = [...columnValues];
     columnValuesCopy.push("");
-    onColumnValuesChanged(columnValuesCopy);
+    onColumnValuesChange(columnValuesCopy);
   }
 
   function removeColumnInput(indexToDelete: number) {
     const columnValuesCopy = [...columnValues];
     columnValuesCopy.splice(indexToDelete, 1);
-    onColumnValuesChanged(columnValuesCopy);
+    onColumnValuesChange(columnValuesCopy);
   }
 
   function handleInput(index: number, newValue: string) {
     const columnValuesCopy = [...columnValues];
     columnValuesCopy[index] = newValue;
-    onColumnValuesChanged(columnValuesCopy);
+    onColumnValuesChange(columnValuesCopy);
   }
 
   return (

@@ -69,7 +69,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
 
         <BoardColumnsListInput
           columnValues={boardColumnNames}
-          onColumnValuesChanged={setBoardColumnNames}
+          onColumnValuesChange={setBoardColumnNames}
           errorMessage={formErrors.boardColumnNames}
         />
         <Button type="submit" className="w-full mb-3 mt-4" variant="primary">
