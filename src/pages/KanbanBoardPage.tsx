@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchKanbanBoardById, kanbanBoardKey } from "../api/kanbanBoard";
 import { Task } from "../api/task";
 import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
@@ -8,6 +7,7 @@ import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import ViewTaskModal from "../components/ViewTaskModal/ViewTaskModal";
+import { useKanbanBoard } from "../api/kanbanBoard";
 
 interface Props {
   urlParams: {
@@ -21,9 +21,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
 
   const { boardId } = urlParams;
 
-  const activeBoardQuery = useQuery([kanbanBoardKey(boardId)], () =>
-    fetchKanbanBoardById(boardId)
-  );
+  const activeBoard = useKanbanBoard(boardId);
 
   function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
@@ -42,10 +40,10 @@ export default function KanbanBoardPage({ urlParams }: Props) {
           </div>
         </SideBar>
 
-        {activeBoardQuery.isSuccess && (
+        {activeBoard.isSuccess && (
           <main className="w-full">
             <KanbanBoard
-              board={activeBoardQuery.data}
+              board={activeBoard.data}
               onTaskClick={handleTaskClicked}
               onCreateNewBoardClick={() =>
                 console.log("create new board clicked")
@@ -54,11 +52,11 @@ export default function KanbanBoardPage({ urlParams }: Props) {
           </main>
         )}
         {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
-        {selectedTask && activeBoardQuery.isSuccess && (
+        {selectedTask && activeBoard.isSuccess && (
           <ViewTaskModal
             onClose={() => setSelectedTask(undefined)}
             task={selectedTask}
-            boardColumns={activeBoardQuery.data.columns}
+            boardColumns={activeBoard.data.columns}
           />
         )}
       </div>

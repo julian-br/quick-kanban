@@ -3,9 +3,8 @@ import BoardIconActive from "../assets/icon-board-active.svg";
 import BoardIconPrimary from "../assets/icon-board-primary.svg";
 import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
-import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useKanbanBoards } from "../api/kanbanBoard";
 interface Props {
   activeBoardId: string;
   onCreateNewBoardClick?: () => void;
@@ -15,10 +14,7 @@ export default function KanbanBoardsNav({
   activeBoardId,
   onCreateNewBoardClick,
 }: Props) {
-  const boardsQuery = useQuery({
-    queryKey: [allKanbanBoardsKey],
-    queryFn: fetchAllKanbanBoards,
-  });
+  const boards = useKanbanBoards();
   const [_, setLocation] = useLocation();
 
   function handleCreateNewBoardClicked() {
@@ -31,7 +27,7 @@ export default function KanbanBoardsNav({
     setLocation("/board/" + boardId);
   }
 
-  const amountOfCreatedBoards = boardsQuery.data?.length;
+  const amountOfCreatedBoards = boards.data?.length;
 
   return (
     <div>
@@ -39,9 +35,9 @@ export default function KanbanBoardsNav({
         <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
-        {boardsQuery.isSuccess && (
+        {boards.isSuccess && (
           <div>
-            {boardsQuery.data.map((board) => (
+            {boards.data.map((board) => (
               <BoardNavEntry
                 key={board.id}
                 onClick={() => handleNavEntryClicked(board.id)}

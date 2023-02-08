@@ -4,21 +4,15 @@ import TextInput from "../common/Input/TextInput";
 import { useState } from "react";
 import { BoardColumnsListInput } from "./ColumnsListInput";
 import Form, { useFormValidation } from "../common/Form";
-import { postKanbanBoard } from "../../api/kanbanBoard";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
+import { useKanbanBoardMutation } from "../../api/kanbanBoard";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const boardDataMutation = useMutation(postKanbanBoard, {
-    onSuccess: (postedBoard) => {
-      setLocation("/board/" + postedBoard.id);
-      onClose();
-    },
-  });
+  const boardMutation = useKanbanBoardMutation();
 
   const { formErrors, validateForm } = useFormValidation({
     boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
@@ -48,10 +42,11 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   function handleSubmit() {
     const formIsValid = validateForm();
     if (formIsValid) {
-      boardDataMutation.mutate({
+      const newBoard = {
         name: boardName,
-        columNames: boardColumnNames,
-      });
+        columns: boardColumnNames,
+      };
+      boardMutation.mutate(newBoard, { onSuccess: onClose });
     }
   }
 

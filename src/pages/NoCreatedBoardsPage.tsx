@@ -1,28 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
 import CreateBoardModal from "../components/CreateKanbanBoardModal/CreateKanbanBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
-import { fetchAllKanbanBoards, allKanbanBoardsKey } from "../api/kanbanBoard";
-import { useLocation } from "wouter";
+import { Redirect, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useKanbanBoards } from "../api/kanbanBoard";
 
 export default function NoCreatedBoardsPage() {
   const [showCreateNewBoardModal, setShowCreateNewBoardModal] = useState(false);
   const [_, setLocation] = useLocation();
 
   // redirect to an existing board if the user has already created one
-  useQuery([allKanbanBoardsKey], {
-    queryFn: fetchAllKanbanBoards,
-    onSuccess: (boardsOverview) => {
-      const hasCreatedBoards = boardsOverview.length > 0;
-      if (hasCreatedBoards) {
-        setLocation("/board/" + boardsOverview[0].id);
-      }
-    },
-  });
+  const boards = useKanbanBoards();
+
+  useEffect(() => {
+    if (boards.isSuccess) {
+      setLocation(`/board/${boards.data[0].id}`);
+    }
+  }, [boards.isSuccess]);
 
   function handleCreateNewBoardClicked() {
     setShowCreateNewBoardModal(true);

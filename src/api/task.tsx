@@ -37,11 +37,10 @@ export function useTaskMutation() {
   const queryClient = useQueryClient();
   const taskMutation = useMutation({
     mutationFn: putTask,
-    onSuccess: (mutatedTask) => {
-      return queryClient.invalidateQueries({
+    onSuccess: (mutatedTask) =>
+      queryClient.invalidateQueries({
         queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
-      });
-    },
+      }),
   });
 
   return taskMutation;
