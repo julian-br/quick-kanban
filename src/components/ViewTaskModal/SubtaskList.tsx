@@ -13,7 +13,7 @@ export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
   ).length;
 
   return (
-    <>
+    <div>
       <h5 className="text-slate-500 font-medium">
         Subtasks ({amountOfFinishedSubtasks} of {amountOfSubtasks})
       </h5>
@@ -26,7 +26,7 @@ export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -44,7 +44,7 @@ function SubtaskListEntry({
       className="bg-grey-light p-3 rounded-md flex items-center w-full hover:bg-secondary hover:shadow text-left"
     >
       <span
-        className={`h-6 w-6 p-1 pt-[5px] rounded border ${
+        className={`h-6 w-[1.6rem] p-1 pt-[5px] rounded border ${
           subtask.isCompleted ? "bg-primary" : "bg-white"
         }`}
       >

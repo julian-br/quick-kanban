@@ -1,13 +1,15 @@
 import { Listbox as ListBoxHeadlessUi } from "@headlessui/react";
 import ChivronDownIcon from "../../../assets/icon-chevron-down.svg";
+import InputLabel from "./InputLabel";
 
 interface Props {
+  label?: string;
   options: string[];
   selected?: string;
   onChange?: (newValue: string) => void;
 }
 
-export default function Listbox({ options, onChange, selected }: Props) {
+export default function Listbox({ options, onChange, selected, label }: Props) {
   function handleChange(newValue: string) {
     if (onChange !== undefined) {
       onChange(newValue);
@@ -16,7 +18,8 @@ export default function Listbox({ options, onChange, selected }: Props) {
 
   return (
     <ListBoxHeadlessUi value={selected} onChange={handleChange}>
-      <div className="relative h-12 overflow-visible">
+      <div className="relative overflow-visible">
+        <InputLabel>{label}</InputLabel>
         <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary border-slate-300 w-full">
           <div className="flex justify-between items-center">
             <span className="block truncate">{selected}</span>

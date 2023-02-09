@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import SideBar from "../components/SideBar";
 import ViewTaskModal from "../components/ViewTaskModal/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
+import CreateTaskModal from "../components/CreateTaskModal";
 
 interface Props {
   urlParams: {
@@ -15,8 +16,10 @@ interface Props {
   };
 }
 
+type modals = "CreateTaskModal" | "CreateBoardModal" | "ViewTaskModal" | "None";
+
 export default function KanbanBoardPage({ urlParams }: Props) {
-  const [showModal, setShowModal] = useState(false);
+  const [activeModal, setActiveModal] = useState<modals>("None");
   const [selectedTask, setSelectedTask] = useState<Task>();
 
   const { boardId } = urlParams;
@@ -25,17 +28,22 @@ export default function KanbanBoardPage({ urlParams }: Props) {
 
   function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
+    setActiveModal("ViewTaskModal");
+  }
+
+  function closeAllModals() {
+    setActiveModal("None");
   }
 
   return (
     <>
-      <Navbar />
+      <Navbar onAddTaskClick={() => setActiveModal("CreateTaskModal")} />
       <div className="flex flex-grow">
         <SideBar>
           <div className="mt-7">
             <KanbanBoardsNav
               activeBoardId={boardId}
-              onCreateNewBoardClick={() => setShowModal(true)}
+              onCreateNewBoardClick={() => setActiveModal("CreateBoardModal")}
             />
           </div>
         </SideBar>
@@ -51,13 +59,26 @@ export default function KanbanBoardPage({ urlParams }: Props) {
             />
           </main>
         )}
-        {showModal && <CreateBoardModal onClose={() => setShowModal(false)} />}
-        {selectedTask && activeBoard.isSuccess && (
-          <ViewTaskModal
-            onClose={() => setSelectedTask(undefined)}
-            task={selectedTask}
-            boardColumns={activeBoard.data.columns}
-          />
+
+        {activeBoard.isSuccess && (
+          <div>
+            {activeModal === "CreateBoardModal" && (
+              <CreateBoardModal onClose={closeAllModals} />
+            )}
+            {activeModal === "CreateTaskModal" && (
+              <CreateTaskModal
+                board={activeBoard.data}
+                onClose={closeAllModals}
+              />
+            )}
+            {selectedTask && activeModal === "ViewTaskModal" && (
+              <ViewTaskModal
+                onClose={closeAllModals}
+                task={selectedTask}
+                boardColumns={activeBoard.data.columns}
+              />
+            )}
+          </div>
         )}
       </div>
     </>

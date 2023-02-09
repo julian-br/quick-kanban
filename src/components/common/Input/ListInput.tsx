@@ -1,11 +1,11 @@
-import Button from "./Button";
-import InputLabel from "./Input/InputLabel";
-import TextInput from "./Input/TextInput";
-import CrossIcon from "../../assets/icon-cross.svg";
+import Button from "../Button";
+import InputLabel from "./InputLabel";
+import TextInput from "./TextInput";
+import CrossIcon from "../../../assets/icon-cross.svg";
 
 interface Props {
   values: string[];
-  title: string;
+  label?: string;
   addButtonText: string;
   inputPlaceHolder?: string;
   onChange: (values: string[]) => void;
@@ -14,7 +14,7 @@ interface Props {
 
 export default function ListInput({
   values,
-  title,
+  label,
   addButtonText,
   inputPlaceHolder,
   onChange,
@@ -40,8 +40,8 @@ export default function ListInput({
 
   return (
     <div>
-      <InputLabel>{title}</InputLabel>
-      <div className="flex flex-col gap-3">
+      <InputLabel>{label}</InputLabel>
+      <div className="flex flex-col gap-2">
         {values.map((value, index) => (
           <div key={index} className="flex items-center">
             <TextInput

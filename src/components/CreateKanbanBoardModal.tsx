@@ -5,7 +5,7 @@ import { useState } from "react";
 import Form, { useFormValidation } from "./common/Form";
 import { useLocation } from "wouter";
 import { useKanbanBoardMutation } from "../api/kanbanBoard";
-import ListInput from "./common/ListInput";
+import ListInput from "./common/Input/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);
@@ -68,7 +68,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
         />
 
         <ListInput
-          title="Board Columns"
+          label="Board Columns"
           inputPlaceHolder="e.g Todo"
           addButtonText="Add new Column"
           values={boardColumnNames}

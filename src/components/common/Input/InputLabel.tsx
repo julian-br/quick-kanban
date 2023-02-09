@@ -9,7 +9,9 @@ export default function InputLabel({
 }) {
   return (
     <label
-      className={`text-slate-500 font-medium block ${passedClassName ?? ""}`}
+      className={`text-slate-500 font-medium block mb-1 ${
+        passedClassName ?? ""
+      }`}
     >
       {children}
     </label>

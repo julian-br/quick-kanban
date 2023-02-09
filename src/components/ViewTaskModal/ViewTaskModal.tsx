@@ -15,7 +15,7 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   const [taskData, setTaskData] = useState(task);
   const taskMutation = useTaskMutation();
 
-  function toggleSubtaskIsCompleted(clickedSubtask: Subtask) {
+  function toggleSubtaskStatus(clickedSubtask: Subtask) {
     const clickedSubtaskIndex = taskData.subtasks.findIndex(
       (subtask) => subtask.title === clickedSubtask.title
     )!;
@@ -42,15 +42,15 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
 
   return (
     <Modal onClose={handleModalClose} title={task.title}>
-      <div className="w-full mt-7">
-        <p className="text-slate-500 mb-5">{task.description}</p>
+      <div className="w-full mt-7 flex flex-col gap-6 mb-4">
+        <p className="text-slate-500">{task.description}</p>
         <SubtaskList
-          onSubtaskClick={toggleSubtaskIsCompleted}
+          onSubtaskClick={toggleSubtaskStatus}
           subtasks={task.subtasks}
         />
         <div>
-          <h5 className="text-slate-500 font-medium mt-5">Current Status</h5>
           <Listbox
+            label="Current Status"
             onChange={changeTaskStatus}
             selected={taskData.status}
             options={boardColumns}
