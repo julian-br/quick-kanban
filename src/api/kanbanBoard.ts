@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import BoardsData from "../mock-data/boardData.json";
 import { Optional } from "../utils/utilityTypes";
-import { deleteTasksForBoard } from "./task";
-const boardsData: KanbanBoard[] = [];
+import { deleteTasksForBoard, TASKS_FOR_BOARD_KEY } from "./task";
+const boardsData: KanbanBoard[] = BoardsData;
+
+const DELAY = 2000;
 
 export interface KanbanBoard {
   id: string;
@@ -42,6 +44,7 @@ export function useKanbanBoardMutation() {
     mutationFn: deleteKanbanBoard,
     onSuccess: (deletedBoard) => {
       queryClient.removeQueries([BOARDS_BASE_KEY, deletedBoard.id]);
+      queryClient.invalidateQueries(TASKS_FOR_BOARD_KEY(deletedBoard.id));
       return queryClient.invalidateQueries([BOARDS_BASE_KEY]);
     },
   });
@@ -103,7 +106,7 @@ function deleteKanbanBoard(boardId: string) {
     }
 
     const deletedBoard = boardsData.splice(indexOfBoardToDelete, 1);
-    /* deleteTasksForBoard(boardId); */
-    res(deletedBoard[0]);
+    deleteTasksForBoard(boardId);
+    setTimeout(() => res(deletedBoard[0]), DELAY);
   });
 }

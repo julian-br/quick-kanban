@@ -76,7 +76,6 @@ export default function KanbanBoardPage({ urlParams }: Props) {
               board={activeBoard.data}
               onTaskClick={handleTaskClicked}
             />
-
             {/* Modals */}
             <div>
               {activeModal === "CreateBoardModal" && (

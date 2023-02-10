@@ -17,8 +17,8 @@ export interface Subtask {
   isCompleted: boolean;
 }
 
-const TASKS_BASE_KEY = "tasks";
-const TASKS_FOR_BOARD_KEY = (boardId: string) => [
+export const TASKS_BASE_KEY = "tasks";
+export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
   TASKS_BASE_KEY,
   "for-board",
   boardId,
@@ -85,5 +85,4 @@ export function deleteTasksForBoard(boardId: string) {
   );
 
   tasksData = tasksDataWithDeletedTasks;
-  console.log(tasksData);
 }
