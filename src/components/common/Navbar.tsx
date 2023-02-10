@@ -1,4 +1,4 @@
-import LogoIcon from "../assets/logo-dark.svg";
+import LogoIcon from "../../assets/logo-dark.svg";
 import { ReactNode } from "react";
 
 interface NavbarProps {

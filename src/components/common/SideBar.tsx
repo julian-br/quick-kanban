@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import Button from "./common/Button";
+import Button from "./Button";
 
 interface Props {
   children: ReactNode;

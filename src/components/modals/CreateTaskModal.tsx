@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { KanbanBoard } from "../api/kanbanBoard";
-import { Task, useTaskMutation } from "../api/task";
-import Button from "./common/Button";
-import Form, { useFormValidation } from "./common/Form";
-import Listbox from "./common/Input/Listbox";
-import ListInput from "./common/Input/ListInput";
-import TextArea from "./common/Input/TextArea";
-import TextInput from "./common/Input/TextInput";
-import Modal from "./common/Modal";
+import { KanbanBoard } from "../../api/kanbanBoard";
+import { Task, useTaskMutation } from "../../api/task";
+import Button from "../common/Button";
+import Form, { useFormValidation } from "../common/Form";
+import Listbox from "../common/Input/Listbox";
+import ListInput from "../common/Input/ListInput";
+import TextArea from "../common/Input/TextArea";
+import TextInput from "../common/Input/TextInput";
+import Modal from "../common/Modal";
 
 interface Props {
   board: KanbanBoard;

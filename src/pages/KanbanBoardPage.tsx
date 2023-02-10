@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Task } from "../api/task";
-import CreateBoardModal from "../components/CreateKanbanBoardModal";
+import CreateBoardModal from "../components/modals/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
-import Navbar from "../components/Navbar";
-import SideBar from "../components/SideBar";
-import ViewTaskModal from "../components/ViewTaskModal/ViewTaskModal";
+import Navbar from "../components/common/Navbar";
+import SideBar from "../components/common/SideBar";
+import ViewTaskModal from "../components/modals/ViewTaskModal/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
-import CreateTaskModal from "../components/CreateTaskModal";
+import CreateTaskModal from "../components/modals/CreateTaskModal";
 import Button from "../components/common/Button";
 import PlusIcon from "../assets/icon-add-task.svg";
 import ContextMenu from "../components/common/ContextMenu";

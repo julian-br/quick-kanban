@@ -1,6 +1,6 @@
-import Button from "../common/Button";
-import CheckIcon from "../../assets/icon-check.svg";
-import { Subtask } from "../../api/task";
+import Button from "../../common/Button";
+import CheckIcon from "../../../assets/icon-check.svg";
+import { Subtask } from "../../../api/task";
 interface Props {
   subtasks: Subtask[];
   onSubtaskClick: (subtask: Subtask) => void;

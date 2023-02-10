@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-import CreateBoardModal from "../components/CreateKanbanBoardModal";
+import CreateBoardModal from "../components/modals/CreateKanbanBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
-import Navbar from "../components/Navbar";
-import SideBar from "../components/SideBar";
+import Navbar from "../components/common/Navbar";
+import SideBar from "../components/common/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
 import { Redirect, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
