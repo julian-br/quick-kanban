@@ -9,6 +9,9 @@ import SideBar from "../components/SideBar";
 import ViewTaskModal from "../components/ViewTaskModal/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
 import CreateTaskModal from "../components/CreateTaskModal";
+import Button from "../components/common/Button";
+import PlusIcon from "../assets/icon-add-task.svg";
+import VerticalEllipsisIcon from "../assets/icon-vertical-ellipsis.svg";
 
 interface Props {
   urlParams: {
@@ -37,7 +40,12 @@ export default function KanbanBoardPage({ urlParams }: Props) {
 
   return (
     <>
-      <Navbar onAddTaskClick={() => setActiveModal("CreateTaskModal")} />
+      <Navbar onAddTaskClick={() => setActiveModal("CreateTaskModal")}>
+        <Navbar.Controls>
+          <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
+          <ContextMenu></ContextMenu>
+        </Navbar.Controls>
+      </Navbar>
       <div className="flex flex-grow">
         <SideBar>
           <div className="mt-7">
@@ -82,5 +90,31 @@ export default function KanbanBoardPage({ urlParams }: Props) {
         )}
       </div>
     </>
+  );
+}
+
+function AddTaskButton({ onClick }: { onClick: () => void }) {
+  return (
+    <Button onClick={onClick} variant="primary" size="large">
+      <div className="flex items-baseline">
+        <img src={PlusIcon} alt="Plus Icon" className="h-2 mr-1" />
+        <span>Add New Task</span>
+      </div>
+    </Button>
+  );
+}
+
+function ContextMenu() {
+  return (
+    <Button
+      variant="custom"
+      className="hover:bg-secondary-light px-2 ml-3 rounded-full"
+    >
+      <img
+        src={VerticalEllipsisIcon}
+        alt="Navbar Options"
+        className="h-5 text-primary"
+      />
+    </Button>
   );
 }

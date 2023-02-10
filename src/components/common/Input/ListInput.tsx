@@ -21,13 +21,11 @@ export default function ListInput({
   errorMessage,
 }: Props) {
   function addInputField() {
-    const valuesCopy = [...values];
-    valuesCopy.push("");
-    onChange(valuesCopy);
+    onChange([...values, ""]);
   }
 
   function removeInputField(indexToDelete: number) {
-    const valuesCopy = [...values];
+    const valuesCopy = [...values].splice(indexToDelete, 1);
     valuesCopy.splice(indexToDelete, 1);
     onChange(valuesCopy);
   }
