@@ -25,14 +25,14 @@ export default function ListInput({
   }
 
   function removeInputField(indexToDelete: number) {
-    const valuesCopy = [...values].splice(indexToDelete, 1);
+    const valuesCopy = [...values];
     valuesCopy.splice(indexToDelete, 1);
     onChange(valuesCopy);
   }
 
-  function handleInput(index: number, newValue: string) {
+  function updateValue(indexToUpdate: number, newValue: string) {
     const valuesCopy = [...values];
-    valuesCopy[index] = newValue;
+    valuesCopy[indexToUpdate] = newValue;
     onChange(valuesCopy);
   }
 
@@ -46,26 +46,43 @@ export default function ListInput({
               value={value}
               className="w-full"
               placeholder={inputPlaceHolder}
-              onInput={(value) => handleInput(index, value)}
+              onInput={(value) => updateValue(index, value)}
             />
-            <Button
-              onClick={() => removeInputField(index)}
-              className="hover:bg-secondary-light ml-2 rounded-lg"
-              variant="custom"
-            >
-              <img src={CrossIcon} className="w-4 mx-2 py-3" />
-            </Button>
+            <RemoveInputFieldButton onClick={() => removeInputField(index)} />
           </div>
         ))}
-
         <div className="text-danger">{errorMessage}</div>
-        <Button onClick={addInputField} variant="secondary">
-          <div>
-            <span>+</span>
-            <span>{addButtonText}</span>
-          </div>
-        </Button>
+        <AddInputFieldButton text={addButtonText} onClick={addInputField} />
       </div>
     </div>
+  );
+}
+
+function RemoveInputFieldButton({ onClick }: { onClick: () => void }) {
+  return (
+    <Button
+      onClick={onClick}
+      className="hover:bg-secondary-light ml-2 rounded-lg"
+      variant="custom"
+    >
+      <img src={CrossIcon} className="w-4 mx-2 py-3" />
+    </Button>
+  );
+}
+
+function AddInputFieldButton({
+  onClick,
+  text,
+}: {
+  onClick: () => void;
+  text: string;
+}) {
+  return (
+    <Button onClick={onClick} variant="secondary">
+      <div>
+        <span>+</span>
+        <span>{text}</span>
+      </div>
+    </Button>
   );
 }

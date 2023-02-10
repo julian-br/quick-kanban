@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Task } from "../api/task";
 import CreateBoardModal from "../components/CreateKanbanBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
@@ -11,7 +10,7 @@ import { useKanbanBoard } from "../api/kanbanBoard";
 import CreateTaskModal from "../components/CreateTaskModal";
 import Button from "../components/common/Button";
 import PlusIcon from "../assets/icon-add-task.svg";
-import VerticalEllipsisIcon from "../assets/icon-vertical-ellipsis.svg";
+import ContextMenu from "../components/common/ContextMenu";
 
 interface Props {
   urlParams: {
@@ -40,12 +39,20 @@ export default function KanbanBoardPage({ urlParams }: Props) {
 
   return (
     <>
-      <Navbar onAddTaskClick={() => setActiveModal("CreateTaskModal")}>
+      <Navbar>
         <Navbar.Controls>
           <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
-          <ContextMenu></ContextMenu>
+          <ContextMenu>
+            <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
+              Edit Board
+            </ContextMenu.Entry>
+            <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
+              <span className="text-danger">Delete Board</span>
+            </ContextMenu.Entry>
+          </ContextMenu>
         </Navbar.Controls>
       </Navbar>
+
       <div className="flex flex-grow">
         <SideBar>
           <div className="mt-7">
@@ -100,21 +107,6 @@ function AddTaskButton({ onClick }: { onClick: () => void }) {
         <img src={PlusIcon} alt="Plus Icon" className="h-2 mr-1" />
         <span>Add New Task</span>
       </div>
-    </Button>
-  );
-}
-
-function ContextMenu() {
-  return (
-    <Button
-      variant="custom"
-      className="hover:bg-secondary-light px-2 ml-3 rounded-full"
-    >
-      <img
-        src={VerticalEllipsisIcon}
-        alt="Navbar Options"
-        className="h-5 text-primary"
-      />
     </Button>
   );
 }

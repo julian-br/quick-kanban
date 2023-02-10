@@ -94,8 +94,7 @@ export default function CreateTaskModal({ onClose, board }: Props) {
           value={taskData.description}
           rows={4}
           label="Description"
-          placeholder="e.g. It's always good to take a break. This 15 minute break will 
-            recharge the batteries a little."
+          placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
         />
         <ListInput
           errorMessage={formErrors.subtaskNames}

@@ -1,18 +1,11 @@
 import LogoIcon from "../assets/logo-dark.svg";
 import { ReactNode } from "react";
 
-interface Props {
-  onAddTaskClick?: () => void;
+interface NavbarProps {
   children?: ReactNode[] | ReactNode;
 }
 
-function Navbar({ onAddTaskClick, children }: Props) {
-  function handleAddTaskClicked() {
-    if (onAddTaskClick !== undefined) {
-      onAddTaskClick();
-    }
-  }
-
+function Navbar({ children }: NavbarProps) {
   return (
     <nav className="bg-white px-7 border-b border-slate-200 flex items-center h-24">
       <img src={LogoIcon} alt="Logo" />
@@ -22,7 +15,7 @@ function Navbar({ onAddTaskClick, children }: Props) {
 }
 
 function NavbarControls({ children }: { children: ReactNode }) {
-  return <div className="flex ml-auto">{children}</div>;
+  return <div className="flex ml-auto gap-3">{children}</div>;
 }
 
 Navbar.Controls = NavbarControls;
