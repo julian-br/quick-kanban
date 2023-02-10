@@ -18,7 +18,7 @@ function ContextMenu({ children }: ContextMenuProps) {
             className="h-6 text-primary"
           />
         </Menu.Button>
-        <Menu.Items className="absolute right-0 mt-1 pt-5 pb-3 w-56 rounded-xl bg-white shadow-lg border">
+        <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-white shadow-lg border">
           {children}
         </Menu.Items>
       </Menu>

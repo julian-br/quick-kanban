@@ -11,6 +11,7 @@ import CreateTaskModal from "../components/modals/CreateTaskModal";
 import Button from "../components/common/Button";
 import PlusIcon from "../assets/icon-add-task.svg";
 import ContextMenu from "../components/common/ContextMenu";
+import DeleteBoardModal from "../components/modals/DeleteBoardModal";
 
 interface Props {
   urlParams: {
@@ -18,7 +19,12 @@ interface Props {
   };
 }
 
-type modals = "CreateTaskModal" | "CreateBoardModal" | "ViewTaskModal" | "None";
+type modals =
+  | "CreateTaskModal"
+  | "CreateBoardModal"
+  | "ViewTaskModal"
+  | "DeleteBoardModal"
+  | "None";
 
 export default function KanbanBoardPage({ urlParams }: Props) {
   const [activeModal, setActiveModal] = useState<modals>("None");
@@ -46,14 +52,16 @@ export default function KanbanBoardPage({ urlParams }: Props) {
             <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
               Edit Board
             </ContextMenu.Entry>
-            <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
+            <ContextMenu.Entry
+              onClick={() => setActiveModal("DeleteBoardModal")}
+            >
               <span className="text-danger">Delete Board</span>
             </ContextMenu.Entry>
           </ContextMenu>
         </Navbar.Controls>
       </Navbar>
 
-      <div className="flex flex-grow">
+      <div className="flex flex-grow bg-green-200">
         <SideBar>
           <div className="mt-7">
             <KanbanBoardsNav
@@ -62,7 +70,6 @@ export default function KanbanBoardPage({ urlParams }: Props) {
             />
           </div>
         </SideBar>
-
         {activeBoard.isSuccess && (
           <main className="w-full">
             <KanbanBoard
@@ -72,28 +79,33 @@ export default function KanbanBoardPage({ urlParams }: Props) {
                 console.log("create new board clicked")
               }
             />
-          </main>
-        )}
 
-        {activeBoard.isSuccess && (
-          <div>
-            {activeModal === "CreateBoardModal" && (
-              <CreateBoardModal onClose={closeAllModals} />
-            )}
-            {activeModal === "CreateTaskModal" && (
-              <CreateTaskModal
-                board={activeBoard.data}
-                onClose={closeAllModals}
-              />
-            )}
-            {selectedTask && activeModal === "ViewTaskModal" && (
-              <ViewTaskModal
-                onClose={closeAllModals}
-                task={selectedTask}
-                boardColumns={activeBoard.data.columns}
-              />
-            )}
-          </div>
+            {/* Modals */}
+            <div>
+              {activeModal === "CreateBoardModal" && (
+                <CreateBoardModal onClose={closeAllModals} />
+              )}
+              {activeModal === "CreateTaskModal" && (
+                <CreateTaskModal
+                  board={activeBoard.data}
+                  onClose={closeAllModals}
+                />
+              )}
+              {selectedTask && activeModal === "ViewTaskModal" && (
+                <ViewTaskModal
+                  onClose={closeAllModals}
+                  task={selectedTask}
+                  boardColumns={activeBoard.data.columns}
+                />
+              )}
+              {activeModal === "DeleteBoardModal" && (
+                <DeleteBoardModal
+                  boardId={activeBoard.data.id}
+                  onClose={closeAllModals}
+                />
+              )}
+            </div>
+          </main>
         )}
       </div>
     </>
