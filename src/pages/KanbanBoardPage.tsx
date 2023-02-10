@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Task } from "../api/task";
-import CreateBoardModal from "../components/modals/CreateKanbanBoardModal";
+import CreateBoardModal from "../components/modals/CreateBoardModal";
 import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
@@ -61,7 +61,7 @@ export default function KanbanBoardPage({ urlParams }: Props) {
         </Navbar.Controls>
       </Navbar>
 
-      <div className="flex flex-grow bg-green-200">
+      <div className="flex flex-grow">
         <SideBar>
           <div className="mt-7">
             <KanbanBoardsNav
@@ -75,9 +75,6 @@ export default function KanbanBoardPage({ urlParams }: Props) {
             <KanbanBoard
               board={activeBoard.data}
               onTaskClick={handleTaskClicked}
-              onCreateNewBoardClick={() =>
-                console.log("create new board clicked")
-              }
             />
 
             {/* Modals */}

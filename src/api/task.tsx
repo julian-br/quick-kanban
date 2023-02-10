@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TaskData from "../mock-data/tasksData.json";
 import { Optional } from "../utils/utilityTypes";
-const tasksData: Task[] = TaskData;
+let tasksData: Task[] = TaskData;
 
 export interface Task {
   id: string;
@@ -77,4 +77,13 @@ function fetchTasksForBoard(boardId: string) {
 
     res(matchingTasks);
   });
+}
+
+export function deleteTasksForBoard(boardId: string) {
+  const tasksDataWithDeletedTasks = tasksData.filter(
+    (task) => task.boardId !== boardId
+  );
+
+  tasksData = tasksDataWithDeletedTasks;
+  console.log(tasksData);
 }

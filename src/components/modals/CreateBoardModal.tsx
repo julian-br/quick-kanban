@@ -12,7 +12,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const boardMutation = useKanbanBoardMutation();
+  const boardPutMutation = useKanbanBoardMutation().putMutation;
 
   const { formErrors, validateForm } = useFormValidation({
     boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
@@ -46,10 +46,10 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
         name: boardName,
         columns: boardColumnNames,
       };
-      boardMutation.mutate(newBoard, {
+      boardPutMutation.mutate(newBoard, {
         onSuccess: (mutatedBoard) => {
-          onClose();
           setLocation(`/board/${mutatedBoard.id}`);
+          onClose();
         },
       });
     }

@@ -6,25 +6,14 @@ import { Task, useTasks } from "../../api/task";
 interface Props {
   board: KanbanBoardData;
   onTaskClick?: (taskData: Task) => void;
-  onCreateNewBoardClick?: () => void;
 }
 
-export default function KanbanBoard({
-  board,
-  onTaskClick,
-  onCreateNewBoardClick,
-}: Props) {
+export default function KanbanBoard({ board, onTaskClick }: Props) {
   const tasks = useTasks(board.id);
 
   function handleTaskClicked(taskData: Task) {
     if (onTaskClick !== undefined) {
       onTaskClick(taskData);
-    }
-  }
-
-  function handleCreateNewBoardClicked() {
-    if (onCreateNewBoardClick !== undefined) {
-      onCreateNewBoardClick();
     }
   }
 
@@ -44,7 +33,7 @@ export default function KanbanBoard({
               columnName={column}
             />
           ))}
-          <CreateNewColumnButton onClick={handleCreateNewBoardClicked} />
+          <CreateNewColumnButton onClick={() => null} />
         </div>
       )}
     </>

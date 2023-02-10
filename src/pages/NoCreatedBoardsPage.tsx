@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-import CreateBoardModal from "../components/modals/CreateKanbanBoardModal";
+import CreateBoardModal from "../components/modals/CreateBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";
@@ -17,7 +17,7 @@ export default function NoCreatedBoardsPage() {
   const boards = useKanbanBoards();
 
   useEffect(() => {
-    if (boards.isSuccess) {
+    if (boards.isSuccess && boards.data[0] !== undefined) {
       setLocation(`/board/${boards.data[0].id}`);
     }
   }, [boards.isSuccess]);
@@ -32,9 +32,6 @@ export default function NoCreatedBoardsPage() {
       <div className="flex-grow flex">
         <SideBar>
           <div className="mt-7">
-            <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
-              all boards (0)
-            </h2>
             <KanbanBoardsNav
               activeBoardId=""
               onCreateNewBoardClick={handleCreateNewBoardClicked}

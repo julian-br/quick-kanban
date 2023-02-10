@@ -1,3 +1,5 @@
+import { useLocation } from "wouter";
+import { useKanbanBoardMutation } from "../../api/kanbanBoard";
 import Button from "../common/Button";
 import Modal from "../common/Modal";
 
@@ -10,9 +12,15 @@ export default function DeleteBoardModal({
   onClose,
   boardId,
 }: DeleteBoardModalProps) {
+  const boardDeleteMutation = useKanbanBoardMutation().deleteMutation;
+  const [_, setLocation] = useLocation();
+
   function deleteBoard() {
-    console.log("deleting board", boardId);
-    onClose();
+    boardDeleteMutation.mutate(boardId, {
+      onSuccess: () => {
+        setLocation("/");
+      },
+    });
   }
 
   return (
