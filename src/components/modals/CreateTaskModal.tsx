@@ -7,6 +7,7 @@ import Listbox from "../common/Input/Listbox";
 import ListInput from "../common/Input/ListInput";
 import TextArea from "../common/Input/TextArea";
 import TextInput from "../common/Input/TextInput";
+import LoadingSpinner from "../common/LoadingSpinner";
 import Modal from "../common/Modal";
 
 interface Props {
@@ -81,39 +82,46 @@ export default function CreateTaskModal({ onClose, board }: Props) {
 
   return (
     <Modal onClose={onClose} title={"Add New Task"}>
-      <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
-        <TextInput
-          errorMessage={formErrors.title}
-          onInput={changeTitle}
-          value={taskData.title}
-          label="Title"
-          placeholder="e.g Take coffee break"
-        />
-        <TextArea
-          onInput={changeDescription}
-          value={taskData.description}
-          rows={4}
-          label="Description"
-          placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
-        />
-        <ListInput
-          errorMessage={formErrors.subtaskNames}
-          label="Subtasks"
-          values={taskData.subtaskTitles}
-          onChange={changeSubtaskNames}
-          addButtonText="Add New Subtask"
-          inputPlaceHolder="e.g Make coffee"
-        />
-        <Listbox
-          label="Status"
-          onChange={changeTaskStatus}
-          selected={taskData.status}
-          options={board.columns}
-        />
-        <Button variant="primary" size="large" className="mt-3" type="submit">
-          Create Task
-        </Button>
-      </Form>
+      {taskMutation.isLoading && (
+        <div className="h-52 mb-16 flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!taskMutation.isLoading && (
+        <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
+          <TextInput
+            errorMessage={formErrors.title}
+            onInput={changeTitle}
+            value={taskData.title}
+            label="Title"
+            placeholder="e.g Take coffee break"
+          />
+          <TextArea
+            onInput={changeDescription}
+            value={taskData.description}
+            rows={4}
+            label="Description"
+            placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+          />
+          <ListInput
+            errorMessage={formErrors.subtaskNames}
+            label="Subtasks"
+            values={taskData.subtaskTitles}
+            onChange={changeSubtaskNames}
+            addButtonText="Add New Subtask"
+            inputPlaceHolder="e.g Make coffee"
+          />
+          <Listbox
+            label="Status"
+            onChange={changeTaskStatus}
+            selected={taskData.status}
+            options={board.columns}
+          />
+          <Button variant="primary" size="large" className="mt-3" type="submit">
+            Create Task
+          </Button>
+        </Form>
+      )}
     </Modal>
   );
 }

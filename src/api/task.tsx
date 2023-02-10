@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TaskData from "../mock-data/tasksData.json";
 import { Optional } from "../utils/utilityTypes";
 let tasksData: Task[] = TaskData;
+const DELAY = 2000;
 
 export interface Task {
   id: string;
@@ -53,7 +54,8 @@ function putTask(task: Optional<Task, "id">) {
       const taskId = parseInt(tasksData.at(-1)!.id) + 1;
       const newTask = { ...task, id: taskId.toString() };
       tasksData.push(newTask);
-      res(newTask);
+      setTimeout(() => res(newTask), DELAY);
+      return;
     }
 
     console.log("updating task");
@@ -65,7 +67,7 @@ function putTask(task: Optional<Task, "id">) {
     }
 
     tasksData[indexOfTaskToUpdate] = task as Task;
-    res(task as Task);
+    setTimeout(() => res(task as Task), DELAY);
   });
 }
 
