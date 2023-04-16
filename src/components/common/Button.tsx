@@ -18,7 +18,7 @@ const variantClassMap = {
 
 const sizeClassMap = {
   medium: "px-7 py-2 rounded-full",
-  large: "text-lg px-7 py-3 rounded-full",
+  large: "text-lg px-7 py-3 h-13 rounded-full",
 } as const;
 
 export default function Button({

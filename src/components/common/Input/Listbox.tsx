@@ -1,6 +1,7 @@
 import { Listbox as ListBoxHeadlessUi } from "@headlessui/react";
-import ChivronDownIcon from "../../../assets/icon-chevron-down.svg";
 import InputLabel from "./InputLabel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   label?: string;
@@ -23,7 +24,10 @@ export default function Listbox({ options, onChange, selected, label }: Props) {
         <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary-400 border-slate-300 w-full">
           <div className="flex justify-between items-center">
             <span className="block truncate">{selected}</span>
-            <img src={ChivronDownIcon} />
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="h-3"
+            ></FontAwesomeIcon>
           </div>
         </ListBoxHeadlessUi.Button>
         <ListBoxHeadlessUi.Options className="absolute max-h-60 w-full overflow-auto mt-1 bg-white border rounded-lg text-slate-500 z-50">

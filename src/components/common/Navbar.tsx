@@ -1,5 +1,6 @@
-import LogoIcon from "../../assets/logo-dark.svg";
 import { ReactNode } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTable } from "@fortawesome/free-solid-svg-icons";
 
 interface NavbarProps {
   children?: ReactNode[] | ReactNode;
@@ -8,14 +9,26 @@ interface NavbarProps {
 function Navbar({ children }: NavbarProps) {
   return (
     <nav className="bg-white px-7 border-b border-slate-200 flex items-center py-3">
-      <img src={LogoIcon} alt="Logo" />
+      <Brand />
       {children}
     </nav>
   );
 }
 
+function Brand() {
+  return (
+    <div className="text-3xl font-bold uppercase">
+      <FontAwesomeIcon
+        icon={faTable}
+        className="text-primary-500 mr-3"
+      ></FontAwesomeIcon>
+      <span>Kanban Board</span>
+    </div>
+  );
+}
+
 function NavbarControls({ children }: { children: ReactNode }) {
-  return <div className="flex ml-auto gap-3">{children}</div>;
+  return <div className="flex ml-auto items-center gap-3">{children}</div>;
 }
 
 Navbar.Controls = NavbarControls;

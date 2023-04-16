@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { KanbanBoard } from "../../api/kanbanBoard";
-import { Task, useTaskMutation } from "../../api/task";
+import { useTaskMutation } from "../../api/task";
 import Button from "../common/Button";
 import Form, { useFormValidation } from "../common/Form";
 import Listbox from "../common/Input/Listbox";

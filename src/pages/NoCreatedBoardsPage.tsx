@@ -4,9 +4,10 @@ import CreateBoardModal from "../components/modals/CreateBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";
-import PlusIcon from "../assets/icon-add-task.svg";
 import { useLocation } from "wouter";
 import { useKanbanBoards } from "../api/kanbanBoard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function NoCreatedBoardsPage() {
   const [showCreateNewBoardModal, setShowCreateNewBoardModal] = useState(false);
@@ -49,7 +50,7 @@ export default function NoCreatedBoardsPage() {
               size="large"
             >
               <div className="flex items-baseline">
-                <img src={PlusIcon} alt="Plus Icon" className="h-2 mr-1" />
+                <FontAwesomeIcon className="h-3" icon={faPlus} />
                 <span>Create new Board</span>
               </div>
             </Button>

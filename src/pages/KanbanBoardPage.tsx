@@ -9,9 +9,10 @@ import ViewTaskModal from "../components/modals/ViewTaskModal/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
 import CreateTaskModal from "../components/modals/CreateTaskModal";
 import Button from "../components/common/Button";
-import PlusIcon from "../assets/icon-add-task.svg";
 import ContextMenu from "../components/common/ContextMenu";
 import DeleteBoardModal from "../components/modals/DeleteBoardModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   urlParams: {
@@ -112,7 +113,7 @@ function AddTaskButton({ onClick }: { onClick: () => void }) {
   return (
     <Button onClick={onClick} variant="primary" size="large">
       <div className="flex items-baseline">
-        <img src={PlusIcon} alt="Plus Icon" className="h-2 mr-1" />
+        <FontAwesomeIcon icon={faPlus} className="h-3 mr-1" />
         <span>Add New Task</span>
       </div>
     </Button>

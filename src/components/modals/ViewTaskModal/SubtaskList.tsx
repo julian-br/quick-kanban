@@ -1,6 +1,7 @@
 import Button from "../../common/Button";
-import CheckIcon from "../../../assets/icon-check.svg";
 import { Subtask } from "../../../api/task";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   subtasks: Subtask[];
   onSubtaskClick: (subtask: Subtask) => void;
@@ -44,11 +45,13 @@ function SubtaskListEntry({
       className="bg-grey-light p-3 rounded-md flex items-center w-full hover:bg-slate-100  text-left"
     >
       <span
-        className={`h-6 w-[1.6rem] p-1 pt-[5px] rounded border ${
+        className={`w-7 h-7 rounded border ${
           subtask.isCompleted ? "bg-primary-400" : "bg-white"
         }`}
       >
-        {subtask.isCompleted && <img className="h-3 w-4" src={CheckIcon} />}
+        {subtask.isCompleted && (
+          <FontAwesomeIcon className="h-4 ml-1 text-white" icon={faCheck} />
+        )}
       </span>
 
       <span

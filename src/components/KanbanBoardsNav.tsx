@@ -1,10 +1,9 @@
-import BoardIcon from "../assets/icon-board.svg";
-import BoardIconActive from "../assets/icon-board-active.svg";
-import BoardIconPrimary from "../assets/icon-board-primary.svg";
-import PlusIconPrimary from "../assets/icon-add-task-primary.svg";
 import Button from "./common/Button";
 import { useLocation } from "wouter";
 import { useKanbanBoards } from "../api/kanbanBoard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+
 interface Props {
   activeBoardId: string;
   onCreateNewBoardClick?: () => void;
@@ -60,16 +59,12 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-primary-50"
     >
-      <div className="flex items-center">
-        <img
-          src={BoardIconPrimary}
-          alt="Icon of a kanban board"
-          className="h-5"
-        />
-        <div className="flex items-baseline ml-3">
-          <img src={PlusIconPrimary} alt="plus icon" className="h-2 mr-1" />
-          <span className="text-primary-500">Create New Board</span>
-        </div>
+      <div className="flex items-baseline ml-1">
+        <FontAwesomeIcon
+          className="h-3 mr-1 text-primary-600"
+          icon={faPlus}
+        ></FontAwesomeIcon>
+        <span className="text-primary-500">Create New Board</span>
       </div>
     </Button>
   );
@@ -95,11 +90,7 @@ function BoardNavEntry({
       }`}
     >
       <div className="flex items-center">
-        <img
-          src={isActive ? BoardIconActive : BoardIcon}
-          alt="Icon of a kanban board"
-          className="h-5"
-        />
+        <FontAwesomeIcon icon={faTableColumns} />
         <span className="ml-3">{title}</span>
       </div>
     </Button>

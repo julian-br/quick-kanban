@@ -1,7 +1,8 @@
 import Button from "../Button";
 import InputLabel from "./InputLabel";
 import TextInput from "./TextInput";
-import CrossIcon from "../../../assets/icon-cross.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   values: string[];
@@ -44,7 +45,7 @@ export default function ListInput({
           <div key={index} className="flex items-center">
             <TextInput
               value={value}
-              className="w-full"
+              className="w-full h-full"
               placeholder={inputPlaceHolder}
               onInput={(value) => updateValue(index, value)}
             />
@@ -62,10 +63,13 @@ function RemoveInputFieldButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
       onClick={onClick}
-      className="hover:bg-secondary-light ml-2 rounded-lg"
+      className="hover:bg-primary-50 ml-1 rounded-lg h-full w-8 mt-1 group"
       variant="custom"
     >
-      <img src={CrossIcon} className="w-4 mx-2 py-3" />
+      <FontAwesomeIcon
+        icon={faXmark}
+        className="text-slate-400 h-7 group-hover:text-primary-400"
+      />
     </Button>
   );
 }
