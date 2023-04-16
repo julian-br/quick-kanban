@@ -1,5 +1,7 @@
 import { ReactNode, useState } from "react";
 import Button from "./Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBurger } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   children: ReactNode;
@@ -18,12 +20,12 @@ export default function SideBar({ children }: Props) {
         <Button
           onClick={toggleIsOpen}
           variant="custom"
-          className="rotate-90 p-2 ml-auto mr-3 font-bold text-xl text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-400"
+          className="p-2 ml-auto mr-3 font-bold text-xl text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-400"
         >
-          {"|||"}
+          <FontAwesomeIcon icon={faBurger}></FontAwesomeIcon>
         </Button>
       </div>
-      <div className={isOpen ? "w-80" : "w-16"}>{isOpen && children}</div>
+      <div className={isOpen ? "w-96" : "w-16"}>{isOpen && children}</div>
     </nav>
   );
 }

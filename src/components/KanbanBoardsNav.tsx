@@ -36,7 +36,7 @@ export default function KanbanBoardsNav({
           all boards ({amountOfCreatedBoards})
         </h2>
         {boards.isSuccess && (
-          <div className="mb-3">
+          <div className="mb-3 mr-4">
             {boards.data.map((board) => (
               <BoardNavEntry
                 key={board.id}
@@ -84,16 +84,14 @@ function BoardNavEntry({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const activeClassList = "text-white bg-primary-400";
-  const notActiveClassList =
-    "text-slate-400 hover:text-primary-500 hover:bg-primary-50";
-
   return (
     <Button
       variant="custom"
       onClick={onClick}
-      className={`w-72 py-3 font-semibold text-lg  rounded-r-full px-7 flex ${
-        isActive ? activeClassList : notActiveClassList
+      className={`w-full py-3 font-semibold text-lg  rounded-r-full px-7 flex ${
+        isActive
+          ? "text-white bg-primary-400"
+          : "text-slate-400 hover:text-primary-500 hover:bg-primary-50"
       }`}
     >
       <div className="flex items-center">
