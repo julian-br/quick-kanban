@@ -41,11 +41,11 @@ function SubtaskListEntry({
     <Button
       onClick={onClick}
       variant="custom"
-      className="bg-grey-light p-3 rounded-md flex items-center w-full hover:bg-secondary hover:shadow text-left"
+      className="bg-grey-light p-3 rounded-md flex items-center w-full hover:bg-slate-100  text-left"
     >
       <span
         className={`h-6 w-[1.6rem] p-1 pt-[5px] rounded border ${
-          subtask.isCompleted ? "bg-primary" : "bg-white"
+          subtask.isCompleted ? "bg-primary-400" : "bg-white"
         }`}
       >
         {subtask.isCompleted && <img className="h-3 w-4" src={CheckIcon} />}

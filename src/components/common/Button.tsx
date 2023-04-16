@@ -8,11 +8,11 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClassMap = {
   primary:
-    "bg-primary text-white font-semibold hover:bg-primary-light active:bg-primary focus:ring-primary-light",
+    "bg-primary-400 text-white font-semibold hover:bg-primary-500 active:bg-primary-400 focus:ring-primary-200",
   secondary:
-    "bg-secondary-light text-primary font-bold hover:bg-secondary active:bg-secondary-light",
+    "bg-primary-100 text-primary-500 font-bold hover:bg-primary-200 active:bg-primary-100",
   danger:
-    "bg-danger text-white font-semibold hover:bg-danger-light active:bg-danger",
+    "bg-danger-500 text-white font-semibold hover:bg-danger-400 active:bg-danger-200",
   custom: "",
 } as const;
 

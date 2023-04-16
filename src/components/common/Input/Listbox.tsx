@@ -20,7 +20,7 @@ export default function Listbox({ options, onChange, selected, label }: Props) {
     <ListBoxHeadlessUi value={selected} onChange={handleChange}>
       <div className="relative overflow-visible">
         <InputLabel>{label}</InputLabel>
-        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary border-slate-300 w-full">
+        <ListBoxHeadlessUi.Button className="relative px-3 py-2 rounded-lg border hover:border-primary-400 border-slate-300 w-full">
           <div className="flex justify-between items-center">
             <span className="block truncate">{selected}</span>
             <img src={ChivronDownIcon} />
@@ -31,7 +31,7 @@ export default function Listbox({ options, onChange, selected, label }: Props) {
             <ListBoxHeadlessUi.Option
               key={option}
               className={
-                "realtive cursor-pointer pl-5 py-2 rounded-lg hover:text-primary hover:bg-secondary-light ui-selected:text-primary ui-selected:font-semibold"
+                "cursor-pointer pl-5 py-2 rounded-lg hover:text-primary-400 hover:bg-primary-50 ui-selected:text-primary-500 ui-selected:font-semibold"
               }
               value={option}
             >

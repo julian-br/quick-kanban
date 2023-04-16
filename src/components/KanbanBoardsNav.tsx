@@ -36,7 +36,7 @@ export default function KanbanBoardsNav({
           all boards ({amountOfCreatedBoards})
         </h2>
         {boards.isSuccess && (
-          <div>
+          <div className="mb-3">
             {boards.data.map((board) => (
               <BoardNavEntry
                 key={board.id}
@@ -58,7 +58,7 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
     <Button
       variant="custom"
       onClick={onClick}
-      className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-secondary-light"
+      className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-primary-50"
     >
       <div className="flex items-center">
         <img
@@ -68,7 +68,7 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
         />
         <div className="flex items-baseline ml-3">
           <img src={PlusIconPrimary} alt="plus icon" className="h-2 mr-1" />
-          <span className=" text-primary">Create New Board</span>
+          <span className="text-primary-500">Create New Board</span>
         </div>
       </div>
     </Button>
@@ -84,9 +84,9 @@ function BoardNavEntry({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const activeClassList = "text-white bg-primary";
+  const activeClassList = "text-white bg-primary-400";
   const notActiveClassList =
-    "text-slate-400 hover:text-primary hover:bg-secondary-light";
+    "text-slate-400 hover:text-primary-500 hover:bg-primary-50";
 
   return (
     <Button

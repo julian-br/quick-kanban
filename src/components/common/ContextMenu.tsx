@@ -11,11 +11,11 @@ function ContextMenu({ children }: ContextMenuProps) {
   return (
     <div>
       <Menu as="nav" className="relative">
-        <Menu.Button className="hover:bg-secondary-light px-4 rounded-full py-4">
+        <Menu.Button className="hover:bg-slate-100 px-4 rounded-full py-4">
           <img
             src={VerticalEllipsisIcon}
             alt="Navbar Options"
-            className="h-6 text-primary"
+            className="h-6 text-teal-200"
           />
         </Menu.Button>
         <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-white shadow-lg border">
@@ -23,21 +23,6 @@ function ContextMenu({ children }: ContextMenuProps) {
         </Menu.Items>
       </Menu>
     </div>
-  );
-}
-
-function ContextMenuButton() {
-  return (
-    <Button
-      variant="custom"
-      className="hover:bg-secondary-light px-4 rounded-full py-4"
-    >
-      <img
-        src={VerticalEllipsisIcon}
-        alt="Navbar Options"
-        className="h-6 text-primary"
-      />
-    </Button>
   );
 }
 
@@ -58,7 +43,7 @@ function ContextMenuEntry({
     <Menu.Item>
       <div
         onClick={handleEntryClicked}
-        className=" w-full text-left py-2 px-3 hover:bg-secondary-light font-medium text-slate-600 cursor-pointer"
+        className=" w-full text-left py-2 px-3 hover:bg-slate-100 font-medium text-slate-600 cursor-pointer"
       >
         <div className="">{children}</div>
       </div>

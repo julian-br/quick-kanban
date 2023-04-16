@@ -24,7 +24,7 @@ export default function KanbanBoard({ board, onTaskClick }: Props) {
   return (
     <>
       {tasks.isSuccess && (
-        <div className="h-full w-full bg-grey-light pt-7 flex px-4">
+        <div className="h-full w-full bg-slate-50 pt-7 flex px-4">
           {board.columns.map((column) => (
             <KanbanBoardColumn
               tasks={filterTasksByColumnName(column)}
@@ -46,7 +46,7 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
       <Button
         variant="custom"
         onClick={onClick}
-        className="w-full h-[59rem] bg-[#e3eaf5c9] rounded-xl text-slate-400 mt-11 hover:text-primary"
+        className="w-full h-[59rem] bg-slate-100 rounded-xl text-slate-400 mt-11 hover:text-primary-300"
       >
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>

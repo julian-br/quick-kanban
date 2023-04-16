@@ -7,7 +7,7 @@ interface NavbarProps {
 
 function Navbar({ children }: NavbarProps) {
   return (
-    <nav className="bg-white px-7 border-b border-slate-200 flex items-center h-24">
+    <nav className="bg-white px-7 border-b border-slate-200 flex items-center py-3">
       <img src={LogoIcon} alt="Logo" />
       {children}
     </nav>

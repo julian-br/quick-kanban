@@ -30,12 +30,12 @@ export default function TextInput({
         onChange={(e) => handleInput(e.target.value)}
         type="text"
         className={`${
-          isValid ? "border-gray-200" : "border-danger"
-        } block w-full rounded-md text-md py-3 placeholder:text-slate-300 focus:border-primary-light`}
+          isValid ? "border-gray-200" : "border-danger-500"
+        } block w-full rounded-md text-md py-3 placeholder:text-slate-300 focus:border-primary-400`}
       />
 
       {!isValid && (
-        <div className="text-red-500 pointer-events-none bottom-3 absolute right-4">
+        <div className="text-danger-500 pointer-events-none bottom-3 absolute right-4">
           {errorMessage}
         </div>
       )}

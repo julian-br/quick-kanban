@@ -2,7 +2,7 @@ export default function LoadingSpinner() {
   return (
     <div role="status">
       <svg
-        className="w-11 h-11 mr-2 text-gray-200 animate-spin  fill-primary"
+        className="w-11 h-11 mr-2 text-gray-200 animate-spin  fill-primary-500"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

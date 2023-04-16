@@ -5,8 +5,7 @@ import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";
 import PlusIcon from "../assets/icon-add-task.svg";
-import { Redirect, useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { useKanbanBoards } from "../api/kanbanBoard";
 
 export default function NoCreatedBoardsPage() {
