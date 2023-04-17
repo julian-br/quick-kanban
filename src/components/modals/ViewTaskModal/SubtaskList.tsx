@@ -45,8 +45,10 @@ function SubtaskListEntry({
       className="bg-slate-600 p-3 rounded-md flex items-center w-full hover:bg-slate-500 text-left group"
     >
       <span
-        className={`w-[1.9rem] h-7 rounded group-hover:bg-slate-400 ${
-          subtask.isCompleted ? "bg-primary-400" : "bg-slate-500"
+        className={`w-[1.9rem] h-7 rounded  ${
+          subtask.isCompleted
+            ? "bg-primary-400 group-hover:bg-primary-300"
+            : "bg-slate-500 group-hover:bg-slate-400"
         }`}
       >
         {subtask.isCompleted && (

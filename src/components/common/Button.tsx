@@ -10,9 +10,9 @@ const variantClassMap = {
   primary:
     "bg-primary-500 text-white font-semibold hover:bg-primary-400 active:bg-primary-400 focus:ring-primary-200",
   secondary:
-    "bg-primary-400 text-primary-50 font-bold hover:bg-primary-200 active:bg-primary-100",
+    "bg-primary-200 text-primary-600 font-bold hover:bg-primary-200 active:bg-primary-100",
   danger:
-    "bg-danger-400 text-white font-semibold hover:bg-danger-400 active:bg-danger-200",
+    "bg-danger-500 text-white font-semibold hover:bg-danger-400 active:bg-danger-200",
   custom: "",
 } as const;
 

@@ -3,6 +3,7 @@ import { Subtask, Task, useTaskMutation } from "../../../api/task";
 import Listbox from "../../common/Input/Listbox";
 import Modal from "../../common/Modal";
 import SubtaskList from "./SubtaskList";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 interface Props {
   task: Task;
@@ -15,24 +16,16 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   const taskMutation = useTaskMutation();
 
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
-    const clickedSubtaskIndex = taskData.subtasks.findIndex(
-      (subtask) => subtask.title === clickedSubtask.title
-    )!;
-
-    const newSubtaskData = {
-      title: clickedSubtask.title,
-      isCompleted: !clickedSubtask.isCompleted,
-    };
-
-    const taskDataCopy = { ...taskData };
-    taskDataCopy.subtasks[clickedSubtaskIndex] = newSubtaskData;
-    setTaskData(taskDataCopy);
+    taskData.subtasks.map((subtask) => {
+      if (clickedSubtask.title === subtask.title) {
+        subtask.isCompleted = !subtask.isCompleted;
+      }
+    });
+    setTaskData({ ...taskData });
   }
 
   function changeTaskStatus(newStatus: string) {
-    const taskCopy = { ...taskData };
-    taskCopy.status = newStatus;
-    setTaskData(taskCopy);
+    setTaskData({ ...taskData, status: newStatus });
   }
 
   function handleModalClose() {
@@ -41,21 +34,28 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
 
   return (
     <Modal onClose={handleModalClose} title={task.title}>
-      <div className="w-full mt-7 flex flex-col gap-6 mb-4">
-        <p className="text-slate-300">{task.description}</p>
-        <SubtaskList
-          onSubtaskClick={toggleSubtaskStatus}
-          subtasks={task.subtasks}
-        />
-        <div>
-          <Listbox
-            label="Current Status"
-            onChange={changeTaskStatus}
-            selected={taskData.status}
-            options={boardColumns}
-          />
+      {taskMutation.isLoading && (
+        <div className="h-72 flex justify-center pt-20">
+          <LoadingSpinner />
         </div>
-      </div>
+      )}
+      {taskMutation.isIdle && (
+        <div className="w-full mt-7 flex flex-col gap-6 mb-4">
+          <p className="text-slate-300">{task.description}</p>
+          <SubtaskList
+            onSubtaskClick={toggleSubtaskStatus}
+            subtasks={task.subtasks}
+          />
+          <div>
+            <Listbox
+              label="Current Status"
+              onChange={changeTaskStatus}
+              selected={taskData.status}
+              options={boardColumns}
+            />
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }

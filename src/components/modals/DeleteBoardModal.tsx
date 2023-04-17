@@ -34,7 +34,7 @@ export default function DeleteBoardModal({
         )}
         {!boardDeleteMutation.isLoading && (
           <div>
-            <h4 className="text-danger-400 text-2xl font-bold">
+            <h4 className="text-danger-500 text-2xl font-bold">
               Delete this board?
             </h4>
             <p className="mt-5 text-slate-200">
