@@ -1,7 +1,7 @@
 import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
 
-interface Props {
+interface KanbanBoardColumnProps {
   columnName: string;
   tasks: Task[];
   onTaskClick: (taskData: Task) => void;
@@ -11,7 +11,7 @@ export default function KanbanBoardColumn({
   columnName,
   tasks,
   onTaskClick,
-}: Props) {
+}: KanbanBoardColumnProps) {
   const ammountOfTask = tasks.length;
 
   return (

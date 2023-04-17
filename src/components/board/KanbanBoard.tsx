@@ -3,12 +3,12 @@ import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../common/Button";
 import { Task, useTasks } from "../../api/task";
 
-interface Props {
+interface KanbanBoardProps {
   board: KanbanBoardData;
   onTaskClick?: (taskData: Task) => void;
 }
 
-export default function KanbanBoard({ board, onTaskClick }: Props) {
+export default function KanbanBoard({ board, onTaskClick }: KanbanBoardProps) {
   const tasks = useTasks(board.id);
 
   function handleTaskClicked(taskData: Task) {

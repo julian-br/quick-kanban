@@ -1,12 +1,15 @@
 import { Task } from "../../api/task";
 import Button from "../common/Button";
 
-interface Props {
+interface KanbanBoardTaskProps {
   taskData: Task;
   onTaskClick: (taskData: Task) => void;
 }
 
-export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {
+export default function KanbanBoardTask({
+  taskData,
+  onTaskClick,
+}: KanbanBoardTaskProps) {
   const amountOfSubtasks = taskData.subtasks.length;
   const amountOfCompletedSubtasks = taskData.subtasks.filter(
     (subtaskData) => subtaskData.isCompleted
