@@ -29,7 +29,7 @@ export default function KanbanBoard({
   return (
     <>
       {tasks.isSuccess && (
-        <div className="h-full w-full bg-slate-800 pt-7 flex px-4">
+        <div className="h-full w-full bg-gray-900 pt-7 flex px-4 select-none">
           {board.columns.map((column) => (
             <KanbanBoardColumn
               onAddTaskClick={onAddTaskClick}
@@ -52,7 +52,7 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
       <Button
         variant="custom"
         onClick={onClick}
-        className="w-full h-[59rem] bg-slate-700 rounded-xl bg-opacity-20 text-slate-400 mt-11 hover:text-primary-300"
+        className="w-full h-[59rem] bg-slate-700 rounded-xl bg-opacity-10 text-slate-400 mt-11 hover:text-primary-300"
       >
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>

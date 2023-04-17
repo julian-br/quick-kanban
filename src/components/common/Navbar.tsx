@@ -8,7 +8,7 @@ interface NavbarProps {
 
 function Navbar({ children }: NavbarProps) {
   return (
-    <nav className="bg-gray-800 px-7 bg-opacity-5   flex items-center py-3">
+    <nav className="bg-slate-800 border-b border-slate-700 border-opacity-60  px-7 flex items-center py-3">
       <Brand />
       {children}
     </nav>
