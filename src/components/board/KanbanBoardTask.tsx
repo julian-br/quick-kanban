@@ -20,7 +20,7 @@ export default function KanbanBoardTask({
       <Button
         variant="custom"
         onClick={() => onTaskClick(taskData)}
-        className="bg-slate-800 w-full text-left pt-5 pb-7 px-5 rounded-xl group"
+        className="bg-slate-800 w-full text-left pt-5 pb-7 px-5 rounded-xl group hover:scale-[1.025]"
       >
         <h4 className="text-lg font-bold text-slate-200 group-hover:text-primary-300">
           {taskData.title}

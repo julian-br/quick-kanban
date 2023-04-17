@@ -48,11 +48,11 @@ export default function KanbanBoard({
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
-    <div className="w-96 mt-2 px-4">
+    <div className="w-96 mt-2 px-4 mb-16 overflow-hidden">
       <Button
         variant="custom"
         onClick={onClick}
-        className="w-full h-[59rem] bg-slate-700 rounded-xl bg-opacity-10 text-slate-400 mt-11 hover:text-primary-300"
+        className="w-full h-full mb-40 bg-slate-700 rounded-xl bg-opacity-10 text-slate-400 mt-11 hover:text-primary-300"
       >
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>
