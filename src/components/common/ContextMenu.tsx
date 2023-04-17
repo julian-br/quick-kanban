@@ -17,7 +17,7 @@ function ContextMenu({ children }: ContextMenuProps) {
             className="h-7 text-slate-500 group-hover:text-slate-400"
           />
         </Menu.Button>
-        <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-slate-700 shadow-lg">
+        <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-slate-800 shadow-lg">
           {children}
         </Menu.Items>
       </Menu>
@@ -42,7 +42,7 @@ function ContextMenuEntry({
     <Menu.Item>
       <div
         onClick={handleEntryClicked}
-        className=" w-full text-left py-2 px-3 hover:bg-slate-600 font-medium text-slate-300 cursor-pointer"
+        className=" w-full text-left py-2 px-3 hover:bg-slate-700 font-medium text-slate-300 cursor-pointer"
       >
         <div className="">{children}</div>
       </div>

@@ -30,8 +30,8 @@ export default function TextArea({
         {...htmlTextAreaProps}
         onChange={(e) => handleInput(e.target.value)}
         className={`${
-          isValid ? "border-slate-600" : "border-danger-500"
-        } block w-full text-slate-100 rounded-md text-md bg-slate-600 py-3 placeholder:text-slate-400 focus:border-primary-600 resize-none`}
+          isValid ? "border-slate-700" : "border-danger-500"
+        } block w-full text-slate-100 rounded-md text-md bg-slate-700 py-3 placeholder:text-slate-400 focus:border-primary-600 resize-none`}
       />
 
       {!isValid && (

@@ -42,7 +42,7 @@ function SubtaskListEntry({
     <Button
       onClick={onClick}
       variant="custom"
-      className="bg-slate-600 p-3 rounded-md flex items-center w-full hover:bg-slate-500 text-left group"
+      className="bg-slate-700 p-3 rounded-md flex items-center w-full hover:bg-slate-600 text-left group"
     >
       <span
         className={`w-[1.9rem] h-7 rounded  ${
