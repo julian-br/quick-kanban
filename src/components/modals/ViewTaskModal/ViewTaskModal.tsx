@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Subtask, Task, useTaskMutation } from "../../../api/task";
 import Listbox from "../../common/Input/Listbox";
 import Modal from "../../common/Modal";
@@ -14,8 +14,10 @@ interface Props {
 export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   const [taskData, setTaskData] = useState(task);
   const taskMutation = useTaskMutation();
+  const taskIsModified = useRef(false);
 
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
+    taskIsModified.current = true;
     taskData.subtasks.map((subtask) => {
       if (clickedSubtask.title === subtask.title) {
         subtask.isCompleted = !subtask.isCompleted;
@@ -25,10 +27,15 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   }
 
   function changeTaskStatus(newStatus: string) {
+    taskIsModified.current = true;
     setTaskData({ ...taskData, status: newStatus });
   }
 
   function handleModalClose() {
+    if (taskIsModified.current === false) {
+      onClose();
+      return;
+    }
     taskMutation.mutate(taskData, { onSuccess: onClose });
   }
 

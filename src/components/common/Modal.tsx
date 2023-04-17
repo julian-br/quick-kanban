@@ -15,7 +15,7 @@ export default function Modal({ children, onClose, title }: Props) {
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="relative flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Dialog.Panel className="font-jakarta opacity-100 relative rounded-lg px-9 py-7 bg-slate-700 shadow-xl transition-all min-w-[35em] min-h-[15em] max-w-min">
+            <Dialog.Panel className="font-jakarta opacity-100 relative rounded-lg px-9 pb-7 pt-10 bg-slate-700 shadow-xl transition-all min-w-[35em] min-h-[15em] max-w-min">
               <Dialog.Title
                 as="h3"
                 className="text-xl text-left font-bold leading-6 mb-2 text-slate-100"
