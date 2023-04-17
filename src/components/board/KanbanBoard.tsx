@@ -6,9 +6,14 @@ import { Task, useTasks } from "../../api/task";
 interface KanbanBoardProps {
   board: KanbanBoardData;
   onTaskClick?: (taskData: Task) => void;
+  onAddTaskClick: (columnName: string) => void;
 }
 
-export default function KanbanBoard({ board, onTaskClick }: KanbanBoardProps) {
+export default function KanbanBoard({
+  board,
+  onTaskClick,
+  onAddTaskClick,
+}: KanbanBoardProps) {
   const tasks = useTasks(board.id);
 
   function handleTaskClicked(taskData: Task) {
@@ -27,6 +32,7 @@ export default function KanbanBoard({ board, onTaskClick }: KanbanBoardProps) {
         <div className="h-full w-full bg-slate-800 pt-7 flex px-4">
           {board.columns.map((column) => (
             <KanbanBoardColumn
+              onAddTaskClick={onAddTaskClick}
               tasks={filterTasksByColumnName(column)}
               key={column}
               onTaskClick={handleTaskClicked}

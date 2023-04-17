@@ -10,16 +10,21 @@ import TextInput from "../common/Input/TextInput";
 import LoadingSpinner from "../common/LoadingSpinner";
 import Modal from "../common/Modal";
 
-interface Props {
+interface CreateTaskModalProps {
   board: KanbanBoard;
+  columnName?: string;
   onClose: () => void;
 }
 
-export default function CreateTaskModal({ onClose, board }: Props) {
+export default function CreateTaskModal({
+  onClose,
+  board,
+  columnName,
+}: CreateTaskModalProps) {
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
-    status: board.columns[0],
+    status: columnName ?? board.columns[0],
     subtaskTitles: [""],
   });
 
@@ -67,7 +72,7 @@ export default function CreateTaskModal({ onClose, board }: Props) {
         (subtaskName) => subtaskName !== ""
       );
 
-      const taskToMutate = {
+      const newTask = {
         ...taskData,
         boardId: board.id,
         subtasks: trimmedSubtaskTitles.map((subtaskTitle) => ({
@@ -76,7 +81,7 @@ export default function CreateTaskModal({ onClose, board }: Props) {
         })),
       };
 
-      taskMutation.mutate(taskToMutate, { onSuccess: onClose });
+      taskMutation.mutate(newTask, { onSuccess: onClose });
     }
   }
 

@@ -14,22 +14,23 @@ import DeleteBoardModal from "../components/modals/DeleteBoardModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-interface Props {
+interface KanbanBoardPageProps {
   urlParams: {
     boardId: string;
   };
 }
 
-type modals =
+type ActiveModal =
   | "CreateTaskModal"
   | "CreateBoardModal"
   | "ViewTaskModal"
   | "DeleteBoardModal"
   | "None";
 
-export default function KanbanBoardPage({ urlParams }: Props) {
-  const [activeModal, setActiveModal] = useState<modals>("None");
+export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
+  const [activeModal, setActiveModal] = useState<ActiveModal>("None");
   const [selectedTask, setSelectedTask] = useState<Task>();
+  const [columnToAddTaskTo, setColumnToAddTaskTo] = useState<string>();
 
   const { boardId } = urlParams;
 
@@ -40,7 +41,9 @@ export default function KanbanBoardPage({ urlParams }: Props) {
     setActiveModal("ViewTaskModal");
   }
 
-  function closeAllModals() {
+  function closeModals() {
+    setSelectedTask(undefined);
+    setColumnToAddTaskTo(undefined);
     setActiveModal("None");
   }
 
@@ -74,34 +77,37 @@ export default function KanbanBoardPage({ urlParams }: Props) {
         {activeBoard.isSuccess && (
           <main className="w-full">
             <KanbanBoard
+              onAddTaskClick={(columnName) => {
+                setColumnToAddTaskTo(columnName);
+                setActiveModal("CreateTaskModal");
+              }}
               board={activeBoard.data}
               onTaskClick={handleTaskClicked}
             />
             {/* Modals */}
-            <div>
-              {activeModal === "CreateBoardModal" && (
-                <CreateBoardModal onClose={closeAllModals} />
-              )}
-              {activeModal === "CreateTaskModal" && (
-                <CreateTaskModal
-                  board={activeBoard.data}
-                  onClose={closeAllModals}
-                />
-              )}
-              {selectedTask && activeModal === "ViewTaskModal" && (
-                <ViewTaskModal
-                  onClose={closeAllModals}
-                  task={selectedTask}
-                  boardColumns={activeBoard.data.columns}
-                />
-              )}
-              {activeModal === "DeleteBoardModal" && (
-                <DeleteBoardModal
-                  boardId={activeBoard.data.id}
-                  onClose={closeAllModals}
-                />
-              )}
-            </div>
+            {activeModal === "CreateBoardModal" && (
+              <CreateBoardModal onClose={closeModals} />
+            )}
+            {activeModal === "CreateTaskModal" && (
+              <CreateTaskModal
+                board={activeBoard.data}
+                columnName={columnToAddTaskTo}
+                onClose={closeModals}
+              />
+            )}
+            {selectedTask && activeModal === "ViewTaskModal" && (
+              <ViewTaskModal
+                onClose={closeModals}
+                task={selectedTask}
+                boardColumns={activeBoard.data.columns}
+              />
+            )}
+            {activeModal === "DeleteBoardModal" && (
+              <DeleteBoardModal
+                boardId={activeBoard.data.id}
+                onClose={closeModals}
+              />
+            )}
           </main>
         )}
       </div>
