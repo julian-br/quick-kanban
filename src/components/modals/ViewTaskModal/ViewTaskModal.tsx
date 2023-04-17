@@ -42,7 +42,7 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   return (
     <Modal onClose={handleModalClose} title={task.title}>
       <div className="w-full mt-7 flex flex-col gap-6 mb-4">
-        <p className="text-slate-500">{task.description}</p>
+        <p className="text-slate-300">{task.description}</p>
         <SubtaskList
           onSubtaskClick={toggleSubtaskStatus}
           subtasks={task.subtasks}

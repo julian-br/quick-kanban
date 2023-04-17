@@ -52,7 +52,7 @@ export default function ListInput({
             <RemoveInputFieldButton onClick={() => removeInputField(index)} />
           </div>
         ))}
-        <div className="text-danger">{errorMessage}</div>
+        <div className="text-danger-400">{errorMessage}</div>
         <AddInputFieldButton text={addButtonText} onClick={addInputField} />
       </div>
     </div>
@@ -63,7 +63,7 @@ function RemoveInputFieldButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
       onClick={onClick}
-      className="hover:bg-primary-50 ml-1 rounded-lg h-full w-8 mt-1 group"
+      className=" ml-1 rounded-lg h-full w-8 mt-1 group"
       variant="custom"
     >
       <FontAwesomeIcon

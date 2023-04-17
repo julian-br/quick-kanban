@@ -31,11 +31,11 @@ export default function KanbanBoardsNav({
   return (
     <div>
       <div>
-        <h2 className="uppercase font-semibold text-slate-400 tracking-widest ml-7 mb-6">
+        <h2 className="uppercase font-semibold text-slate-300 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
         {boards.isSuccess && (
-          <div className="mb-3 mr-4">
+          <div className="mb-3 mx-4 flex-col flex gap-3">
             {boards.data.map((board) => (
               <BoardNavEntry
                 key={board.id}
@@ -57,14 +57,14 @@ function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
     <Button
       variant="custom"
       onClick={onClick}
-      className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-primary-50"
+      className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">
         <FontAwesomeIcon
-          className="h-3 mr-1 text-primary-600"
+          className="h-3 mr-1 text-primary-300"
           icon={faPlus}
         ></FontAwesomeIcon>
-        <span className="text-primary-500">Create New Board</span>
+        <span className="text-primary-300">Create New Board</span>
       </div>
     </Button>
   );
@@ -83,10 +83,10 @@ function BoardNavEntry({
     <Button
       variant="custom"
       onClick={onClick}
-      className={`w-full py-3 font-semibold text-lg  rounded-r-full px-7 flex ${
+      className={`w-full py-2 font-semibold text-lg  rounded-lg px-4 flex ${
         isActive
-          ? "text-white bg-primary-400"
-          : "text-slate-400 hover:text-primary-500 hover:bg-primary-50"
+          ? "text-slate-100 bg-primary-500"
+          : "text-slate-400 hover:text-primary-300 hover:bg-slate-700"
       }`}
     >
       <div className="flex items-center">

@@ -15,7 +15,7 @@ export default function SubtaskList({ subtasks, onSubtaskClick }: Props) {
 
   return (
     <div>
-      <h5 className="text-slate-500 font-medium">
+      <h5 className="text-slate-200 font-medium">
         Subtasks ({amountOfFinishedSubtasks} of {amountOfSubtasks})
       </h5>
       <div className="flex flex-col gap-2 mt-3">
@@ -42,21 +42,21 @@ function SubtaskListEntry({
     <Button
       onClick={onClick}
       variant="custom"
-      className="bg-grey-light p-3 rounded-md flex items-center w-full hover:bg-slate-100  text-left"
+      className="bg-slate-600 p-3 rounded-md flex items-center w-full hover:bg-slate-500 text-left group"
     >
       <span
-        className={`w-7 h-7 rounded border ${
-          subtask.isCompleted ? "bg-primary-400" : "bg-white"
+        className={`w-[1.9rem] h-7 rounded group-hover:bg-slate-400 ${
+          subtask.isCompleted ? "bg-primary-400" : "bg-slate-500"
         }`}
       >
         {subtask.isCompleted && (
-          <FontAwesomeIcon className="h-4 ml-1 text-white" icon={faCheck} />
+          <FontAwesomeIcon className="h-4 ml-2 text-white" icon={faCheck} />
         )}
       </span>
 
       <span
         className={`font-bold ml-4 w-full ${
-          subtask.isCompleted ? "text-slate-500 line-through" : "text-slate-900"
+          subtask.isCompleted ? "text-slate-400 line-through" : "text-slate-100"
         }`}
       >
         {subtask.title}

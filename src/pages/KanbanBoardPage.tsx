@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Task } from "../api/task";
 import CreateBoardModal from "../components/modals/CreateBoardModal";
-import KanbanBoard from "../components/KanbanBoard/KanbanBoard";
+import KanbanBoard from "../components/board/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";

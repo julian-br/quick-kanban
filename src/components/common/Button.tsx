@@ -8,17 +8,17 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClassMap = {
   primary:
-    "bg-primary-400 text-white font-semibold hover:bg-primary-500 active:bg-primary-400 focus:ring-primary-200",
+    "bg-primary-500 text-white font-semibold hover:bg-primary-400 active:bg-primary-400 focus:ring-primary-200",
   secondary:
-    "bg-primary-100 text-primary-500 font-bold hover:bg-primary-200 active:bg-primary-100",
+    "bg-primary-400 text-primary-50 font-bold hover:bg-primary-200 active:bg-primary-100",
   danger:
-    "bg-danger-500 text-white font-semibold hover:bg-danger-400 active:bg-danger-200",
+    "bg-danger-400 text-white font-semibold hover:bg-danger-400 active:bg-danger-200",
   custom: "",
 } as const;
 
 const sizeClassMap = {
-  medium: "px-7 py-2 rounded-full",
-  large: "text-lg px-7 py-3 h-13 rounded-full",
+  medium: "px-7 py-2 rounded-xl",
+  large: "text-lg px-7 py-3 h-13 rounded-xl",
 } as const;
 
 export default function Button({

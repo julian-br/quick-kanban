@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="font-jakarta min-h-screen flex flex-col">
+    <div className="font-jakarta min-h-screen flex flex-col bg-gray-900">
       <QueryClientProvider client={queryClient}>
         <Route path="/" component={NoCreatedBoardsPage}></Route>
         <Route path="/board/:boardId">

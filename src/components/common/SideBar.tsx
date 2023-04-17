@@ -15,12 +15,12 @@ export default function SideBar({ children }: Props) {
   }
 
   return (
-    <nav className="bg-white border-r relative border-slate-200">
+    <nav className="bg-slate-800 bg-opacity-40  relative ">
       <div className="absolute flex w-full pt-5">
         <Button
           onClick={toggleIsOpen}
           variant="custom"
-          className="p-2 ml-auto mr-3 font-bold text-xl text-slate-400 rounded-lg hover:bg-primary-50 hover:text-primary-400"
+          className="p-2 ml-auto mr-3 font-bold text-xl text-slate-400 rounded-lg hover:bg-slate-800 hover:text-primary-400"
         >
           <FontAwesomeIcon className="h-6" icon={faBars}></FontAwesomeIcon>
         </Button>

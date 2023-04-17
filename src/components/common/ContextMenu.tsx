@@ -11,13 +11,13 @@ function ContextMenu({ children }: ContextMenuProps) {
   return (
     <div>
       <Menu as="nav" className="relative">
-        <Menu.Button className="hover:bg-slate-100 px-4 rounded-full py-3">
+        <Menu.Button className="hover:bg-slate-800 px-3 rounded-full py-3">
           <FontAwesomeIcon
             icon={faEllipsisVertical}
-            className="h-7 text-slate-400"
+            className="h-7 text-slate-500"
           />
         </Menu.Button>
-        <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-white shadow-lg border">
+        <Menu.Items className="absolute right-0 mt-1 py-4 w-56 rounded-xl bg-slate-700 shadow-lg">
           {children}
         </Menu.Items>
       </Menu>
@@ -42,7 +42,7 @@ function ContextMenuEntry({
     <Menu.Item>
       <div
         onClick={handleEntryClicked}
-        className=" w-full text-left py-2 px-3 hover:bg-slate-100 font-medium text-slate-600 cursor-pointer"
+        className=" w-full text-left py-2 px-3 hover:bg-slate-600 font-medium text-slate-300 cursor-pointer"
       >
         <div className="">{children}</div>
       </div>

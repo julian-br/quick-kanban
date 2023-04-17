@@ -17,9 +17,9 @@ export default function KanbanBoardTask({ taskData, onTaskClick }: Props) {
       <Button
         variant="custom"
         onClick={() => onTaskClick(taskData)}
-        className="bg-white w-full text-left pt-5 pb-7 px-5 rounded-xl shadow-md group"
+        className="bg-slate-700 w-full text-left pt-5 pb-7 px-5 rounded-xl group"
       >
-        <h4 className="text-lg font-bold text-slate-700 group-hover:text-primary-500">
+        <h4 className="text-lg font-bold text-slate-200 group-hover:text-primary-300">
           {taskData.title}
         </h4>
         <p className="text-slate-400 text-sm font-bold">

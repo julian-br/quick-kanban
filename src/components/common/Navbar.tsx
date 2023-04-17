@@ -8,7 +8,7 @@ interface NavbarProps {
 
 function Navbar({ children }: NavbarProps) {
   return (
-    <nav className="bg-white px-7 border-b border-slate-200 flex items-center py-3">
+    <nav className="bg-gray-800 px-7 bg-opacity-5   flex items-center py-3">
       <Brand />
       {children}
     </nav>
@@ -22,7 +22,7 @@ function Brand() {
         icon={faTable}
         className="text-primary-500 mr-3"
       ></FontAwesomeIcon>
-      <span>Kanban Board</span>
+      <span className="text-white">Kanban Board</span>
     </div>
   );
 }

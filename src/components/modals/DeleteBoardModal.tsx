@@ -34,10 +34,10 @@ export default function DeleteBoardModal({
         )}
         {!boardDeleteMutation.isLoading && (
           <div>
-            <h4 className="text-danger text-2xl font-bold">
+            <h4 className="text-danger-400 text-2xl font-bold">
               Delete this board?
             </h4>
-            <p className="mt-5 text-slate-500">
+            <p className="mt-5 text-slate-200">
               Are you sure you want to delete the ‘Platform Launch’ board? This
               action will remove all columns and tasks and cannot be reversed.
             </p>
