@@ -50,6 +50,11 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   return (
     <>
       <Navbar>
+        {activeBoard.isFetched && (
+          <div className="text-slate-300 font-semibold text-2xl ml-20">
+            {activeBoard.data?.name}
+          </div>
+        )}
         <Navbar.Controls>
           <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
           <ContextMenu>
