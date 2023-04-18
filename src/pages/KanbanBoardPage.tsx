@@ -64,7 +64,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             <ContextMenu.Entry
               onClick={() => setActiveModal("DeleteBoardModal")}
             >
-              <span className="text-danger">Delete Board</span>
+              <span className="text-danger-500">Delete Board</span>
             </ContextMenu.Entry>
           </ContextMenu>
         </Navbar.Controls>

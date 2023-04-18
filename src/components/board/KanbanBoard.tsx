@@ -52,7 +52,7 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
       <Button
         variant="custom"
         onClick={onClick}
-        className="w-full h-full mb-40 bg-slate-700 rounded-xl bg-opacity-10 text-slate-400 mt-11 hover:text-primary-300"
+        className="w-full h-full mb-40 bg-slate-800 rounded-xl bg-opacity-20 text-slate-400 mt-11 hover:text-primary-300"
       >
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>
