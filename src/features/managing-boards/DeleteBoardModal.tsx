@@ -13,7 +13,7 @@ export default function DeleteBoardModal({
   onClose,
   boardId,
 }: DeleteBoardModalProps) {
-  const boardDeleteMutation = useKanbanBoardMutation().deleteMutation;
+  const boardDeleteMutation = useKanbanBoardMutation().delete;
   const [_, setLocation] = useLocation();
 
   function deleteBoard() {

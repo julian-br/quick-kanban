@@ -50,8 +50,8 @@ export function useKanbanBoardMutation() {
   });
 
   return {
-    putMutation: putKanbanBoardMutation,
-    deleteMutation: deleteKanbanBoardMutation,
+    put: putKanbanBoardMutation,
+    delete: deleteKanbanBoardMutation,
   };
 }
 
