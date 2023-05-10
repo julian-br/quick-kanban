@@ -56,7 +56,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal title="Add New Board" onClose={onClose}>
+    <Modal header="Add New Board" onClose={onClose}>
       <Form onSubmit={handleSubmit} className="mt-7 flex flex-col gap-5">
         <TextInput
           value={boardName}
@@ -75,7 +75,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
           onChange={setBoardColumnNames}
           errorMessage={formErrors.boardColumnNames}
         />
-        <Button type="submit" className="w-full mb-3 mt-4" variant="primary">
+        <Button type="submit" className="w-full mb-3 mt-8" variant="primary">
           Create New Board
         </Button>
       </Form>

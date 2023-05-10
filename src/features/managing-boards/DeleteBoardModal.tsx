@@ -25,23 +25,27 @@ export default function DeleteBoardModal({
   }
 
   return (
-    <Modal onClose={onClose}>
-      <div className="h-48">
+    <Modal
+      header={
+        <h3 className="text-danger-500 text-2xl font-bold">
+          Delete this board?
+        </h3>
+      }
+      onClose={onClose}
+    >
+      <div>
         {boardDeleteMutation.isLoading && (
           <div className="flex pb-7 h-full items-center justify-center">
             <LoadingSpinner />
           </div>
         )}
-        {!boardDeleteMutation.isLoading && (
+        {boardDeleteMutation.isIdle && (
           <div>
-            <h4 className="text-danger-500 text-2xl font-bold">
-              Delete this board?
-            </h4>
-            <p className="mt-5 text-slate-200">
+            <p className="mt-7 text-slate-200">
               Are you sure you want to delete the ‘Platform Launch’ board? This
               action will remove all columns and tasks and cannot be reversed.
             </p>
-            <div className="mt-7 mb-5 flex gap-5">
+            <div className="mt-10 flex gap-5">
               <Button variant="danger" className="w-1/2" onClick={deleteBoard}>
                 Delete
               </Button>

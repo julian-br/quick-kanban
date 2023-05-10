@@ -86,7 +86,7 @@ export default function CreateTaskModal({
   }
 
   return (
-    <Modal onClose={onClose} title={"Add New Task"}>
+    <Modal onClose={onClose} header="Add New Task">
       {taskMutation.isLoading && (
         <div className="h-52 mb-16 flex items-center justify-center">
           <LoadingSpinner />

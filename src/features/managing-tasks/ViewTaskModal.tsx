@@ -40,14 +40,14 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
   }
 
   return (
-    <Modal onClose={handleModalClose} title={task.title}>
+    <Modal onClose={handleModalClose} header={task.title}>
       {taskMutation.isLoading && (
         <div className="h-72 flex justify-center pt-20">
           <LoadingSpinner />
         </div>
       )}
       {taskMutation.isIdle && (
-        <div className="w-full mt-7 flex flex-col gap-6 mb-4">
+        <div className="w-full mt-7 flex flex-col gap-6">
           <p className="text-slate-300">{task.description}</p>
           <SubtaskList
             onSubtaskClick={toggleSubtaskStatus}
