@@ -33,7 +33,7 @@ export default function CreateTaskModal({
     subtaskNames: validateSubtaskTitles,
   });
 
-  const taskMutation = useTaskMutation();
+  const taskPutMutation = useTaskMutation().put;
 
   function validateSubtaskTitles() {
     const hasEmptyValues =
@@ -81,18 +81,18 @@ export default function CreateTaskModal({
         })),
       };
 
-      taskMutation.mutate(newTask, { onSuccess: onClose });
+      taskPutMutation.mutate(newTask, { onSuccess: onClose });
     }
   }
 
   return (
     <Modal onClose={onClose} header="Add New Task">
-      {taskMutation.isLoading && (
+      {taskPutMutation.isLoading && (
         <div className="h-52 mb-16 flex items-center justify-center">
           <LoadingSpinner />
         </div>
       )}
-      {!taskMutation.isLoading && (
+      {taskPutMutation.isIdle && (
         <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
           <TextInput
             errorMessage={formErrors.title}
