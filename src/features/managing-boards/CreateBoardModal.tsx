@@ -1,11 +1,11 @@
-import Button from "../../components/common/Button";
-import Modal from "../../components/common/Modal";
-import TextInput from "../../components/common/Input/TextInput";
+import Button from "../../components/Button";
+import Modal from "../../components/Modal";
+import TextInput from "../../components/Input/TextInput";
 import { useState } from "react";
-import Form, { useFormValidation } from "../../components/common/Form";
+import Form, { useFormValidation } from "../../components/Form";
 import { useLocation } from "wouter";
 import { useKanbanBoardMutation } from "../../api/kanbanBoard";
-import ListInput from "../../components/common/Input/ListInput";
+import ListInput from "../../components/Input/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);

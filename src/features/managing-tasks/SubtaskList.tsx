@@ -1,4 +1,4 @@
-import Button from "../../components/common/Button";
+import Button from "../../components/Button";
 import { Subtask } from "../../api/task";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";

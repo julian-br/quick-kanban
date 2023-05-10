@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { KanbanBoard } from "../../api/kanbanBoard";
 import { useTaskMutation } from "../../api/task";
-import Button from "../../components/common/Button";
-import Form, { useFormValidation } from "../../components/common/Form";
-import Listbox from "../../components/common/Input/Listbox";
-import ListInput from "../../components/common/Input/ListInput";
-import TextArea from "../../components/common/Input/TextArea";
-import TextInput from "../../components/common/Input/TextInput";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
-import Modal from "../../components/common/Modal";
+import Button from "../../components/Button";
+import Form, { useFormValidation } from "../../components/Form";
+import Listbox from "../../components/Input/Listbox";
+import ListInput from "../../components/Input/ListInput";
+import TextArea from "../../components/Input/TextArea";
+import TextInput from "../../components/Input/TextInput";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import Modal from "../../components/Modal";
 
 interface CreateTaskModalProps {
   board: KanbanBoard;

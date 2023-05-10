@@ -1,6 +1,6 @@
-import Button from "./common/Button";
+import Button from "../../components/Button";
 import { useLocation } from "wouter";
-import { useKanbanBoards } from "../api/kanbanBoard";
+import { useKanbanBoards } from "../../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 

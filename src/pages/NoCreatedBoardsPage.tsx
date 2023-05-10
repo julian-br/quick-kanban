@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Button from "../components/common/Button";
+import Button from "../components/Button";
 import CreateBoardModal from "../features/managing-boards/CreateBoardModal";
-import KanbanBoardsNav from "../components/KanbanBoardsNav";
-import Navbar from "../components/common/Navbar";
-import SideBar from "../components/common/SideBar";
+import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
+import Navbar from "../components/Navbar";
+import SideBar from "../components/SideBar";
 import { useLocation } from "wouter";
 import { useKanbanBoards } from "../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
