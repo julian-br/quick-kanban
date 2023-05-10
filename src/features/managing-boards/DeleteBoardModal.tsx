@@ -1,8 +1,8 @@
 import { useLocation } from "wouter";
 import { useKanbanBoardMutation } from "../../api/kanbanBoard";
-import Button from "../common/Button";
-import LoadingSpinner from "../common/LoadingSpinner";
-import Modal from "../common/Modal";
+import Button from "../../components/common/Button";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import Modal from "../../components/common/Modal";
 
 interface DeleteBoardModalProps {
   boardId: string;

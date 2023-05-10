@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../components/common/Button";
-import CreateBoardModal from "../components/modals/CreateBoardModal";
+import CreateBoardModal from "../features/managing-boards/CreateBoardModal";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";

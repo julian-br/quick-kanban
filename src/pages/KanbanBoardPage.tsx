@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Task } from "../api/task";
-import CreateBoardModal from "../components/modals/CreateBoardModal";
-import KanbanBoard from "../features/board/KanbanBoard";
+import CreateBoardModal from "../features/managing-boards/CreateBoardModal";
+import KanbanBoard from "../features/kanban-board/KanbanBoard";
 import KanbanBoardsNav from "../components/KanbanBoardsNav";
 import Navbar from "../components/common/Navbar";
 import SideBar from "../components/common/SideBar";
@@ -10,7 +10,7 @@ import { useKanbanBoard } from "../api/kanbanBoard";
 import CreateTaskModal from "../features/managing-tasks/CreateTaskModal";
 import Button from "../components/common/Button";
 import ContextMenu from "../components/common/ContextMenu";
-import DeleteBoardModal from "../components/modals/DeleteBoardModal";
+import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
