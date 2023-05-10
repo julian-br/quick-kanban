@@ -1,5 +1,5 @@
 import { Task } from "../../api/task";
-import Button from "../common/Button";
+import Button from "../../components/common/Button";
 
 interface KanbanBoardTaskProps {
   taskData: Task;

@@ -1,6 +1,6 @@
 import { KanbanBoard as KanbanBoardData } from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
-import Button from "../common/Button";
+import Button from "../../components/common/Button";
 import { Task, useTasks } from "../../api/task";
 
 interface KanbanBoardProps {
