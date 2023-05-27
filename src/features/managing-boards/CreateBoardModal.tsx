@@ -4,7 +4,7 @@ import TextInput from "../../components/Input/TextInput";
 import { useState } from "react";
 import Form, { useFormValidation } from "../../components/Form";
 import { useLocation } from "wouter";
-import { useKanbanBoardMutation } from "../../api/kanbanBoard";
+import { useKanbanBoardsMutation } from "../../api/kanbanBoard";
 import ListInput from "../../components/Input/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
@@ -12,7 +12,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const boardPutMutation = useKanbanBoardMutation().put;
+  const boardPutMutation = useKanbanBoardsMutation().put;
 
   const { formErrors, validateForm } = useFormValidation({
     boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
@@ -69,7 +69,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
 
         <ListInput
           label="Board Columns"
-          inputPlaceHolder="e.g Todo"
+          inputPlaceHolder="e.g. Todo"
           addButtonText="Add new Column"
           values={boardColumnNames}
           onChange={setBoardColumnNames}

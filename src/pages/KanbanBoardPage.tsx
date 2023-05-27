@@ -13,6 +13,7 @@ import ContextMenu from "../components/ContextMenu";
 import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { CreateColumnModal } from "../features/managing-columns/CreateColumnModal";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -25,6 +26,7 @@ type ActiveModal =
   | "CreateBoardModal"
   | "ViewTaskModal"
   | "DeleteBoardModal"
+  | "CreateColumnModal"
   | "None";
 
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
@@ -86,6 +88,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 setColumnToAddTaskTo(columnName);
                 setActiveModal("CreateTaskModal");
               }}
+              onCreateColumnClick={() => setActiveModal("CreateColumnModal")}
               board={activeBoard.data}
               onTaskClick={handleTaskClicked}
             />
@@ -111,6 +114,12 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <DeleteBoardModal
                 boardId={activeBoard.data.id}
                 onClose={closeModals}
+              />
+            )}
+            {activeModal === "CreateColumnModal" && (
+              <CreateColumnModal
+                onClose={closeModals}
+                board={activeBoard.data}
               />
             )}
           </main>

@@ -7,12 +7,14 @@ interface KanbanBoardProps {
   board: KanbanBoardData;
   onTaskClick?: (taskData: Task) => void;
   onAddTaskClick: (columnName: string) => void;
+  onCreateColumnClick: () => void;
 }
 
 export default function KanbanBoard({
   board,
   onTaskClick,
   onAddTaskClick,
+  onCreateColumnClick,
 }: KanbanBoardProps) {
   const tasks = useTasks(board.id);
 
@@ -39,7 +41,7 @@ export default function KanbanBoard({
               columnName={column}
             />
           ))}
-          <CreateNewColumnButton onClick={() => null} />
+          <CreateNewColumnButton onClick={onCreateColumnClick} />
         </div>
       )}
     </>
