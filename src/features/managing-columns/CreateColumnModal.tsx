@@ -12,10 +12,21 @@ interface CreateColumnModalProps {
 
 export function CreateColumnModal({ onClose, board }: CreateColumnModalProps) {
   const [newColumnName, setNewColumnName] = useState("");
+  const [formError, setFormError] = useState("");
 
   const putKanbanBoard = useKanbanBoardsMutation().put;
 
+  function validateColumnName() {
+    return newColumnName !== "";
+  }
+
   function handleSubmit() {
+    if (validateColumnName() === false) {
+      setFormError("please provide a valid column name");
+      return;
+    }
+
+    setFormError("");
     const newBoardData = { ...board };
     newBoardData.columns.push(newColumnName);
     putKanbanBoard.mutate(newBoardData, { onSuccess: () => onClose() });
@@ -29,6 +40,7 @@ export function CreateColumnModal({ onClose, board }: CreateColumnModalProps) {
           onInput={(value) => setNewColumnName(value)}
           label="Column Name"
           placeholder="e.g. Todo"
+          errorMessage={formError}
         />
         <Button
           type="submit"
