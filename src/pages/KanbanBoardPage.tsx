@@ -3,8 +3,6 @@ import { Task } from "../api/task";
 import CreateBoardModal from "../features/managing-boards/CreateBoardModal";
 import KanbanBoard from "../features/kanban-board/KanbanBoard";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
-import Navbar from "../components/Navbar";
-import SideBar from "../components/SideBar";
 import ViewTaskModal from "../features/managing-tasks/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
 import CreateTaskModal from "../features/managing-tasks/CreateTaskModal";
@@ -14,6 +12,7 @@ import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CreateColumnModal } from "../features/managing-columns/CreateColumnModal";
+import AppShell from "../components/AppShell";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -36,7 +35,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   const { boardId } = urlParams;
 
-  const activeBoard = useKanbanBoard(boardId);
+  const activeBoardQuery = useKanbanBoard(boardId);
 
   function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
@@ -51,54 +50,53 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   return (
     <>
-      <Navbar>
-        {activeBoard.isFetched && (
-          <div className="text-slate-300 font-semibold text-2xl ml-20">
-            {activeBoard.data?.name}
+      <AppShell
+        navBar={
+          <div className="flex ml-auto gap-3">
+            <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
+            <ContextMenu>
+              <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
+                Edit Board
+              </ContextMenu.Entry>
+              <ContextMenu.Entry
+                onClick={() => setActiveModal("DeleteBoardModal")}
+              >
+                <span className="text-danger-400">Delete Board</span>
+              </ContextMenu.Entry>
+            </ContextMenu>
           </div>
-        )}
-        <Navbar.Controls>
-          <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
-          <ContextMenu>
-            <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
-              Edit Board
-            </ContextMenu.Entry>
-            <ContextMenu.Entry
-              onClick={() => setActiveModal("DeleteBoardModal")}
-            >
-              <span className="text-danger-400">Delete Board</span>
-            </ContextMenu.Entry>
-          </ContextMenu>
-        </Navbar.Controls>
-      </Navbar>
-
-      <div className="flex flex-grow">
-        <SideBar>
-          <div className="mt-7">
-            <KanbanBoardsNav
-              activeBoardId={boardId}
-              onCreateNewBoardClick={() => setActiveModal("CreateBoardModal")}
-            />
-          </div>
-        </SideBar>
-        {activeBoard.isSuccess && (
-          <main className="w-full">
+        }
+        sideBar={
+          <KanbanBoardsNav
+            activeBoardId={boardId}
+            onCreateNewBoardClick={() => setActiveModal("CreateBoardModal")}
+          />
+        }
+        main={
+          activeBoardQuery.isSuccess && (
             <KanbanBoard
               onAddTaskClick={(columnName) => {
                 setColumnToAddTaskTo(columnName);
                 setActiveModal("CreateTaskModal");
               }}
               onCreateColumnClick={() => setActiveModal("CreateColumnModal")}
-              board={activeBoard.data}
+              board={activeBoardQuery.data}
               onTaskClick={handleTaskClicked}
             />
+          )
+        }
+      />
+
+      <div className="flex flex-grow">
+        {activeBoardQuery.isSuccess && (
+          <div>
             {/* Modals */}
             {activeModal === "CreateBoardModal" && (
               <CreateBoardModal onClose={closeModals} />
             )}
             {activeModal === "CreateTaskModal" && (
               <CreateTaskModal
-                board={activeBoard.data}
+                board={activeBoardQuery.data}
                 columnName={columnToAddTaskTo}
                 onClose={closeModals}
               />
@@ -107,22 +105,22 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <ViewTaskModal
                 onClose={closeModals}
                 task={selectedTask}
-                boardColumns={activeBoard.data.columns}
+                boardColumns={activeBoardQuery.data.columns}
               />
             )}
             {activeModal === "DeleteBoardModal" && (
               <DeleteBoardModal
-                boardId={activeBoard.data.id}
+                boardId={activeBoardQuery.data.id}
                 onClose={closeModals}
               />
             )}
             {activeModal === "CreateColumnModal" && (
               <CreateColumnModal
                 onClose={closeModals}
-                board={activeBoard.data}
+                board={activeBoardQuery.data}
               />
             )}
-          </main>
+          </div>
         )}
       </div>
     </>
