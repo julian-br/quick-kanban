@@ -1,18 +1,18 @@
-import Button from "../common/Button";
-import Modal from "../common/Modal";
-import TextInput from "../common/Input/TextInput";
+import Button from "../../components/Button";
+import Modal from "../../components/Modal";
+import TextInput from "../../components/Input/TextInput";
 import { useState } from "react";
-import Form, { useFormValidation } from "../common/Form";
+import Form, { useFormValidation } from "../../components/Form";
 import { useLocation } from "wouter";
-import { useKanbanBoardMutation } from "../../api/kanbanBoard";
-import ListInput from "../common/Input/ListInput";
+import { useKanbanBoardsMutation } from "../../api/kanbanBoard";
+import ListInput from "../../components/Input/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardColumnNames, setBoardColumnNames] = useState([""]);
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const boardPutMutation = useKanbanBoardMutation().putMutation;
+  const boardPutMutation = useKanbanBoardsMutation().put;
 
   const { formErrors, validateForm } = useFormValidation({
     boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
@@ -56,7 +56,7 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal title="Add New Board" onClose={onClose}>
+    <Modal header="Add New Board" onClose={onClose}>
       <Form onSubmit={handleSubmit} className="mt-7 flex flex-col gap-5">
         <TextInput
           value={boardName}
@@ -69,13 +69,13 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
 
         <ListInput
           label="Board Columns"
-          inputPlaceHolder="e.g Todo"
+          inputPlaceHolder="e.g. Todo"
           addButtonText="Add new Column"
           values={boardColumnNames}
           onChange={setBoardColumnNames}
           errorMessage={formErrors.boardColumnNames}
         />
-        <Button type="submit" className="w-full mb-3 mt-4" variant="primary">
+        <Button type="submit" className="w-full mb-3 mt-8" variant="primary">
           Create New Board
         </Button>
       </Form>

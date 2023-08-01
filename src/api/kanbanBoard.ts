@@ -32,12 +32,11 @@ export function useKanbanBoards() {
   return kanbanBoardsQuery;
 }
 
-export function useKanbanBoardMutation() {
+export function useKanbanBoardsMutation() {
   const queryClient = useQueryClient();
   const putKanbanBoardMutation = useMutation({
     mutationFn: putKanbanBoard,
-    onSuccess: (mutatedBoard) =>
-      queryClient.invalidateQueries([BOARDS_BASE_KEY]),
+    onSuccess: () => queryClient.invalidateQueries([BOARDS_BASE_KEY]),
   });
 
   const deleteKanbanBoardMutation = useMutation({
@@ -50,8 +49,8 @@ export function useKanbanBoardMutation() {
   });
 
   return {
-    putMutation: putKanbanBoardMutation,
-    deleteMutation: deleteKanbanBoardMutation,
+    put: putKanbanBoardMutation,
+    delete: deleteKanbanBoardMutation,
   };
 }
 

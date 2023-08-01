@@ -36,7 +36,7 @@ export function useTasks(boardId: string) {
 
 export function useTaskMutation() {
   const queryClient = useQueryClient();
-  const taskMutation = useMutation({
+  const taskPutMutation = useMutation({
     mutationFn: putTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
@@ -44,13 +44,20 @@ export function useTaskMutation() {
       }),
   });
 
-  return taskMutation;
+  const taskDeleteMutation = useMutation({
+    mutationFn: deleteTask,
+    onSuccess: (deletedTask) =>
+      queryClient.invalidateQueries({
+        queryKey: TASKS_FOR_BOARD_KEY(deletedTask.boardId),
+      }),
+  });
+
+  return { put: taskPutMutation, delete: taskDeleteMutation };
 }
 
 function putTask(task: Optional<Task, "id">) {
   return new Promise<Task>((res) => {
     if (task.id === undefined) {
-      console.log("creating new task");
       const taskId = parseInt(tasksData.at(-1)!.id) + 1;
       const newTask = { ...task, id: taskId.toString() };
       tasksData.push(newTask);
@@ -58,7 +65,6 @@ function putTask(task: Optional<Task, "id">) {
       return;
     }
 
-    console.log("updating task");
     const indexOfTaskToUpdate = tasksData.findIndex(
       (taskData) => taskData.id === task.id
     );
@@ -68,6 +74,21 @@ function putTask(task: Optional<Task, "id">) {
 
     tasksData[indexOfTaskToUpdate] = task as Task;
     setTimeout(() => res(task as Task), DELAY);
+  });
+}
+
+async function deleteTask(taskId: string) {
+  return new Promise<Task>((res) => {
+    const indexOfTaskToDelete = tasksData.findIndex(
+      (task) => task.id === taskId
+    );
+    if (indexOfTaskToDelete === -1) {
+      throw new Error("no task with this id");
+    }
+
+    const taskToDelete = tasksData[indexOfTaskToDelete];
+    tasksData.splice(indexOfTaskToDelete, 1);
+    setTimeout(() => res(taskToDelete), DELAY);
   });
 }
 

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { KanbanBoard } from "../../api/kanbanBoard";
 import { useTaskMutation } from "../../api/task";
-import Button from "../common/Button";
-import Form, { useFormValidation } from "../common/Form";
-import Listbox from "../common/Input/Listbox";
-import ListInput from "../common/Input/ListInput";
-import TextArea from "../common/Input/TextArea";
-import TextInput from "../common/Input/TextInput";
-import LoadingSpinner from "../common/LoadingSpinner";
-import Modal from "../common/Modal";
+import Button from "../../components/Button";
+import Form, { useFormValidation } from "../../components/Form";
+import Listbox from "../../components/Input/Listbox";
+import ListInput from "../../components/Input/ListInput";
+import TextArea from "../../components/Input/TextArea";
+import TextInput from "../../components/Input/TextInput";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import Modal from "../../components/Modal";
 
 interface CreateTaskModalProps {
   board: KanbanBoard;
@@ -33,7 +33,7 @@ export default function CreateTaskModal({
     subtaskNames: validateSubtaskTitles,
   });
 
-  const taskMutation = useTaskMutation();
+  const taskPutMutation = useTaskMutation().put;
 
   function validateSubtaskTitles() {
     const hasEmptyValues =
@@ -81,18 +81,18 @@ export default function CreateTaskModal({
         })),
       };
 
-      taskMutation.mutate(newTask, { onSuccess: onClose });
+      taskPutMutation.mutate(newTask, { onSuccess: onClose });
     }
   }
 
   return (
-    <Modal onClose={onClose} title={"Add New Task"}>
-      {taskMutation.isLoading && (
+    <Modal onClose={onClose} header="Add New Task">
+      {taskPutMutation.isLoading && (
         <div className="h-52 mb-16 flex items-center justify-center">
           <LoadingSpinner />
         </div>
       )}
-      {!taskMutation.isLoading && (
+      {taskPutMutation.isIdle && (
         <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
           <TextInput
             errorMessage={formErrors.title}
