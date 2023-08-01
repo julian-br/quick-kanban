@@ -4,7 +4,7 @@
     "boardId": "1",
     "title": "Build UI for onboarding flow",
     "description": "",
-    "status": "Todo",
+    "columnIndex": 0,
     "subtasks": [
       {
         "title": "Sign up page",
@@ -25,7 +25,7 @@
     "boardId": "1",
     "title": "Build settings UI",
     "description": "",
-    "status": "Todo",
+    "columnIndex": 0,
     "subtasks": [
       {
         "title": "Account page",
@@ -42,7 +42,7 @@
     "boardId": "1",
     "title": "QA and test all major user journeys",
     "description": "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
-    "status": "Todo",
+    "columnIndex": 0,
     "subtasks": [
       {
         "title": "Internal testing",
@@ -59,7 +59,7 @@
     "boardId": "1",
     "title": "Add search enpoints",
     "description": "",
-    "status": "Doing",
+    "columnIndex": 1,
     "subtasks": [
       {
         "title": "Add search endpoint",
@@ -76,7 +76,7 @@
     "boardId": "1",
     "title": "Add authentication endpoints",
     "description": "",
-    "status": "Doing",
+    "columnIndex": 1,
     "subtasks": [
       {
         "title": "Define user model",
@@ -93,7 +93,7 @@
     "boardId": "1",
     "title": "Research pricing points of various competitors and trial different business models",
     "description": "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
-    "status": "Doing",
+    "columnIndex": 1,
     "subtasks": [
       {
         "title": "Research competitor pricing and business models",
@@ -114,7 +114,7 @@
     "boardId": "1",
     "title": "Create paper prototypes and conduct 10 usability tests with potential customers",
     "description": "Create paper prototypes and conduct 10 usability tests with potential customers. Create paper prototypes and conduct 10 usability tests with potential customers",
-    "status": "Done",
+    "columnIndex": 2,
     "subtasks": [
       {
         "title": "Create paper prototypes for version one",
@@ -131,7 +131,7 @@
     "boardId": "1",
     "title": "Research the market",
     "description": "We need to get a solid overview of the market to ensure we have up-to-date estimates of market size and demand.",
-    "status": "Done",
+    "columnIndex": 2,
     "subtasks": [
       {
         "title": "Write up research analysis",

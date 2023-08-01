@@ -9,7 +9,7 @@ export interface Task {
   boardId: string;
   title: string;
   description: string;
-  status: string;
+  columnIndex: number;
   subtasks: Subtask[];
 }
 
