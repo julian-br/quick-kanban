@@ -9,9 +9,9 @@ interface AppShellProps {
   navBar?: ReactNode;
 }
 
-const NAVBAR_HEIGHT = "5rem";
-const SIDE_BAR_OPEN_WIDTH = "25rem";
-const SIDE_BAR_CLOSED_WIDTH = "4rem";
+const NAVBAR_HEIGHT = "5.5rem";
+const SIDE_BAR_OPEN_WIDTH = "24rem";
+const SIDE_BAR_CLOSED_WIDTH = "5rem";
 
 export default function AppShell(props: AppShellProps) {
   const mainContentSize: CSSProperties = {
@@ -54,19 +54,19 @@ function Navbar({ children }: { children?: ReactNode }) {
 }
 
 function SideBar({ children }: { children: ReactNode }) {
-  const [sideBarIsOpen, setSideBarIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
-  const sideBarWidth = sideBarIsOpen
-    ? SIDE_BAR_OPEN_WIDTH
-    : SIDE_BAR_CLOSED_WIDTH;
+  const sideBarWidth = isOpen ? SIDE_BAR_OPEN_WIDTH : SIDE_BAR_CLOSED_WIDTH;
 
   const sideBarSize: CSSProperties = {
     width: sideBarWidth,
     height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+    flexGrow: 0,
+    flexShrink: 0,
   };
 
   function toggleSideBar() {
-    setSideBarIsOpen((prev) => !prev);
+    setIsOpen((prev) => !prev);
   }
 
   return (
@@ -74,16 +74,19 @@ function SideBar({ children }: { children: ReactNode }) {
       className="bg-slate-800 border-r bg-opacity-40 border-slate-700 border-opacity-40 relative overflow-hidden"
       style={sideBarSize}
     >
-      <div className="absolute flex w-full pt-5">
-        <Button
-          onClick={toggleSideBar}
-          variant="custom"
-          className="p-2 ml-auto mr-3 font-bold text-xl text-slate-400 rounded-lg hover:bg-slate-800 hover:text-primary-400"
-        >
-          <FontAwesomeIcon className="h-6" icon={faBars}></FontAwesomeIcon>
-        </Button>
-      </div>
-      {sideBarIsOpen === true && <div className="pt-10">{children}</div>}
+      <Button
+        onClick={toggleSideBar}
+        variant="custom"
+        className={`${
+          isOpen ? "right-2" : "mx-auto left-0 right-0"
+        } w-fit top-3 p-2 absolute mx-auto font-bold text-xl text-slate-400 rounded-lg hover:bg-slate-800 hover:text-primary-400`}
+      >
+        <FontAwesomeIcon
+          className="h-[1.65rem]"
+          icon={faBars}
+        ></FontAwesomeIcon>
+      </Button>
+      {isOpen === true && <div className="pt-7">{children}</div>}
     </nav>
   );
 }
