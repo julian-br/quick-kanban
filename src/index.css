@@ -6,3 +6,20 @@ html {
   font-size: 13px;
   line-height: 23px;
 }
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  @apply w-5 h-5
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-800 rounded-xl bg-clip-content border-transparent border-solid border-4
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700
+}
