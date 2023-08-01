@@ -11,6 +11,7 @@ interface Props {
   inputPlaceHolder?: string;
   onChange: (values: string[]) => void;
   errorMessage?: string;
+  className?: string;
 }
 
 export default function ListInput({
@@ -20,6 +21,7 @@ export default function ListInput({
   inputPlaceHolder,
   onChange,
   errorMessage,
+  className,
 }: Props) {
   function addInputField() {
     onChange([...values, ""]);
@@ -38,7 +40,7 @@ export default function ListInput({
   }
 
   return (
-    <div>
+    <div className={className}>
       <InputLabel>{label}</InputLabel>
       <div className="flex flex-col gap-2">
         {values.map((value, index) => (
@@ -82,7 +84,7 @@ function AddInputFieldButton({
   text: string;
 }) {
   return (
-    <Button onClick={onClick} variant="secondary">
+    <Button className="mt-2" onClick={onClick} variant="secondary">
       <div>
         <span>+</span>
         <span>{text}</span>

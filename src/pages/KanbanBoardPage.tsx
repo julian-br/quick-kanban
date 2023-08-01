@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CreateColumnModal } from "../features/managing-columns/CreateColumnModal";
 import AppShell from "../components/AppShell";
+import EditBoardModal from "../features/managing-boards/EditBoardModal";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -26,6 +27,7 @@ type ActiveModal =
   | "ViewTaskModal"
   | "DeleteBoardModal"
   | "CreateColumnModal"
+  | "EditBoardModal"
   | "None";
 
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
@@ -55,7 +57,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
           <div className="flex ml-auto gap-3">
             <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
             <ContextMenu>
-              <ContextMenu.Entry onClick={() => console.log("entry clicked")}>
+              <ContextMenu.Entry
+                onClick={() => setActiveModal("EditBoardModal")}
+              >
                 Edit Board
               </ContextMenu.Entry>
               <ContextMenu.Entry
@@ -119,6 +123,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 onClose={closeModals}
                 board={activeBoardQuery.data}
               />
+            )}
+            {activeModal === "EditBoardModal" && (
+              <EditBoardModal onClose={closeModals} boardId={boardId} />
             )}
           </div>
         )}

@@ -30,7 +30,12 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
 
   function changeTaskStatus(newStatus: string) {
     taskIsModified.current = true;
-    setTaskData({ ...taskData, status: newStatus });
+    const statusColumnIndex = boardColumns.findIndex(
+      (columnName) => columnName === newStatus
+    );
+
+    if (statusColumnIndex === -1) return;
+    setTaskData({ ...taskData, columnIndex: statusColumnIndex });
   }
 
   function handleModalClose() {
@@ -78,7 +83,7 @@ export default function ViewTaskModal({ task, onClose, boardColumns }: Props) {
             <Listbox
               label="Current Status"
               onChange={changeTaskStatus}
-              selected={taskData.status}
+              selected={boardColumns[taskData.columnIndex]}
               options={boardColumns}
             />
           </div>

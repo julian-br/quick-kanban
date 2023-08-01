@@ -24,21 +24,21 @@ export default function KanbanBoard({
     }
   }
 
-  function filterTasksByColumnName(column: string) {
-    return tasks.data?.filter((task) => task.status === column) ?? [];
+  function filterTasksByColumnIndex(columnIndex: number) {
+    return tasks.data?.filter((task) => task.columnIndex === columnIndex) ?? [];
   }
 
   return (
     <>
       {tasks.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
-          {board.columns.map((column) => (
+          {board.columns.map((columnName, columnIndex) => (
             <KanbanBoardColumn
               onAddTaskClick={onAddTaskClick}
-              tasks={filterTasksByColumnName(column)}
-              key={column}
+              tasks={filterTasksByColumnIndex(columnIndex)}
+              key={columnName}
               onTaskClick={handleTaskClicked}
-              columnName={column}
+              columnName={columnName}
             />
           ))}
           <CreateNewColumnButton onClick={onCreateColumnClick} />
