@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
+import DeleteTaskModal from "../features/managing-tasks/DeleteTaskModal";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -24,6 +25,7 @@ type ActiveModal =
   | "CreateTaskModal"
   | "CreateBoardModal"
   | "ViewTaskModal"
+  | "DeleteTaskModal"
   | "DeleteBoardModal"
   | "EditBoardModal"
   | "None";
@@ -106,8 +108,18 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             {selectedTask && activeModal === "ViewTaskModal" && (
               <ViewTaskModal
                 onClose={closeModals}
+                onDeleteTaskClick={() => setActiveModal("DeleteTaskModal")}
                 task={selectedTask}
                 boardColumns={activeBoardQuery.data.columns}
+              />
+            )}
+            {selectedTask && activeModal === "DeleteTaskModal" && (
+              <DeleteTaskModal
+                taskId={selectedTask.id}
+                onClose={closeModals}
+                onCancel={() => {
+                  setActiveModal("ViewTaskModal");
+                }}
               />
             )}
             {activeModal === "DeleteBoardModal" && (

@@ -42,8 +42,8 @@ export default function DeleteBoardModal({
         {boardDeleteMutation.isIdle && (
           <div>
             <p className="mt-7 text-slate-200">
-              Are you sure you want to delete the ‘Platform Launch’ board? This
-              action will remove all columns and tasks and cannot be reversed.
+              Are you sure you want to delete this board? This action will
+              remove all columns and tasks and cannot be reversed.
             </p>
             <div className="mt-10 flex gap-5">
               <Button variant="danger" className="w-1/2" onClick={deleteBoard}>
