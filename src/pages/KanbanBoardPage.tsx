@@ -14,6 +14,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
 import DeleteTaskModal from "../features/managing-tasks/DeleteTaskModal";
+import { useModalManager } from "../features/modal-manager/ModalManager";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -38,6 +39,8 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   const activeBoardQuery = useKanbanBoard(boardId);
 
+  const modalManager = useModalManager();
+
   function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
     setActiveModal("ViewTaskModal");
@@ -50,6 +53,14 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   return (
     <>
+      <Button
+        variant="primary"
+        onClick={() => {
+          modalManager.showModal("createBoardModal", { onClose: () => null });
+        }}
+      >
+        create
+      </Button>
       <AppShell
         navBar={
           <div className="flex ml-auto gap-3">
@@ -70,12 +81,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             </ContextMenu>
           </div>
         }
-        sideBar={
-          <KanbanBoardsNav
-            activeBoardId={boardId}
-            onCreateNewBoardClick={() => setActiveModal("CreateBoardModal")}
-          />
-        }
+        sideBar={<KanbanBoardsNav activeBoardId={boardId} />}
         main={
           activeBoardQuery.isSuccess && (
             <KanbanBoard
