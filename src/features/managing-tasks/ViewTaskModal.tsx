@@ -10,6 +10,7 @@ interface Props {
   task: Task;
   boardColumns: string[];
   onDeleteTaskClick: () => void;
+  onEditTaskClick: () => void;
   onClose: () => void;
 }
 
@@ -17,6 +18,7 @@ export default function ViewTaskModal({
   task,
   onClose,
   onDeleteTaskClick,
+  onEditTaskClick,
   boardColumns,
 }: Props) {
   const [taskData, setTaskData] = useState(task);
@@ -58,7 +60,9 @@ export default function ViewTaskModal({
         <div className="flex justify-between items-center">
           <h3>{task.title}</h3>
           <ContextMenu>
-            <ContextMenu.Entry>Edit Task</ContextMenu.Entry>
+            <ContextMenu.Entry onClick={onEditTaskClick}>
+              Edit Task
+            </ContextMenu.Entry>
             <ContextMenu.Entry onClick={onDeleteTaskClick}>
               <span className="text-danger-400">Delete Task</span>
             </ContextMenu.Entry>

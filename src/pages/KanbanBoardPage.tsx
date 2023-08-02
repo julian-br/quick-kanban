@@ -5,7 +5,7 @@ import KanbanBoard from "../features/kanban-board/KanbanBoard";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
 import ViewTaskModal from "../features/managing-tasks/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
-import CreateTaskModal from "../features/managing-tasks/CreateOrEditTaskModal";
+import CreateOrEditTaskModal from "../features/managing-tasks/CreateOrEditTaskModal";
 import Button from "../components/Button";
 import ContextMenu from "../components/ContextMenu";
 import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
@@ -95,8 +95,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <CreateBoardModal onClose={closeModals} />
             )}
             {activeModal === "CreateOrEditTaskModal" && (
-              <CreateTaskModal
+              <CreateOrEditTaskModal
                 board={activeBoardQuery.data}
+                selectedTask={selectedTask}
                 onClose={closeModals}
               />
             )}
@@ -104,6 +105,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <ViewTaskModal
                 onClose={closeModals}
                 onDeleteTaskClick={() => setActiveModal("DeleteTaskModal")}
+                onEditTaskClick={() => setActiveModal("CreateOrEditTaskModal")}
                 task={selectedTask}
                 boardColumns={activeBoardQuery.data.columns}
               />

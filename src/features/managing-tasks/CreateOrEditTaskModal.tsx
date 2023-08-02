@@ -1,6 +1,6 @@
 import { cloneElement, useState } from "react";
 import { KanbanBoard } from "../../api/kanbanBoard";
-import { useTaskMutation } from "../../api/task";
+import { Task, useTaskMutation } from "../../api/task";
 import Button from "../../components/Button";
 import Form, { useFormValidation } from "../../components/Form";
 import Listbox from "../../components/Input/Listbox";
@@ -9,21 +9,27 @@ import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
+import { Optional } from "../../utils/utilityTypes";
 
 interface CreateTaskModalProps {
   board: KanbanBoard;
   onClose: () => void;
+  selectedTask?: Task;
 }
 
-export default function CreateTaskModal({
+export default function CreateOrEditTaskModal({
   onClose,
   board,
+  selectedTask,
 }: CreateTaskModalProps) {
   const [taskData, setTaskData] = useState({
-    title: "",
-    description: "",
-    columnIndex: 0,
-    subtaskTitles: [""],
+    id: selectedTask?.id,
+    title: selectedTask?.title ?? "",
+    description: selectedTask?.description ?? "",
+    columnIndex: selectedTask?.columnIndex ?? 0,
+    subtaskTitles: selectedTask?.subtasks.map((subTask) => subTask.title) ?? [
+      "",
+    ],
   });
 
   const { formErrors, validateForm } = useFormValidation({
@@ -32,6 +38,8 @@ export default function CreateTaskModal({
   });
 
   const taskPutMutation = useTaskMutation().put;
+
+  const isEditingTask = selectedTask !== undefined;
 
   function findColumnIndexByColumnName(columnName: string) {
     const index = board.columns.findIndex(
@@ -93,7 +101,10 @@ export default function CreateTaskModal({
   }
 
   return (
-    <Modal onClose={onClose} header="Add New Task">
+    <Modal
+      onClose={onClose}
+      header={isEditingTask ? "Edit Task" : "Add New Task"}
+    >
       {taskPutMutation.isLoading && (
         <div className="h-52 mb-16 flex items-center justify-center">
           <LoadingSpinner />
@@ -130,7 +141,7 @@ export default function CreateTaskModal({
             options={board.columns}
           />
           <Button variant="primary" size="large" className="mt-3" type="submit">
-            Create Task
+            {isEditingTask ? "Save Changes" : "Create Task"}
           </Button>
         </Form>
       )}
