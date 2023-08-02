@@ -5,7 +5,7 @@ import KanbanBoard from "../features/kanban-board/KanbanBoard";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
 import ViewTaskModal from "../features/managing-tasks/ViewTaskModal";
 import { useKanbanBoard } from "../api/kanbanBoard";
-import CreateTaskModal from "../features/managing-tasks/CreateTaskModal";
+import CreateTaskModal from "../features/managing-tasks/CreateOrEditTaskModal";
 import Button from "../components/Button";
 import ContextMenu from "../components/ContextMenu";
 import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
@@ -22,7 +22,7 @@ interface KanbanBoardPageProps {
 }
 
 type ActiveModal =
-  | "CreateTaskModal"
+  | "CreateOrEditTaskModal"
   | "CreateBoardModal"
   | "ViewTaskModal"
   | "DeleteTaskModal"
@@ -55,7 +55,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
       <AppShell
         navBar={
           <div className="flex ml-auto gap-3">
-            <AddTaskButton onClick={() => setActiveModal("CreateTaskModal")} />
+            <AddTaskButton
+              onClick={() => setActiveModal("CreateOrEditTaskModal")}
+            />
             <ContextMenu>
               <ContextMenu.Entry
                 onClick={() => setActiveModal("EditBoardModal")}
@@ -81,7 +83,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             <KanbanBoard
               onAddTaskClick={(columnName) => {
                 setColumnToAddTaskTo(columnName);
-                setActiveModal("CreateTaskModal");
+                setActiveModal("CreateOrEditTaskModal");
               }}
               onCreateColumnClick={() => setActiveModal("EditBoardModal")}
               board={activeBoardQuery.data}
@@ -98,7 +100,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             {activeModal === "CreateBoardModal" && (
               <CreateBoardModal onClose={closeModals} />
             )}
-            {activeModal === "CreateTaskModal" && (
+            {activeModal === "CreateOrEditTaskModal" && (
               <CreateTaskModal
                 board={activeBoardQuery.data}
                 columnName={columnToAddTaskTo}
