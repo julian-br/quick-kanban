@@ -8,14 +8,12 @@ interface KanbanBoardColumnProps {
   columnName: string;
   tasks: Task[];
   onTaskClick: (taskData: Task) => void;
-  onAddTaskClick: (columnName: string) => void;
 }
 
 export default function KanbanBoardColumn({
   columnName,
   tasks,
   onTaskClick,
-  onAddTaskClick,
 }: KanbanBoardColumnProps) {
   const ammountOfTask = tasks.length;
 
@@ -27,13 +25,6 @@ export default function KanbanBoardColumn({
           <span>
             {columnName} ({ammountOfTask})
           </span>
-          <Button
-            variant="custom"
-            className="ml-auto rounded-lg hover:text-primary-400 hover:scale-125"
-            onClick={() => onAddTaskClick(columnName)}
-          >
-            <FontAwesomeIcon icon={faPlus} className="h-4" />
-          </Button>
         </div>
       </h3>
 

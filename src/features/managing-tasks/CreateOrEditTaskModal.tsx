@@ -12,19 +12,17 @@ import Modal from "../../components/Modal";
 
 interface CreateTaskModalProps {
   board: KanbanBoard;
-  columnName?: string;
   onClose: () => void;
 }
 
 export default function CreateTaskModal({
   onClose,
   board,
-  columnName,
 }: CreateTaskModalProps) {
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
-    columnIndex: columnName ? findColumnIndexByColumnName(columnName) : 0,
+    columnIndex: 0,
     subtaskTitles: [""],
   });
 
@@ -128,7 +126,7 @@ export default function CreateTaskModal({
           <Listbox
             label="Status"
             onChange={changeTaskStatus}
-            selected={columnName ?? board.columns[0]}
+            selected={board.columns[0]}
             options={board.columns}
           />
           <Button variant="primary" size="large" className="mt-3" type="submit">

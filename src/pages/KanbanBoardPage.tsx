@@ -33,7 +33,6 @@ type ActiveModal =
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const [activeModal, setActiveModal] = useState<ActiveModal>("None");
   const [selectedTask, setSelectedTask] = useState<Task>();
-  const [columnToAddTaskTo, setColumnToAddTaskTo] = useState<string>();
 
   const { boardId } = urlParams;
 
@@ -46,7 +45,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   function closeModals() {
     setSelectedTask(undefined);
-    setColumnToAddTaskTo(undefined);
     setActiveModal("None");
   }
 
@@ -81,10 +79,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         main={
           activeBoardQuery.isSuccess && (
             <KanbanBoard
-              onAddTaskClick={(columnName) => {
-                setColumnToAddTaskTo(columnName);
-                setActiveModal("CreateOrEditTaskModal");
-              }}
               onCreateColumnClick={() => setActiveModal("EditBoardModal")}
               board={activeBoardQuery.data}
               onTaskClick={handleTaskClicked}
@@ -103,7 +97,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             {activeModal === "CreateOrEditTaskModal" && (
               <CreateTaskModal
                 board={activeBoardQuery.data}
-                columnName={columnToAddTaskTo}
                 onClose={closeModals}
               />
             )}
