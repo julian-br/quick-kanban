@@ -11,7 +11,6 @@ import ContextMenu from "../components/ContextMenu";
 import DeleteBoardModal from "../features/managing-boards/DeleteBoardModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { CreateColumnModal } from "../features/managing-columns/CreateColumnModal";
 import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
 
@@ -26,7 +25,6 @@ type ActiveModal =
   | "CreateBoardModal"
   | "ViewTaskModal"
   | "DeleteBoardModal"
-  | "CreateColumnModal"
   | "EditBoardModal"
   | "None";
 
@@ -83,7 +81,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 setColumnToAddTaskTo(columnName);
                 setActiveModal("CreateTaskModal");
               }}
-              onCreateColumnClick={() => setActiveModal("CreateColumnModal")}
+              onCreateColumnClick={() => setActiveModal("EditBoardModal")}
               board={activeBoardQuery.data}
               onTaskClick={handleTaskClicked}
             />
@@ -116,12 +114,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <DeleteBoardModal
                 boardId={activeBoardQuery.data.id}
                 onClose={closeModals}
-              />
-            )}
-            {activeModal === "CreateColumnModal" && (
-              <CreateColumnModal
-                onClose={closeModals}
-                board={activeBoardQuery.data}
               />
             )}
             {activeModal === "EditBoardModal" && (
