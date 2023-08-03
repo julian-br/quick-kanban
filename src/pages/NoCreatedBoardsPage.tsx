@@ -31,7 +31,7 @@ export default function NoCreatedBoardsPage() {
         sideBar={
           <div className="mt-7">
             <KanbanBoardsNav
-              activeBoardId=""
+              boardId=""
               onCreateNewBoardClick={handleCreateNewBoardClicked}
             />
           </div>

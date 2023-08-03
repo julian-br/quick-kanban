@@ -5,25 +5,18 @@ import Modal from "../../components/Modal";
 import SubtaskList from "./SubtaskList";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ContextMenu from "../../components/ContextMenu";
+import { useKanbanBoard } from "../../api/kanbanBoard";
 
 interface Props {
   task: Task;
-  boardColumns: string[];
-  onDeleteTaskClick: () => void;
-  onEditTaskClick: () => void;
   onClose: () => void;
 }
 
-export default function ViewTaskModal({
-  task,
-  onClose,
-  onDeleteTaskClick,
-  onEditTaskClick,
-  boardColumns,
-}: Props) {
+export default function ViewTaskModal({ task, onClose }: Props) {
   const [taskData, setTaskData] = useState(task);
   const taskPutMutation = useTaskMutation().put;
   const taskIsModified = useRef(false);
+  const kanbanBoardColumns = useKanbanBoard(taskData.boardId).data!.columns;
 
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
     taskIsModified.current = true;
@@ -37,7 +30,7 @@ export default function ViewTaskModal({
 
   function changeTaskStatus(newStatus: string) {
     taskIsModified.current = true;
-    const statusColumnIndex = boardColumns.findIndex(
+    const statusColumnIndex = kanbanBoardColumns.findIndex(
       (columnName) => columnName === newStatus
     );
 
@@ -60,10 +53,10 @@ export default function ViewTaskModal({
         <div className="flex justify-between items-center">
           <h3>{task.title}</h3>
           <ContextMenu>
-            <ContextMenu.Entry onClick={onEditTaskClick}>
+            <ContextMenu.Entry onClick={() => null}>
               Edit Task
             </ContextMenu.Entry>
-            <ContextMenu.Entry onClick={onDeleteTaskClick}>
+            <ContextMenu.Entry onClick={() => null}>
               <span className="text-danger-400">Delete Task</span>
             </ContextMenu.Entry>
           </ContextMenu>
@@ -86,8 +79,8 @@ export default function ViewTaskModal({
             <Listbox
               label="Current Status"
               onChange={changeTaskStatus}
-              selected={boardColumns[taskData.columnIndex]}
-              options={boardColumns}
+              selected={kanbanBoardColumns[taskData.columnIndex]}
+              options={kanbanBoardColumns}
             />
           </div>
         </div>

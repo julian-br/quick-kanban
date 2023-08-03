@@ -5,22 +5,14 @@ import { Task, useTasks } from "../../api/task";
 
 interface KanbanBoardProps {
   board: KanbanBoardData;
-  onTaskClick?: (taskData: Task) => void;
   onCreateColumnClick: () => void;
 }
 
 export default function KanbanBoard({
   board,
-  onTaskClick,
   onCreateColumnClick,
 }: KanbanBoardProps) {
   const tasks = useTasks(board.id);
-
-  function handleTaskClicked(taskData: Task) {
-    if (onTaskClick !== undefined) {
-      onTaskClick(taskData);
-    }
-  }
 
   function filterTasksByColumnIndex(columnIndex: number) {
     return tasks.data?.filter((task) => task.columnIndex === columnIndex) ?? [];
@@ -34,7 +26,6 @@ export default function KanbanBoard({
             <KanbanBoardColumn
               tasks={filterTasksByColumnIndex(columnIndex)}
               key={columnName}
-              onTaskClick={handleTaskClicked}
               columnName={columnName}
             />
           ))}

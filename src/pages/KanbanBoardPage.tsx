@@ -24,7 +24,6 @@ interface KanbanBoardPageProps {
 type ActiveModal =
   | "CreateOrEditTaskModal"
   | "CreateBoardModal"
-  | "ViewTaskModal"
   | "DeleteTaskModal"
   | "DeleteBoardModal"
   | "EditBoardModal"
@@ -37,11 +36,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const { boardId } = urlParams;
 
   const activeBoardQuery = useKanbanBoard(boardId);
-
-  function handleTaskClicked(taskData: Task) {
-    setSelectedTask(taskData);
-    setActiveModal("ViewTaskModal");
-  }
 
   function closeModals() {
     setSelectedTask(undefined);
@@ -78,13 +72,12 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             </ContextMenu>
           </div>
         }
-        sideBar={<KanbanBoardsNav activeBoardId={boardId} />}
+        sideBar={<KanbanBoardsNav boardId={boardId} />}
         main={
           activeBoardQuery.isSuccess && (
             <KanbanBoard
               onCreateColumnClick={() => setActiveModal("EditBoardModal")}
               board={activeBoardQuery.data}
-              onTaskClick={handleTaskClicked}
             />
           )
         }
@@ -104,22 +97,11 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 onClose={closeModals}
               />
             )}
-            {selectedTask && activeModal === "ViewTaskModal" && (
-              <ViewTaskModal
-                onClose={closeModals}
-                onDeleteTaskClick={() => setActiveModal("DeleteTaskModal")}
-                onEditTaskClick={() => setActiveModal("CreateOrEditTaskModal")}
-                task={selectedTask}
-                boardColumns={activeBoardQuery.data.columns}
-              />
-            )}
             {selectedTask && activeModal === "DeleteTaskModal" && (
               <DeleteTaskModal
                 taskId={selectedTask.id}
                 onClose={closeModals}
-                onCancel={() => {
-                  setActiveModal("ViewTaskModal");
-                }}
+                onCancel={() => null}
               />
             )}
             {activeModal === "DeleteBoardModal" && (

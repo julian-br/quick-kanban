@@ -6,10 +6,10 @@ import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
-  activeBoardId: string;
+  boardId: string;
 }
 
-export default function KanbanBoardsNav({ activeBoardId }: Props) {
+export default function KanbanBoardsNav({ boardId }: Props) {
   const boards = useKanbanBoards();
   const [_, setLocation] = useLocation();
 
@@ -32,7 +32,7 @@ export default function KanbanBoardsNav({ activeBoardId }: Props) {
                 key={board.id}
                 onClick={() => handleNavEntryClicked(board.id)}
                 title={board.name}
-                isActive={board.id === activeBoardId}
+                isActive={board.id === boardId}
               />
             ))}
           </div>
@@ -49,7 +49,7 @@ function CreateNewBoardButton() {
   return (
     <Button
       variant="custom"
-      onClick={() => appModalManager.showModal("createBoardModal", {})}
+      onClick={() => appModalManager.showModal("createBoardModal")}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">

@@ -28,15 +28,11 @@ export function createModalManager<PassedModals extends Modals>(
 ) {
   type AvailableModalKeys = keyof typeof modals | "none";
 
-  type RequiredKeys<T> = {
-    [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
-  }[keyof T];
-
   type ModalManagerContext = {
     activeModal: AvailableModalKeys;
     showModal: <ActiveModal extends AvailableModalKeys>(
       modal: ActiveModal,
-      data: Optional<Parameters<(typeof modals)[ActiveModal]>[0], "onClose">
+      data?: Optional<Parameters<(typeof modals)[ActiveModal]>[0], "onClose">
     ) => void;
   };
 
