@@ -14,6 +14,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
 import DeleteTaskModal from "../features/managing-tasks/DeleteTaskModal";
+import { useAppModalManager } from "../appModalManager";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -23,9 +24,7 @@ interface KanbanBoardPageProps {
 
 type ActiveModal =
   | "CreateOrEditTaskModal"
-  | "CreateBoardModal"
   | "DeleteTaskModal"
-  | "DeleteBoardModal"
   | "EditBoardModal"
   | "None";
 
@@ -36,6 +35,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const { boardId } = urlParams;
 
   const activeBoardQuery = useKanbanBoard(boardId);
+  const { showModal } = useAppModalManager();
 
   function closeModals() {
     setSelectedTask(undefined);
@@ -44,14 +44,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   return (
     <>
-      <Button
-        variant="primary"
-        onClick={() => {
-          /* modalManager.showModal("", { onClose: () => null }); */
-        }}
-      >
-        create
-      </Button>
       <AppShell
         navBar={
           <div className="flex ml-auto gap-3">
@@ -65,7 +57,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 Edit Board
               </ContextMenu.Entry>
               <ContextMenu.Entry
-                onClick={() => setActiveModal("DeleteBoardModal")}
+                onClick={() =>
+                  showModal("deleteBoardModal", { boardId: boardId })
+                }
               >
                 <span className="text-danger-400">Delete Board</span>
               </ContextMenu.Entry>
@@ -87,9 +81,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         {activeBoardQuery.isSuccess && (
           <div>
             {/* Modals */}
-            {activeModal === "CreateBoardModal" && (
-              <CreateBoardModal onClose={closeModals} />
-            )}
             {activeModal === "CreateOrEditTaskModal" && (
               <CreateOrEditTaskModal
                 board={activeBoardQuery.data}
@@ -102,12 +93,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
                 taskId={selectedTask.id}
                 onClose={closeModals}
                 onCancel={() => null}
-              />
-            )}
-            {activeModal === "DeleteBoardModal" && (
-              <DeleteBoardModal
-                boardId={activeBoardQuery.data.id}
-                onClose={closeModals}
               />
             )}
             {activeModal === "EditBoardModal" && (
