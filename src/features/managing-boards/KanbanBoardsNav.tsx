@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useKanbanBoards } from "../../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
-import { useModalManager } from "../modal-manager/ModalManager";
+import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
   activeBoardId: string;
@@ -44,11 +44,12 @@ export default function KanbanBoardsNav({ activeBoardId }: Props) {
 }
 
 function CreateNewBoardButton() {
-  const { showModal } = useModalManager();
+  const appModalManager = useAppModalManager();
+
   return (
     <Button
       variant="custom"
-      onClick={() => showModal("createBoardModal", { onClose: () => null })}
+      onClick={() => appModalManager.showModal("createBoardModal", {})}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">

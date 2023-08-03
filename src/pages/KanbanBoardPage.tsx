@@ -14,8 +14,6 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
 import DeleteTaskModal from "../features/managing-tasks/DeleteTaskModal";
-import { useModalManager } from "../features/modal-manager/ModalManager";
-import { testModalManager } from "../App";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -55,7 +53,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
       <Button
         variant="primary"
         onClick={() => {
-          modalManager.showModal("", { onClose: () => null });
+          /* modalManager.showModal("", { onClose: () => null }); */
         }}
       >
         create
