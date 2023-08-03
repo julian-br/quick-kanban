@@ -67,10 +67,6 @@ export function createModalManager<PassedModals extends Modals>(
           },
         }}
       >
-        <h1>
-          Modal Manager. Active Modal: {activeModal.toString()} |||| data:
-          {JSON.stringify(modalData.current)}
-        </h1>
         <div>
           {activeModal !== "none" &&
             createElement(modals[activeModal] as any, {

@@ -6,13 +6,11 @@ import { useTaskMutation } from "../../api/task";
 interface DeleteTaskModalProps {
   taskId: string;
   onClose: () => void;
-  onCancel: () => void;
 }
 
 export default function DeleteTaskModal({
   onClose,
   taskId,
-  onCancel,
 }: DeleteTaskModalProps) {
   const taskDeleteMutation = useTaskMutation().delete;
 
@@ -45,7 +43,7 @@ export default function DeleteTaskModal({
               <Button variant="danger" className="w-1/2" onClick={deleteTask}>
                 Delete
               </Button>
-              <Button variant="secondary" className="w-1/2" onClick={onCancel}>
+              <Button variant="secondary" className="w-1/2" onClick={onClose}>
                 Cancel
               </Button>
             </div>

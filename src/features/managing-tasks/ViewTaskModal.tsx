@@ -66,7 +66,9 @@ export default function ViewTaskModal({ task, onClose, boardId }: Props) {
             >
               Edit Task
             </ContextMenu.Entry>
-            <ContextMenu.Entry onClick={() => null}>
+            <ContextMenu.Entry
+              onClick={() => showModal("deleteTaskModal", { taskId: task.id })}
+            >
               <span className="text-danger-400">Delete Task</span>
             </ContextMenu.Entry>
           </ContextMenu>
