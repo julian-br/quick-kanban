@@ -15,6 +15,7 @@ import AppShell from "../components/AppShell";
 import EditBoardModal from "../features/managing-boards/EditBoardModal";
 import DeleteTaskModal from "../features/managing-tasks/DeleteTaskModal";
 import { useModalManager } from "../features/modal-manager/ModalManager";
+import { testModalManager } from "../App";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -39,8 +40,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   const activeBoardQuery = useKanbanBoard(boardId);
 
-  const modalManager = useModalManager();
-
   function handleTaskClicked(taskData: Task) {
     setSelectedTask(taskData);
     setActiveModal("ViewTaskModal");
@@ -56,7 +55,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
       <Button
         variant="primary"
         onClick={() => {
-          modalManager.showModal("createBoardModal", { onClose: () => null });
+          modalManager.showModal("", { onClose: () => null });
         }}
       >
         create
