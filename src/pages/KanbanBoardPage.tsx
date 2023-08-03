@@ -22,11 +22,7 @@ interface KanbanBoardPageProps {
   };
 }
 
-type ActiveModal =
-  | "CreateOrEditTaskModal"
-  | "DeleteTaskModal"
-  | "EditBoardModal"
-  | "None";
+type ActiveModal = "CreateOrEditTaskModal" | "DeleteTaskModal" | "None";
 
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const [activeModal, setActiveModal] = useState<ActiveModal>("None");
@@ -34,7 +30,6 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   const { boardId } = urlParams;
 
-  const activeBoardQuery = useKanbanBoard(boardId);
   const { showModal } = useAppModalManager();
 
   function closeModals() {
@@ -52,7 +47,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             />
             <ContextMenu>
               <ContextMenu.Entry
-                onClick={() => setActiveModal("EditBoardModal")}
+                onClick={() => showModal("editBoardModal", { boardId })}
               >
                 Edit Board
               </ContextMenu.Entry>
@@ -67,36 +62,19 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
           </div>
         }
         sideBar={<KanbanBoardsNav boardId={boardId} />}
-        main={
-          activeBoardQuery.isSuccess && (
-            <KanbanBoard
-              onCreateColumnClick={() => setActiveModal("EditBoardModal")}
-              board={activeBoardQuery.data}
-            />
-          )
-        }
+        main={<KanbanBoard boardId={boardId} />}
       />
 
       <div className="flex flex-grow">
-        {activeBoardQuery.isSuccess && (
+        {true && (
           <div>
             {/* Modals */}
-            {activeModal === "CreateOrEditTaskModal" && (
-              <CreateOrEditTaskModal
-                board={activeBoardQuery.data}
-                selectedTask={selectedTask}
-                onClose={closeModals}
-              />
-            )}
             {selectedTask && activeModal === "DeleteTaskModal" && (
               <DeleteTaskModal
                 taskId={selectedTask.id}
                 onClose={closeModals}
                 onCancel={() => null}
               />
-            )}
-            {activeModal === "EditBoardModal" && (
-              <EditBoardModal onClose={closeModals} boardId={boardId} />
             )}
           </div>
         )}

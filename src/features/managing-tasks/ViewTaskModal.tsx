@@ -6,17 +6,20 @@ import SubtaskList from "./SubtaskList";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ContextMenu from "../../components/ContextMenu";
 import { useKanbanBoard } from "../../api/kanbanBoard";
+import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
   task: Task;
+  boardId: string;
   onClose: () => void;
 }
 
-export default function ViewTaskModal({ task, onClose }: Props) {
+export default function ViewTaskModal({ task, onClose, boardId }: Props) {
   const [taskData, setTaskData] = useState(task);
   const taskPutMutation = useTaskMutation().put;
   const taskIsModified = useRef(false);
   const kanbanBoardColumns = useKanbanBoard(taskData.boardId).data!.columns;
+  const { showModal } = useAppModalManager();
 
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
     taskIsModified.current = true;
@@ -53,7 +56,14 @@ export default function ViewTaskModal({ task, onClose }: Props) {
         <div className="flex justify-between items-center">
           <h3>{task.title}</h3>
           <ContextMenu>
-            <ContextMenu.Entry onClick={() => null}>
+            <ContextMenu.Entry
+              onClick={() =>
+                showModal("createOrEditTaskModal", {
+                  task: taskData,
+                  boardId,
+                })
+              }
+            >
               Edit Task
             </ContextMenu.Entry>
             <ContextMenu.Entry onClick={() => null}>

@@ -1,35 +1,41 @@
-import { KanbanBoard as KanbanBoardData } from "../../api/kanbanBoard";
+import {
+  KanbanBoard as KanbanBoardData,
+  useKanbanBoard,
+} from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
-import { Task, useTasks } from "../../api/task";
+import { useTasks } from "../../api/task";
+import { useAppModalManager } from "../../appModalManager";
 
 interface KanbanBoardProps {
-  board: KanbanBoardData;
-  onCreateColumnClick: () => void;
+  boardId: string;
 }
 
-export default function KanbanBoard({
-  board,
-  onCreateColumnClick,
-}: KanbanBoardProps) {
-  const tasks = useTasks(board.id);
+export default function KanbanBoard({ boardId }: KanbanBoardProps) {
+  const boardQuery = useKanbanBoard(boardId);
+  const tasks = useTasks(boardId);
+  const { showModal } = useAppModalManager();
 
   function filterTasksByColumnIndex(columnIndex: number) {
     return tasks.data?.filter((task) => task.columnIndex === columnIndex) ?? [];
   }
 
+  function handleCreateColumnClick() {
+    showModal("editBoardModal", { boardId: boardId });
+  }
+
   return (
     <>
-      {tasks.isSuccess && (
+      {tasks.isSuccess && boardQuery.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
-          {board.columns.map((columnName, columnIndex) => (
+          {boardQuery.data.columns.map((columnName, columnIndex) => (
             <KanbanBoardColumn
               tasks={filterTasksByColumnIndex(columnIndex)}
               key={columnName}
               columnName={columnName}
             />
           ))}
-          <CreateNewColumnButton onClick={onCreateColumnClick} />
+          <CreateNewColumnButton onClick={handleCreateColumnClick} />
         </div>
       )}
     </>

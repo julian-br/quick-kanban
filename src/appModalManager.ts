@@ -1,5 +1,7 @@
 import CreateBoardModal from "./features/managing-boards/CreateBoardModal";
 import DeleteBoardModal from "./features/managing-boards/DeleteBoardModal";
+import EditBoardModal from "./features/managing-boards/EditBoardModal";
+import CreateOrEditTaskModal from "./features/managing-tasks/CreateOrEditTaskModal";
 import ViewTaskModal from "./features/managing-tasks/ViewTaskModal";
 import { createModalManager } from "./lib/ModalManager";
 
@@ -7,6 +9,8 @@ const appModals = {
   createBoardModal: CreateBoardModal,
   viewTaskModal: ViewTaskModal,
   deleteBoardModal: DeleteBoardModal,
+  editBoardModal: EditBoardModal,
+  createOrEditTaskModal: CreateOrEditTaskModal,
 };
 
 const appModalManager = createModalManager(appModals);

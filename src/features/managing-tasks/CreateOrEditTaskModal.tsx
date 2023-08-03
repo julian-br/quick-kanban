@@ -1,5 +1,5 @@
 import { cloneElement, useState } from "react";
-import { KanbanBoard } from "../../api/kanbanBoard";
+import { KanbanBoard, useKanbanBoard } from "../../api/kanbanBoard";
 import { Task, useTaskMutation } from "../../api/task";
 import Button from "../../components/Button";
 import Form, { useFormValidation } from "../../components/Form";
@@ -11,25 +11,23 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
 import { Optional } from "../../utils/utilityTypes";
 
-interface CreateTaskModalProps {
-  board: KanbanBoard;
+interface CreateOrEditTaskModalProps {
   onClose: () => void;
-  selectedTask?: Task;
+  task?: Task;
+  boardId: string;
 }
 
 export default function CreateOrEditTaskModal({
   onClose,
-  board,
-  selectedTask,
-}: CreateTaskModalProps) {
+  task,
+  boardId,
+}: CreateOrEditTaskModalProps) {
   const [taskData, setTaskData] = useState({
-    id: selectedTask?.id,
-    title: selectedTask?.title ?? "",
-    description: selectedTask?.description ?? "",
-    columnIndex: selectedTask?.columnIndex ?? 0,
-    subtaskTitles: selectedTask?.subtasks.map((subTask) => subTask.title) ?? [
-      "",
-    ],
+    id: task?.id,
+    title: task?.title ?? "",
+    description: task?.description ?? "",
+    columnIndex: task?.columnIndex ?? 0,
+    subtaskTitles: task?.subtasks.map((subTask) => subTask.title) ?? [""],
   });
 
   const { formErrors, validateForm } = useFormValidation({
@@ -39,10 +37,11 @@ export default function CreateOrEditTaskModal({
 
   const taskPutMutation = useTaskMutation().put;
 
-  const isEditingTask = selectedTask !== undefined;
+  const isEditingTask = task !== undefined;
+  const board = useKanbanBoard(boardId);
 
   function findColumnIndexByColumnName(columnName: string) {
-    const index = board.columns.findIndex(
+    const index = board.data!.columns.findIndex(
       (boardColumnName) => boardColumnName === columnName
     );
 
@@ -89,7 +88,7 @@ export default function CreateOrEditTaskModal({
 
       const newTask = {
         ...taskData,
-        boardId: board.id,
+        boardId: boardId,
         subtasks: trimmedSubtaskTitles.map((subtaskTitle) => ({
           title: subtaskTitle,
           isCompleted: false,
@@ -137,8 +136,8 @@ export default function CreateOrEditTaskModal({
           <Listbox
             label="Status"
             onChange={changeTaskStatus}
-            selected={board.columns[0]}
-            options={board.columns}
+            selected={board.data!.columns[0]}
+            options={board.data!.columns}
           />
           <Button variant="primary" size="large" className="mt-3" type="submit">
             {isEditingTask ? "Save Changes" : "Create Task"}

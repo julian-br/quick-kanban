@@ -20,6 +20,7 @@ export default function KanbanBoardTask({ taskData }: KanbanBoardTaskProps) {
         variant="custom"
         onClick={() =>
           showModal("viewTaskModal", {
+            boardId: taskData.boardId,
             task: taskData,
           })
         }
