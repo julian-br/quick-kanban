@@ -1,5 +1,5 @@
-import { cloneElement, useState } from "react";
-import { KanbanBoard, useKanbanBoard } from "../../api/kanbanBoard";
+import { useState } from "react";
+import { useKanbanBoard } from "../../api/kanbanBoard";
 import { Task, useTaskMutation } from "../../api/task";
 import Button from "../../components/Button";
 import Form, { useFormValidation } from "../../components/Form";
@@ -9,7 +9,6 @@ import TextArea from "../../components/Input/TextArea";
 import TextInput from "../../components/Input/TextInput";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
-import { Optional } from "../../utils/utilityTypes";
 
 interface CreateOrEditTaskModalProps {
   onClose: () => void;

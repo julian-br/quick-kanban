@@ -20,8 +20,7 @@ export default function KanbanBoardTask({ taskData }: KanbanBoardTaskProps) {
         variant="custom"
         onClick={() =>
           showModal("viewTaskModal", {
-            boardId: taskData.boardId,
-            task: taskData,
+            taskId: taskData.id,
           })
         }
         className="bg-slate-800 w-full z-10 text-left pt-5 pb-7 px-5 rounded-xl group hover:scale-[1.025]"

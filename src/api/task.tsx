@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TaskData from "../mock-data/tasksData.json";
 import { Optional } from "../utils/utilityTypes";
 let tasksData: Task[] = TaskData;
-const DELAY = 2000;
 
 export interface Task {
   id: string;
@@ -25,13 +24,22 @@ export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
   boardId,
 ];
 
-export function useTasks(boardId: string) {
+export function useTask(taskId: string) {
   const taskQuery = useQuery({
+    queryKey: [TASKS_BASE_KEY, taskId],
+    queryFn: () => fetchTask(taskId),
+  });
+
+  return taskQuery;
+}
+
+export function useTasks(boardId: string) {
+  const tasksQuery = useQuery({
     queryKey: TASKS_FOR_BOARD_KEY(boardId),
     queryFn: () => fetchTasksForBoard(boardId),
   });
 
-  return taskQuery;
+  return tasksQuery;
 }
 
 export function useTaskMutation() {
@@ -55,51 +63,52 @@ export function useTaskMutation() {
   return { put: taskPutMutation, delete: taskDeleteMutation };
 }
 
-function putTask(task: Optional<Task, "id">) {
-  return new Promise<Task>((res) => {
-    if (task.id === undefined) {
-      const taskId = parseInt(tasksData.at(-1)!.id) + 1;
-      const newTask = { ...task, id: taskId.toString() };
-      tasksData.push(newTask);
-      setTimeout(() => res(newTask), DELAY);
-      return;
-    }
+async function fetchTask(taskId: string) {
+  const matchingTask = tasksData.find((task) => task.id === taskId);
+  if (matchingTask === undefined) {
+    throw new Error(`No Task with the id: ${taskId}`);
+  }
 
-    const indexOfTaskToUpdate = tasksData.findIndex(
-      (taskData) => taskData.id === task.id
-    );
-    if (indexOfTaskToUpdate === -1) {
-      throw new Error("no task with this id");
-    }
+  return matchingTask;
+}
 
-    tasksData[indexOfTaskToUpdate] = task as Task;
-    setTimeout(() => res(task as Task), DELAY);
-  });
+async function putTask(task: Optional<Task, "id">) {
+  if (task.id === undefined) {
+    const taskId = parseInt(tasksData.at(-1)!.id) + 1;
+    const newTask = { ...task, id: taskId.toString() };
+    tasksData.push(newTask);
+    return newTask;
+  }
+
+  const indexOfTaskToUpdate = tasksData.findIndex(
+    (taskData) => taskData.id === task.id
+  );
+  if (indexOfTaskToUpdate === -1) {
+    throw new Error("no task with this id");
+  }
+
+  tasksData[indexOfTaskToUpdate] = task as Task;
+
+  return task;
 }
 
 async function deleteTask(taskId: string) {
-  return new Promise<Task>((res) => {
-    const indexOfTaskToDelete = tasksData.findIndex(
-      (task) => task.id === taskId
-    );
-    if (indexOfTaskToDelete === -1) {
-      throw new Error("no task with this id");
-    }
+  const indexOfTaskToDelete = tasksData.findIndex((task) => task.id === taskId);
+  if (indexOfTaskToDelete === -1) {
+    throw new Error("no task with this id");
+  }
 
-    const taskToDelete = tasksData[indexOfTaskToDelete];
-    tasksData.splice(indexOfTaskToDelete, 1);
-    setTimeout(() => res(taskToDelete), DELAY);
-  });
+  const taskToDelete = tasksData[indexOfTaskToDelete];
+  tasksData.splice(indexOfTaskToDelete, 1);
+  return taskToDelete;
 }
 
-function fetchTasksForBoard(boardId: string) {
-  return new Promise<Task[]>((res) => {
-    const matchingTasks = tasksData.filter(
-      (taskData) => taskData.boardId === boardId
-    );
+async function fetchTasksForBoard(boardId: string) {
+  const matchingTasks = tasksData.filter(
+    (taskData) => taskData.boardId === boardId
+  );
 
-    res(matchingTasks);
-  });
+  return matchingTasks;
 }
 
 export function deleteTasksForBoard(boardId: string) {
