@@ -95,9 +95,8 @@ function ViewTaskModalHeader({
           <ContextMenu>
             <ContextMenu.Entry
               onClick={() =>
-                showModal("createOrEditTaskModal", {
-                  task: taskQuery.data,
-                  boardId: taskQuery.data.boardId,
+                showModal("editTaskModal", {
+                  taskId,
                 })
               }
             >

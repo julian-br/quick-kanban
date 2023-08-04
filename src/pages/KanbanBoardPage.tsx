@@ -23,7 +23,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         navBar={
           <div className="flex ml-auto gap-3">
             <AddTaskButton
-              onClick={() => showModal("createOrEditTaskModal", { boardId })}
+              onClick={() => showModal("createTaskModal", { boardId })}
             />
             <ContextMenu>
               <ContextMenu.Entry
