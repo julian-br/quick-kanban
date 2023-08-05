@@ -33,7 +33,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
     <>
       <AppShell
         navBar={
-          <div className="flex ml-auto gap-3">
+          <div className="flex ml-auto gap-3 items-center">
             <AddTaskButton onClick={handleAddTaskClicked} />
             <ContextMenu>
               <ContextMenu.Entry onClick={handleEditBoardClicked}>
