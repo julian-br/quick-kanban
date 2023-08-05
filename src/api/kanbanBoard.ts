@@ -4,8 +4,6 @@ import { Optional } from "../utils/utilityTypes";
 import { deleteTasksForBoard, TASKS_FOR_BOARD_KEY } from "./task";
 const boardsData: KanbanBoard[] = BoardsData;
 
-const DELAY = 2000;
-
 export interface KanbanBoard {
   id: string;
   name: string;
@@ -54,20 +52,16 @@ export function useKanbanBoardsMutation() {
   };
 }
 
-function fetchKanbanBoards() {
-  return new Promise<KanbanBoard[]>((res) => {
-    res(boardsData);
-  });
+async function fetchKanbanBoards() {
+  return boardsData;
 }
 
-function fetchKanbanBoardById(boardId: string) {
-  return new Promise<KanbanBoard>((res) => {
-    const matchingBoard = boardsData.find((board) => board.id === boardId);
-    if (matchingBoard === undefined) {
-      throw new Error("fetch board: no board with the id:" + boardId);
-    }
-    res(matchingBoard);
-  });
+async function fetchKanbanBoardById(boardId: string) {
+  const matchingBoard = boardsData.find((board) => board.id === boardId);
+  if (matchingBoard === undefined) {
+    throw new Error("fetch board: no board with the id:" + boardId);
+  }
+  return matchingBoard;
 }
 
 async function putKanbanBoard(kanbanBoard: Optional<KanbanBoard, "id">) {
@@ -92,18 +86,16 @@ async function putKanbanBoard(kanbanBoard: Optional<KanbanBoard, "id">) {
   return kanbanBoard as KanbanBoard;
 }
 
-function deleteKanbanBoard(boardId: string) {
-  return new Promise<KanbanBoard>((res) => {
-    const indexOfBoardToDelete = boardsData.findIndex(
-      (board) => board.id === boardId
-    );
+async function deleteKanbanBoard(boardId: string) {
+  const indexOfBoardToDelete = boardsData.findIndex(
+    (board) => board.id === boardId
+  );
 
-    if (indexOfBoardToDelete === -1) {
-      throw new Error("delete board: no board with this id");
-    }
+  if (indexOfBoardToDelete === -1) {
+    throw new Error("delete board: no board with this id");
+  }
 
-    const deletedBoard = boardsData.splice(indexOfBoardToDelete, 1);
-    deleteTasksForBoard(boardId);
-    setTimeout(() => res(deletedBoard[0]), DELAY);
-  });
+  const deletedBoard = boardsData.splice(indexOfBoardToDelete, 1);
+  deleteTasksForBoard(boardId);
+  return deletedBoard[0];
 }
