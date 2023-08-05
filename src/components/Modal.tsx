@@ -21,20 +21,17 @@ export default function Modal({ children, onClose, header }: ModalProps) {
       <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-200"
+          enter="ease-out duration-75"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black bg-opacity-40 transition-opacity backdrop-blur-sm" />
         </Transition.Child>
 
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-200"
-          enterFrom="scale-50 opacity-0"
+          enter="ease-in duration-75"
+          enterFrom="scale-75 opacity-0"
           enterTo="opacity-100 scale-100"
         >
           <div className="fixed inset-0 z-10 overflow-y-auto">
