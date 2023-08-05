@@ -7,22 +7,21 @@ import { useKanbanBoards } from "../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
+import { useAppModalManager } from "../appModalManager";
 
 export default function NoCreatedBoardsPage() {
-  const [showCreateNewBoardModal, setShowCreateNewBoardModal] = useState(false);
   const [_, setLocation] = useLocation();
-
-  // redirect to an existing board if the user has already created one
-  const boards = useKanbanBoards();
+  const boardsQuery = useKanbanBoards();
+  const { showModal } = useAppModalManager();
 
   useEffect(() => {
-    if (boards.isSuccess && boards.data[0] !== undefined) {
-      setLocation(`/board/${boards.data[0].id}`);
+    if (boardsQuery.isSuccess && boardsQuery.data.at(0) !== undefined) {
+      setLocation(`/board/${boardsQuery.data[0].id}`);
     }
-  }, [boards.isSuccess]);
+  }, [boardsQuery.data]);
 
   function handleCreateNewBoardClicked() {
-    setShowCreateNewBoardModal(true);
+    showModal("createBoardModal");
   }
 
   return (
@@ -30,16 +29,13 @@ export default function NoCreatedBoardsPage() {
       <AppShell
         sideBar={
           <div className="mt-7">
-            <KanbanBoardsNav
-              boardId=""
-              onCreateNewBoardClick={handleCreateNewBoardClicked}
-            />
+            <KanbanBoardsNav boardId="" />
           </div>
         }
         main={
           <div className="flex items-center">
             <div className="mx-auto mt-96 text-center">
-              <p className="text-lg font-medium text-slate-400 mb-3">
+              <p className="text-lg font-medium text-slate-400 mb-5">
                 No board has been created yet.
               </p>
               <Button
@@ -48,19 +44,14 @@ export default function NoCreatedBoardsPage() {
                 size="large"
               >
                 <div className="flex items-baseline">
-                  <FontAwesomeIcon className="h-3" icon={faPlus} />
-                  <span>Create new Board</span>
+                  <FontAwesomeIcon className="h-[0.6rem] mr-1" icon={faPlus} />
+                  <span>Create New Board</span>
                 </div>
               </Button>
             </div>
           </div>
         }
       />
-      <div>
-        {showCreateNewBoardModal && (
-          <CreateBoardModal onClose={() => setShowCreateNewBoardModal(false)} />
-        )}
-      </div>
     </>
   );
 }

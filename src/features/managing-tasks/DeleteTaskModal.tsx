@@ -2,6 +2,7 @@ import Button from "../../components/Button";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
 import { useTaskMutation } from "../../api/task";
+import { useAppModalManager } from "../../appModalManager";
 
 interface DeleteTaskModalProps {
   taskId: string;
@@ -13,9 +14,15 @@ export default function DeleteTaskModal({
   taskId,
 }: DeleteTaskModalProps) {
   const taskDeleteMutation = useTaskMutation().delete;
+  const { showModal } = useAppModalManager();
 
-  function deleteTask() {
+  function handleDeleteTaskClicked() {
     taskDeleteMutation.mutate(taskId, { onSuccess: onClose });
+  }
+
+  function handleCancelClicked() {
+    onClose();
+    showModal("viewTaskModal", { taskId });
   }
 
   return (
@@ -40,10 +47,18 @@ export default function DeleteTaskModal({
               reversed.
             </p>
             <div className="mt-10 flex gap-5">
-              <Button variant="danger" className="w-1/2" onClick={deleteTask}>
+              <Button
+                variant="danger"
+                className="w-1/2"
+                onClick={handleDeleteTaskClicked}
+              >
                 Delete
               </Button>
-              <Button variant="secondary" className="w-1/2" onClick={onClose}>
+              <Button
+                variant="secondary"
+                className="w-1/2"
+                onClick={handleCancelClicked}
+              >
                 Cancel
               </Button>
             </div>
