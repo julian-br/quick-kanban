@@ -19,6 +19,7 @@ export default function DeleteBoardModal({
   function deleteBoard() {
     boardDeleteMutation.mutate(boardId, {
       onSuccess: () => {
+        onClose();
         setLocation("/");
       },
     });

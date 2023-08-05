@@ -3,24 +3,15 @@ import { useLocation } from "wouter";
 import { useKanbanBoards } from "../../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
-  activeBoardId: string;
-  onCreateNewBoardClick?: () => void;
+  boardId: string;
 }
 
-export default function KanbanBoardsNav({
-  activeBoardId,
-  onCreateNewBoardClick,
-}: Props) {
+export default function KanbanBoardsNav({ boardId }: Props) {
   const boards = useKanbanBoards();
   const [_, setLocation] = useLocation();
-
-  function handleCreateNewBoardClicked() {
-    if (onCreateNewBoardClick !== undefined) {
-      onCreateNewBoardClick();
-    }
-  }
 
   function handleNavEntryClicked(boardId: string) {
     setLocation("/board/" + boardId);
@@ -41,22 +32,24 @@ export default function KanbanBoardsNav({
                 key={board.id}
                 onClick={() => handleNavEntryClicked(board.id)}
                 title={board.name}
-                isActive={board.id === activeBoardId}
+                isActive={board.id === boardId}
               />
             ))}
           </div>
         )}
       </div>
-      <CreateNewBoardButton onClick={handleCreateNewBoardClicked} />
+      <CreateNewBoardButton />
     </div>
   );
 }
 
-function CreateNewBoardButton({ onClick }: { onClick: () => void }) {
+function CreateNewBoardButton() {
+  const appModalManager = useAppModalManager();
+
   return (
     <Button
       variant="custom"
-      onClick={onClick}
+      onClick={() => appModalManager.showModal("createBoardModal")}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">

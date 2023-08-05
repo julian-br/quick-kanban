@@ -1,19 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../components/Button";
-
 interface KanbanBoardColumnProps {
   columnName: string;
   tasks: Task[];
-  onTaskClick: (taskData: Task) => void;
 }
 
 export default function KanbanBoardColumn({
   columnName,
   tasks,
-  onTaskClick,
 }: KanbanBoardColumnProps) {
   const ammountOfTask = tasks.length;
 
@@ -30,11 +24,7 @@ export default function KanbanBoardColumn({
 
       <div className="flex flex-col gap-5">
         {tasks.map((taskData) => (
-          <KanbanBoardTask
-            key={taskData.title}
-            onTaskClick={onTaskClick}
-            taskData={taskData}
-          />
+          <KanbanBoardTask key={taskData.title} taskData={taskData} />
         ))}
       </div>
     </div>
