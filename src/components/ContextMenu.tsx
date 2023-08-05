@@ -1,5 +1,5 @@
-import { Menu } from "@headlessui/react";
-import { ReactNode } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,9 +17,19 @@ function ContextMenu({ children }: ContextMenuProps) {
             className="h-[1.7rem] text-slate-500 group-hover:text-slate-400"
           />
         </Menu.Button>
-        <Menu.Items className="z-50 absolute right-0 py-3 w-56 rounded-xl bg-slate-700 shadow-lg">
-          {children}
-        </Menu.Items>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="z-50 absolute top-13 right-0 py-3 w-56 rounded-xl bg-slate-700 shadow-lg">
+            {children}
+          </Menu.Items>
+        </Transition>
       </Menu>
     </div>
   );

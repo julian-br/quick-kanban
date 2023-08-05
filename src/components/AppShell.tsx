@@ -10,7 +10,7 @@ interface AppShellProps {
 }
 
 const NAVBAR_HEIGHT = "5.5rem";
-const SIDE_BAR_OPEN_WIDTH = "24rem";
+const SIDE_BAR_OPEN_WIDTH = "21rem";
 const SIDE_BAR_CLOSED_WIDTH = "5rem";
 
 export default function AppShell(props: AppShellProps) {
@@ -71,7 +71,7 @@ function SideBar({ children }: { children: ReactNode }) {
 
   return (
     <nav
-      className="bg-slate-800 border-r bg-opacity-40 border-slate-700 border-opacity-40 relative overflow-hidden"
+      className="bg-slate-800 border-r bg-opacity-40 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75"
       style={sideBarSize}
     >
       <Button
@@ -86,7 +86,13 @@ function SideBar({ children }: { children: ReactNode }) {
           icon={faBars}
         ></FontAwesomeIcon>
       </Button>
-      {isOpen === true && <div className="pt-7">{children}</div>}
+      <div
+        className={`${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        } pt-7 whitespace-nowrap transition-opacity ease-linear duration-75`}
+      >
+        {children}
+      </div>
     </nav>
   );
 }
