@@ -1,9 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../components/Button";
-
 interface KanbanBoardColumnProps {
   columnName: string;
   tasks: Task[];

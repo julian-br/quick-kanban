@@ -1,7 +1,5 @@
 import {
   FunctionComponent,
-  JSXElementConstructor,
-  ReactComponentElement,
   ReactNode,
   createContext,
   createElement,

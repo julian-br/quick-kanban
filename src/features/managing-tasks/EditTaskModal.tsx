@@ -1,4 +1,4 @@
-import { Task, useTask, useTaskMutation } from "../../api/task";
+import { useTask, useTaskMutation } from "../../api/task";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
 import TaskForm, { EditedTask } from "./TaskForm";

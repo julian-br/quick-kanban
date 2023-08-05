@@ -1,7 +1,4 @@
-import {
-  KanbanBoard as KanbanBoardData,
-  useKanbanBoard,
-} from "../../api/kanbanBoard";
+import { useKanbanBoard } from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
 import { useTasks } from "../../api/task";
