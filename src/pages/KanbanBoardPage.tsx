@@ -17,25 +17,29 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const { boardId } = urlParams;
   const { showModal } = useAppModalManager();
 
+  function handleAddTaskClicked() {
+    showModal("createTaskModal", { boardId });
+  }
+
+  function handleEditBoardClicked() {
+    showModal("editBoardModal", { boardId });
+  }
+
+  function handleDelteBoardClicked() {
+    showModal("deleteBoardModal", { boardId: boardId });
+  }
+
   return (
     <>
       <AppShell
         navBar={
           <div className="flex ml-auto gap-3">
-            <AddTaskButton
-              onClick={() => showModal("createTaskModal", { boardId })}
-            />
+            <AddTaskButton onClick={handleAddTaskClicked} />
             <ContextMenu>
-              <ContextMenu.Entry
-                onClick={() => showModal("editBoardModal", { boardId })}
-              >
+              <ContextMenu.Entry onClick={handleEditBoardClicked}>
                 Edit Board
               </ContextMenu.Entry>
-              <ContextMenu.Entry
-                onClick={() =>
-                  showModal("deleteBoardModal", { boardId: boardId })
-                }
-              >
+              <ContextMenu.Entry onClick={() => handleDelteBoardClicked}>
                 <span className="text-danger-400">Delete Board</span>
               </ContextMenu.Entry>
             </ContextMenu>
