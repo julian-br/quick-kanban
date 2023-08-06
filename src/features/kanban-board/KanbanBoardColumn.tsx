@@ -12,12 +12,8 @@ export default function KanbanBoardColumn({
 }: KanbanBoardColumnProps) {
   const ammountOfTask = tasks.length;
 
-  const tasksSortedByRowIndex = [...tasks].sort(
-    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
-  );
-
   return (
-    <div className="px-3 shrink-0 basis-96">
+    <div className="px-2 shrink-0 basis-[25rem] grow-0">
       <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6">
         <div className="flex items-center">
           <span className="w-4 h-4 bg-amber-300 rounded-full mr-3"></span>
@@ -26,34 +22,36 @@ export default function KanbanBoardColumn({
           </span>
         </div>
       </h3>
-      <Droppable droppableId={columnName}>
-        {(providedDroppable) => (
-          <div
-            ref={providedDroppable.innerRef}
-            className="flex flex-col gap-5"
-            {...providedDroppable.droppableProps}
-          >
-            {tasksSortedByRowIndex.map((taskData) => (
-              <Draggable
-                key={taskData.id}
-                draggableId={taskData.id}
-                index={taskData.rowIndex}
-              >
-                {(providedDraggable) => (
-                  <div
-                    ref={providedDraggable.innerRef}
-                    {...providedDraggable.dragHandleProps}
-                    {...providedDraggable.draggableProps}
-                  >
-                    <KanbanBoardTask taskData={taskData} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {providedDroppable.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <TaskList columnName={columnName} tasks={tasks} />
     </div>
+  );
+}
+
+function TaskList({
+  columnName,
+  tasks,
+}: {
+  columnName: string;
+  tasks: Task[];
+}) {
+  const tasksSortedByRowIndex = [...tasks].sort(
+    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
+  );
+
+  return (
+    <Droppable droppableId={columnName}>
+      {(providedDroppable) => (
+        <div
+          ref={providedDroppable.innerRef}
+          className="flex flex-col h-full"
+          {...providedDroppable.droppableProps}
+        >
+          {tasksSortedByRowIndex.map((taskData) => (
+            <KanbanBoardTask key={taskData.id} taskData={taskData} />
+          ))}
+          <div className="w-0">{providedDroppable.placeholder}</div>
+        </div>
+      )}
+    </Droppable>
   );
 }

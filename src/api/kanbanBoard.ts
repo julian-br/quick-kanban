@@ -85,7 +85,7 @@ async function updateKanbanBoard(kanbanBoard: KanbanBoard) {
   );
 
   if (indexOfBoardToMutate === -1) {
-    throw new Error("delete board: no board with this id found");
+    throw new Error("no board with this id found");
   }
 
   boardsData[indexOfBoardToMutate] = { ...kanbanBoard } as KanbanBoard;

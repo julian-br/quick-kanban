@@ -28,9 +28,9 @@ export default function DeleteBoardModal({
   return (
     <Modal
       header={
-        <h3 className="text-danger-500 text-2xl font-bold">
+        <div className="text-danger-500 text-2xl font-bold">
           Delete this board?
-        </h3>
+        </div>
       }
       onClose={onClose}
     >

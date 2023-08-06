@@ -11,12 +11,14 @@ interface KanbanBoardProps {
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   const boardQuery = useKanbanBoard(boardId);
-  const tasks = useTasks(boardId);
+  const tasksQuery = useTasks(boardId);
   const taskUpdateMutation = useTaskMutation().update;
   const { showModal } = useAppModalManager();
 
   function filterTasksByColumnIndex(columnIndex: number) {
-    return tasks.data?.filter((task) => task.columnIndex === columnIndex) ?? [];
+    return (
+      tasksQuery.data?.filter((task) => task.columnIndex === columnIndex) ?? []
+    );
   }
 
   function handleCreateColumnClick() {
@@ -34,7 +36,9 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     const columnIndex = boardQuery.data!.columns.indexOf(
       destination.droppableId
     );
-    const taskToMutate = tasks.data?.find((task) => task.id === draggedTaskId);
+    const taskToMutate = tasksQuery.data?.find(
+      (task) => task.id === draggedTaskId
+    );
 
     if (taskToMutate !== undefined) {
       taskUpdateMutation.mutate({ ...taskToMutate, columnIndex, rowIndex });
@@ -43,7 +47,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
 
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
-      {tasks.isSuccess && boardQuery.isSuccess && (
+      {tasksQuery.isSuccess && boardQuery.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
           {boardQuery.data.columns.map((columnName, columnIndex) => (
             <KanbanBoardColumn
@@ -61,7 +65,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
-    <div className="basis-96 mt-2 px-4 shrink-0 h-[80vh]">
+    <div className="basis-[26rem] mt-2 px-4 shrink-0 h-[80vh]">
       <Button
         variant="custom"
         onClick={onClick}

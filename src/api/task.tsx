@@ -121,8 +121,8 @@ async function updateTask(taskToUpdate: Task) {
     (taskData) => taskData.id === taskToUpdate.id
   );
 
-  /* tasksData[indexOfTaskToUpdate] = taskToUpdate;
-   */
+  tasksData[indexOfTaskToUpdate] = taskToUpdate;
+
   return taskToUpdate;
 }
 
@@ -133,7 +133,9 @@ async function deleteTask(taskId: string) {
   }
 
   const taskToDelete = tasksData[indexOfTaskToDelete];
+  updateGridPostions(taskToDelete, true);
   tasksData.splice(indexOfTaskToDelete, 1);
+
   return taskToDelete;
 }
 
@@ -161,20 +163,26 @@ function getNextAvailableRowIndex(boardId: string, columnIndex: number) {
     (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
   );
 
-  return currentTasksInColumnSortedByRowIndex.at(-1)!.rowIndex + 1;
+  const lastRowIndex = currentTasksInColumnSortedByRowIndex.at(-1)?.rowIndex;
+
+  return lastRowIndex ?? 0;
 }
 
 function findNextAvailableTaskId() {
-  return parseInt(tasksData.at(-1)!.id) + 1;
+  const lastTaskId = tasksData.at(-1);
+  return lastTaskId ? parseInt(lastTaskId.id) + 1 : "1";
 }
 
-function updateGridPostions(taskWithNewPostion: Task) {
+function updateGridPostions(
+  updatedTask: Task,
+  taskWasDeleted: boolean = false
+) {
   const allTasksOfBoard = tasksData.filter(
-    (task) => (task.boardId = taskWithNewPostion.boardId)
+    (task) => task.boardId === updatedTask.boardId
   );
 
   const taskWithOldPostion = allTasksOfBoard.find(
-    (task) => task.id === taskWithNewPostion.id
+    (task) => task.id === updatedTask.id
   )!;
 
   const grid: Task[][] = [];
@@ -189,12 +197,13 @@ function updateGridPostions(taskWithNewPostion: Task) {
   // remove task from old postion
   grid[taskWithOldPostion.columnIndex].splice(taskWithOldPostion.rowIndex, 1);
 
-  // add task at new postion
-  grid[taskWithNewPostion.columnIndex].splice(
-    taskWithNewPostion.rowIndex,
-    0,
-    taskWithNewPostion
-  );
+  if (taskWasDeleted === false) {
+    // add task at new postion
+    if (grid[updatedTask.columnIndex] === undefined) {
+      grid[updatedTask.columnIndex] = [];
+    }
+    grid[updatedTask.columnIndex].splice(updatedTask.rowIndex, 0, updatedTask);
+  }
 
   //reassign inindices
   grid.forEach((_, columnIndex) => {
