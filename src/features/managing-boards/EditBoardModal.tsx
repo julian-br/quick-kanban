@@ -19,7 +19,7 @@ export default function EditBoardModal(props: EditBoardModalProps) {
   }
 
   const [boardData, setBoardData] = useState(activeBoardQuery.data);
-  const boardPutMutation = useKanbanBoardsMutation().put;
+  const boardUpdateMutation = useKanbanBoardsMutation().update;
   const isEdited = useRef(false);
 
   function editBoardName(newBoardName: string) {
@@ -34,7 +34,7 @@ export default function EditBoardModal(props: EditBoardModalProps) {
 
   function updateBoardData() {
     if (isEdited.current === true) {
-      boardPutMutation.mutate(boardData, { onSuccess: () => props.onClose });
+      boardUpdateMutation.mutate(boardData, { onSuccess: () => props.onClose });
     }
     props.onClose();
   }

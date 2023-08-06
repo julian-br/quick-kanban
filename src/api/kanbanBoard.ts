@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import BoardsData from "../mock-data/boardData.json";
 import { Optional } from "../utils/utilityTypes";
 import { deleteTasksForBoard, TASKS_FOR_BOARD_KEY } from "./task";
+import KanbanBoard from "../features/kanban-board/KanbanBoard";
 const boardsData: KanbanBoard[] = BoardsData;
 
 export interface KanbanBoard {
@@ -32,8 +33,13 @@ export function useKanbanBoards() {
 
 export function useKanbanBoardsMutation() {
   const queryClient = useQueryClient();
-  const putKanbanBoardMutation = useMutation({
-    mutationFn: putKanbanBoard,
+  const postKanbanBoardMutation = useMutation({
+    mutationFn: postKanbanBoard,
+    onSuccess: () => queryClient.invalidateQueries([BOARDS_BASE_KEY]),
+  });
+
+  const updateKanabanBoardMutation = useMutation({
+    mutationFn: updateKanbanBoard,
     onSuccess: () => queryClient.invalidateQueries([BOARDS_BASE_KEY]),
   });
 
@@ -47,13 +53,14 @@ export function useKanbanBoardsMutation() {
   });
 
   return {
-    put: putKanbanBoardMutation,
+    post: postKanbanBoardMutation,
+    update: updateKanabanBoardMutation,
     delete: deleteKanbanBoardMutation,
   };
 }
 
 async function fetchKanbanBoards() {
-  return boardsData;
+  return structuredClone(boardsData);
 }
 
 async function fetchKanbanBoardById(boardId: string) {
@@ -61,19 +68,18 @@ async function fetchKanbanBoardById(boardId: string) {
   if (matchingBoard === undefined) {
     throw new Error("fetch board: no board with the id:" + boardId);
   }
-  return matchingBoard;
+  return structuredClone(matchingBoard);
 }
 
-async function putKanbanBoard(kanbanBoard: Optional<KanbanBoard, "id">) {
-  if (kanbanBoard.id === undefined) {
-    const previousBoard = boardsData.at(-1);
-    const newBoardId =
-      previousBoard !== undefined ? parseInt(previousBoard.id) + 1 : "1";
-    const newBoard = { ...kanbanBoard, id: newBoardId.toString() };
-    boardsData.push(newBoard);
-    return newBoard as KanbanBoard;
-  }
+async function postKanbanBoard(kanbanBoard: Omit<KanbanBoard, "id">) {
+  const newBoardId = findNextAvailableBoardId();
 
+  const newBoard = { ...kanbanBoard, id: newBoardId.toString() };
+  boardsData.push(newBoard);
+  return newBoard as KanbanBoard;
+}
+
+async function updateKanbanBoard(kanbanBoard: KanbanBoard) {
   const indexOfBoardToMutate = boardsData.findIndex(
     (boardData) => boardData.id === kanbanBoard.id
   );
@@ -82,7 +88,7 @@ async function putKanbanBoard(kanbanBoard: Optional<KanbanBoard, "id">) {
     throw new Error("delete board: no board with this id found");
   }
 
-  boardsData[indexOfBoardToMutate] = kanbanBoard as KanbanBoard;
+  boardsData[indexOfBoardToMutate] = { ...kanbanBoard } as KanbanBoard;
   return kanbanBoard as KanbanBoard;
 }
 
@@ -98,4 +104,11 @@ async function deleteKanbanBoard(boardId: string) {
   const deletedBoard = boardsData.splice(indexOfBoardToDelete, 1);
   deleteTasksForBoard(boardId);
   return deletedBoard[0];
+}
+
+function findNextAvailableBoardId() {
+  const lastBoard = boardsData.at(-1);
+  const newBoardId = lastBoard !== undefined ? parseInt(lastBoard.id) + 1 : "1";
+
+  return newBoardId;
 }

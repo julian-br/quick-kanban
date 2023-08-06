@@ -1,3 +1,4 @@
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
 interface KanbanBoardColumnProps {
@@ -11,6 +12,10 @@ export default function KanbanBoardColumn({
 }: KanbanBoardColumnProps) {
   const ammountOfTask = tasks.length;
 
+  const tasksSortedByRowIndex = [...tasks].sort(
+    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
+  );
+
   return (
     <div className="px-3 shrink-0 basis-96">
       <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6">
@@ -21,12 +26,34 @@ export default function KanbanBoardColumn({
           </span>
         </div>
       </h3>
-
-      <div className="flex flex-col gap-5">
-        {tasks.map((taskData) => (
-          <KanbanBoardTask key={taskData.title} taskData={taskData} />
-        ))}
-      </div>
+      <Droppable droppableId={columnName}>
+        {(providedDroppable) => (
+          <div
+            ref={providedDroppable.innerRef}
+            className="flex flex-col gap-5"
+            {...providedDroppable.droppableProps}
+          >
+            {tasksSortedByRowIndex.map((taskData) => (
+              <Draggable
+                key={taskData.id}
+                draggableId={taskData.id}
+                index={taskData.rowIndex}
+              >
+                {(providedDraggable) => (
+                  <div
+                    ref={providedDraggable.innerRef}
+                    {...providedDraggable.dragHandleProps}
+                    {...providedDraggable.draggableProps}
+                  >
+                    <KanbanBoardTask taskData={taskData} />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {providedDroppable.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 }

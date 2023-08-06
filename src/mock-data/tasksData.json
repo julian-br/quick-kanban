@@ -1,10 +1,29 @@
 [
   {
+    "id": "3",
+    "boardId": "1",
+    "title": "Build settings UI",
+    "description": "",
+    "columnIndex": 0,
+    "rowIndex": 1,
+    "subtasks": [
+      {
+        "title": "Account page",
+        "isCompleted": false
+      },
+      {
+        "title": "Billing page",
+        "isCompleted": false
+      }
+    ]
+  },
+  {
     "id": "1",
     "boardId": "1",
     "title": "Build UI for onboarding flow",
     "description": "",
     "columnIndex": 0,
+    "rowIndex": 0,
     "subtasks": [
       {
         "title": "Sign up page",
@@ -21,28 +40,12 @@
     ]
   },
   {
-    "id": "3",
-    "boardId": "1",
-    "title": "Build settings UI",
-    "description": "",
-    "columnIndex": 0,
-    "subtasks": [
-      {
-        "title": "Account page",
-        "isCompleted": false
-      },
-      {
-        "title": "Billing page",
-        "isCompleted": false
-      }
-    ]
-  },
-  {
     "id": "4",
     "boardId": "1",
     "title": "QA and test all major user journeys",
     "description": "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
     "columnIndex": 0,
+    "rowIndex": 2,
     "subtasks": [
       {
         "title": "Internal testing",
@@ -60,6 +63,7 @@
     "title": "Add search enpoints",
     "description": "",
     "columnIndex": 1,
+    "rowIndex": 0,
     "subtasks": [
       {
         "title": "Add search endpoint",
@@ -77,6 +81,7 @@
     "title": "Add authentication endpoints",
     "description": "",
     "columnIndex": 1,
+    "rowIndex": 1,
     "subtasks": [
       {
         "title": "Define user model",
@@ -94,6 +99,7 @@
     "title": "Research pricing points of various competitors and trial different business models",
     "description": "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
     "columnIndex": 1,
+    "rowIndex": 2,
     "subtasks": [
       {
         "title": "Research competitor pricing and business models",
@@ -115,6 +121,7 @@
     "title": "Create paper prototypes and conduct 10 usability tests with potential customers",
     "description": "Create paper prototypes and conduct 10 usability tests with potential customers. Create paper prototypes and conduct 10 usability tests with potential customers",
     "columnIndex": 2,
+    "rowIndex": 0,
     "subtasks": [
       {
         "title": "Create paper prototypes for version one",
@@ -132,6 +139,7 @@
     "title": "Research the market",
     "description": "We need to get a solid overview of the market to ensure we have up-to-date estimates of market size and demand.",
     "columnIndex": 2,
+    "rowIndex": 1,
     "subtasks": [
       {
         "title": "Write up research analysis",

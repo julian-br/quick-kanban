@@ -15,7 +15,7 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
   const taskQuery = useTask(taskId);
   const [taskDataToEdit, setTaskDataToEdit] = useState<Task>();
 
-  const taskPutMutation = useTaskMutation().put;
+  const taskUpdateMutation = useTaskMutation().update;
 
   useEffect(() => {
     setTaskDataToEdit(taskQuery.data);
@@ -42,10 +42,10 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
       onClose();
       return;
     }
-    taskPutMutation.mutate(taskDataToEdit, { onSuccess: onClose });
+    taskUpdateMutation.mutate(taskDataToEdit, { onSuccess: onClose });
   }
 
-  const isLoading = taskPutMutation.isLoading || taskQuery.isLoading;
+  const isLoading = taskUpdateMutation.isLoading || taskQuery.isLoading;
 
   return (
     <Modal

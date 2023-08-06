@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TaskData from "../mock-data/tasksData.json";
-import { Optional } from "../utils/utilityTypes";
 let tasksData: Task[] = TaskData;
 
 export interface Task {
@@ -9,6 +8,7 @@ export interface Task {
   title: string;
   description: string;
   columnIndex: number;
+  rowIndex: number;
   subtasks: Subtask[];
 }
 
@@ -33,19 +33,18 @@ export function useTask(taskId: string) {
   return taskQuery;
 }
 
-export function useTasks(boardId: string) {
-  const tasksQuery = useQuery({
-    queryKey: TASKS_FOR_BOARD_KEY(boardId),
-    queryFn: () => fetchTasksForBoard(boardId),
-  });
-
-  return tasksQuery;
-}
-
 export function useTaskMutation() {
   const queryClient = useQueryClient();
-  const taskPutMutation = useMutation({
-    mutationFn: putTask,
+  const taskPostMutation = useMutation({
+    mutationFn: postTask,
+    onSuccess: (mutatedTask) =>
+      queryClient.invalidateQueries({
+        queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
+      }),
+  });
+
+  const taskUpdateMutation = useMutation({
+    mutationFn: updateTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
         queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
@@ -60,7 +59,20 @@ export function useTaskMutation() {
       }),
   });
 
-  return { put: taskPutMutation, delete: taskDeleteMutation };
+  return {
+    post: taskPostMutation,
+    update: taskUpdateMutation,
+    delete: taskDeleteMutation,
+  };
+}
+
+export function useTasks(boardId: string) {
+  const tasksQuery = useQuery({
+    queryKey: TASKS_FOR_BOARD_KEY(boardId),
+    queryFn: () => fetchTasksForBoard(boardId),
+  });
+
+  return tasksQuery;
 }
 
 async function fetchTask(taskId: string) {
@@ -69,27 +81,49 @@ async function fetchTask(taskId: string) {
     throw new Error(`No Task with the id: ${taskId}`);
   }
 
-  return matchingTask;
+  return structuredClone(matchingTask);
 }
 
-async function putTask(task: Optional<Task, "id">) {
-  if (task.id === undefined) {
-    const taskId = parseInt(tasksData.at(-1)!.id) + 1;
-    const newTask = { ...task, id: taskId.toString() };
-    tasksData.push(newTask);
-    return newTask;
+async function postTask(
+  taskToPost: Omit<Task, "id" | "columnIndex" | "rowIndex">
+) {
+  const taskId = findNextAvailableTaskId();
+
+  // always post a task to the first column for now
+  const columnIndex = 0;
+  const rowIndex = getNextAvailableRowIndex(taskToPost.boardId, columnIndex);
+
+  const newTask = {
+    ...taskToPost,
+    id: taskId.toString(),
+    columnIndex,
+    rowIndex,
+  };
+  tasksData.push(newTask);
+  return taskToPost;
+}
+
+async function updateTask(taskToUpdate: Task) {
+  const oldTaskData = tasksData.find((task) => task.id === taskToUpdate.id);
+  if (oldTaskData === undefined) {
+    throw new Error("no task with this id: " + taskToUpdate.id);
+  }
+
+  const gridPostionShouldUpdate =
+    taskToUpdate.columnIndex !== oldTaskData.columnIndex ||
+    taskToUpdate.rowIndex !== oldTaskData.rowIndex;
+
+  if (gridPostionShouldUpdate) {
+    updateGridPostions(taskToUpdate);
   }
 
   const indexOfTaskToUpdate = tasksData.findIndex(
-    (taskData) => taskData.id === task.id
+    (taskData) => taskData.id === taskToUpdate.id
   );
-  if (indexOfTaskToUpdate === -1) {
-    throw new Error("no task with this id");
-  }
 
-  tasksData[indexOfTaskToUpdate] = task as Task;
-
-  return task;
+  /* tasksData[indexOfTaskToUpdate] = taskToUpdate;
+   */
+  return taskToUpdate;
 }
 
 async function deleteTask(taskId: string) {
@@ -108,7 +142,7 @@ async function fetchTasksForBoard(boardId: string) {
     (taskData) => taskData.boardId === boardId
   );
 
-  return matchingTasks;
+  return structuredClone(matchingTasks);
 }
 
 export function deleteTasksForBoard(boardId: string) {
@@ -117,4 +151,60 @@ export function deleteTasksForBoard(boardId: string) {
   );
 
   tasksData = tasksDataWithDeletedTasks;
+}
+
+function getNextAvailableRowIndex(boardId: string, columnIndex: number) {
+  const currentTasksInColumn = tasksData.filter(
+    (task) => task.boardId === boardId && task.columnIndex === columnIndex
+  );
+  const currentTasksInColumnSortedByRowIndex = currentTasksInColumn.sort(
+    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
+  );
+
+  return currentTasksInColumnSortedByRowIndex.at(-1)!.rowIndex + 1;
+}
+
+function findNextAvailableTaskId() {
+  return parseInt(tasksData.at(-1)!.id) + 1;
+}
+
+function updateGridPostions(taskWithNewPostion: Task) {
+  const allTasksOfBoard = tasksData.filter(
+    (task) => (task.boardId = taskWithNewPostion.boardId)
+  );
+
+  const taskWithOldPostion = allTasksOfBoard.find(
+    (task) => task.id === taskWithNewPostion.id
+  )!;
+
+  const grid: Task[][] = [];
+
+  allTasksOfBoard.forEach((task) => {
+    if (grid[task.columnIndex] === undefined) {
+      grid[task.columnIndex] = [];
+    }
+    grid[task.columnIndex][task.rowIndex] = task;
+  });
+
+  // remove task from old postion
+  grid[taskWithOldPostion.columnIndex].splice(taskWithOldPostion.rowIndex, 1);
+
+  // add task at new postion
+  grid[taskWithNewPostion.columnIndex].splice(
+    taskWithNewPostion.rowIndex,
+    0,
+    taskWithNewPostion
+  );
+
+  //reassign inindices
+  grid.forEach((_, columnIndex) => {
+    grid[columnIndex].forEach((_, rowIndex) => {
+      const taskInGrid = grid[columnIndex][rowIndex];
+      const taskData = tasksData.find(
+        (taskData) => taskData.id === taskInGrid.id
+      )!;
+      taskData.columnIndex = columnIndex;
+      taskData.rowIndex = rowIndex;
+    });
+  });
 }

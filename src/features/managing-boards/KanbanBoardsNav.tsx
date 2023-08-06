@@ -44,19 +44,16 @@ export default function KanbanBoardsNav({ boardId }: Props) {
 }
 
 function CreateNewBoardButton() {
-  const appModalManager = useAppModalManager();
+  const { showModal } = useAppModalManager();
 
   return (
     <Button
       variant="custom"
-      onClick={() => appModalManager.showModal("createBoardModal")}
+      onClick={() => showModal("createBoardModal")}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">
-        <FontAwesomeIcon
-          className="h-3 mr-1 text-primary-300"
-          icon={faPlus}
-        ></FontAwesomeIcon>
+        <FontAwesomeIcon className="h-3 mr-1 text-primary-300" icon={faPlus} />
         <span className="text-primary-300">Create New Board</span>
       </div>
     </Button>

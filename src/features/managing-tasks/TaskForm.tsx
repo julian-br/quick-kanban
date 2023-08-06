@@ -11,11 +11,13 @@ interface TaskFormProps {
   onSubmit: (editedTask: EditedTask) => void;
 }
 
-export type EditedTask = Omit<Task, "id" | "boardId">;
+export type EditedTask = Omit<
+  Task,
+  "id" | "columnIndex" | "rowIndex" | "boardId"
+>;
 
 function createEmptyTask(): EditedTask {
   return {
-    columnIndex: 0,
     subtasks: [{ title: "", isCompleted: false }],
     description: "",
     title: "",
