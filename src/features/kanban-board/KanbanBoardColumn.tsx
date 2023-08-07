@@ -1,16 +1,17 @@
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
+import { KanbanBoardColumn as KanbanBoardColumnData } from "../../api/kanbanBoard";
 interface KanbanBoardColumnProps {
-  columnName: string;
-  tasks: Task[];
+  column: KanbanBoardColumnData;
+  columnTasks: Task[];
 }
 
 export default function KanbanBoardColumn({
-  columnName,
-  tasks,
+  column,
+  columnTasks,
 }: KanbanBoardColumnProps) {
-  const ammountOfTask = tasks.length;
+  const ammountOfTask = column.taskIds.length;
 
   return (
     <div className="px-2 shrink-0 basis-[25rem] grow-0">
@@ -18,11 +19,11 @@ export default function KanbanBoardColumn({
         <div className="flex items-center">
           <span className="w-4 h-4 bg-amber-300 rounded-full mr-3"></span>
           <span>
-            {columnName} ({ammountOfTask})
+            {column.title} ({ammountOfTask})
           </span>
         </div>
       </h3>
-      <TaskList columnName={columnName} tasks={tasks} />
+      <TaskList columnName={column.title} tasks={columnTasks} />
     </div>
   );
 }
@@ -34,10 +35,6 @@ function TaskList({
   columnName: string;
   tasks: Task[];
 }) {
-  const tasksSortedByRowIndex = [...tasks].sort(
-    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
-  );
-
   return (
     <Droppable droppableId={columnName}>
       {(providedDroppable) => (
@@ -46,8 +43,12 @@ function TaskList({
           className="flex flex-col h-full"
           {...providedDroppable.droppableProps}
         >
-          {tasksSortedByRowIndex.map((taskData) => (
-            <KanbanBoardTask key={taskData.id} taskData={taskData} />
+          {tasks.map((taskData, rowIndex) => (
+            <KanbanBoardTask
+              rowIndex={rowIndex}
+              key={taskData.id}
+              taskData={taskData}
+            />
           ))}
           <div className="w-0">{providedDroppable.placeholder}</div>
         </div>

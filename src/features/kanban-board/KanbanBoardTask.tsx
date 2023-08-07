@@ -4,9 +4,13 @@ import { useAppModalManager } from "../../appModalManager";
 
 interface KanbanBoardTaskProps {
   taskData: Task;
+  rowIndex: number;
 }
 
-export default function KanbanBoardTask({ taskData }: KanbanBoardTaskProps) {
+export default function KanbanBoardTask({
+  taskData,
+  rowIndex,
+}: KanbanBoardTaskProps) {
   const amountOfSubtasks = taskData.subtasks.length;
   const amountOfCompletedSubtasks = taskData.subtasks.filter(
     (subtaskData) => subtaskData.isCompleted
@@ -21,7 +25,7 @@ export default function KanbanBoardTask({ taskData }: KanbanBoardTaskProps) {
   }
 
   return (
-    <Draggable draggableId={taskData.id} index={taskData.rowIndex}>
+    <Draggable draggableId={taskData.id} index={rowIndex}>
       {(providedDraggable, { isDragging }) => (
         <div
           ref={providedDraggable.innerRef}

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import {
   KanbanBoardColumn,
   useKanbanBoard,
-  useKanbanBoardsMutation,
+  useKanbanBoardMutation,
 } from "../../api/kanbanBoard";
 import Form from "../../components/Form";
 import ListInput from "../../components/Input/ListInput";
@@ -23,7 +23,7 @@ export default function EditBoardModal(props: EditBoardModalProps) {
   }
 
   const [boardData, setBoardData] = useState(activeBoardQuery.data);
-  const boardUpdateMutation = useKanbanBoardsMutation().update;
+  const boardUpdateMutation = useKanbanBoardMutation().update;
   const isEdited = useRef(false);
 
   function handleBoardNameChange(newBoardName: string) {
@@ -81,6 +81,7 @@ function ColumnInput({
         ...columns,
         {
           title: "",
+          taskIds: [],
         },
       ]);
       return;

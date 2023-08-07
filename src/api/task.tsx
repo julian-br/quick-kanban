@@ -7,8 +7,6 @@ export interface Task {
   boardId: string;
   title: string;
   description: string;
-  columnIndex: number;
-  rowIndex: number;
   subtasks: Subtask[];
 }
 
@@ -89,15 +87,9 @@ async function postTask(
 ) {
   const taskId = findNextAvailableTaskId();
 
-  // always post a task to the first column for now
-  const columnIndex = 0;
-  const rowIndex = getNextAvailableRowIndex(taskToPost.boardId, columnIndex);
-
   const newTask = {
     ...taskToPost,
     id: taskId.toString(),
-    columnIndex,
-    rowIndex,
   };
   tasksData.push(newTask);
   return taskToPost;
@@ -107,14 +99,6 @@ async function updateTask(taskToUpdate: Task) {
   const oldTaskData = tasksData.find((task) => task.id === taskToUpdate.id);
   if (oldTaskData === undefined) {
     throw new Error("no task with this id: " + taskToUpdate.id);
-  }
-
-  const gridPostionShouldUpdate =
-    taskToUpdate.columnIndex !== oldTaskData.columnIndex ||
-    taskToUpdate.rowIndex !== oldTaskData.rowIndex;
-
-  if (gridPostionShouldUpdate) {
-    updateGridPostions(taskToUpdate);
   }
 
   const indexOfTaskToUpdate = tasksData.findIndex(
@@ -133,7 +117,6 @@ async function deleteTask(taskId: string) {
   }
 
   const taskToDelete = tasksData[indexOfTaskToDelete];
-  updateGridPostions(taskToDelete, true);
   tasksData.splice(indexOfTaskToDelete, 1);
 
   return taskToDelete;
@@ -155,65 +138,7 @@ export function deleteTasksForBoard(boardId: string) {
   tasksData = tasksDataWithDeletedTasks;
 }
 
-function getNextAvailableRowIndex(boardId: string, columnIndex: number) {
-  const currentTasksInColumn = tasksData.filter(
-    (task) => task.boardId === boardId && task.columnIndex === columnIndex
-  );
-  const currentTasksInColumnSortedByRowIndex = currentTasksInColumn.sort(
-    (taskA, taskB) => taskA.rowIndex - taskB.rowIndex
-  );
-
-  const lastRowIndex = currentTasksInColumnSortedByRowIndex.at(-1)?.rowIndex;
-
-  return lastRowIndex ?? 0;
-}
-
 function findNextAvailableTaskId() {
   const lastTaskId = tasksData.at(-1);
   return lastTaskId ? parseInt(lastTaskId.id) + 1 : "1";
-}
-
-function updateGridPostions(
-  updatedTask: Task,
-  taskWasDeleted: boolean = false
-) {
-  const allTasksOfBoard = tasksData.filter(
-    (task) => task.boardId === updatedTask.boardId
-  );
-
-  const taskWithOldPostion = allTasksOfBoard.find(
-    (task) => task.id === updatedTask.id
-  )!;
-
-  const grid: Task[][] = [];
-
-  allTasksOfBoard.forEach((task) => {
-    if (grid[task.columnIndex] === undefined) {
-      grid[task.columnIndex] = [];
-    }
-    grid[task.columnIndex][task.rowIndex] = task;
-  });
-
-  // remove task from old postion
-  grid[taskWithOldPostion.columnIndex].splice(taskWithOldPostion.rowIndex, 1);
-
-  if (taskWasDeleted === false) {
-    // add task at new postion
-    if (grid[updatedTask.columnIndex] === undefined) {
-      grid[updatedTask.columnIndex] = [];
-    }
-    grid[updatedTask.columnIndex].splice(updatedTask.rowIndex, 0, updatedTask);
-  }
-
-  //reassign inindices
-  grid.forEach((_, columnIndex) => {
-    grid[columnIndex].forEach((_, rowIndex) => {
-      const taskInGrid = grid[columnIndex][rowIndex];
-      const taskData = tasksData.find(
-        (taskData) => taskData.id === taskInGrid.id
-      )!;
-      taskData.columnIndex = columnIndex;
-      taskData.rowIndex = rowIndex;
-    });
-  });
 }

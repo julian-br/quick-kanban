@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import BoardsData from "../mock-data/boardData.json";
-import { Optional } from "../utils/utilityTypes";
 import { deleteTasksForBoard, TASKS_FOR_BOARD_KEY } from "./task";
 import KanbanBoard from "../features/kanban-board/KanbanBoard";
 const boardsData: KanbanBoard[] = BoardsData;
@@ -13,6 +12,7 @@ export interface KanbanBoard {
 
 export interface KanbanBoardColumn {
   title: string;
+  taskIds: string[];
 }
 
 const BOARDS_BASE_KEY = "boards";
@@ -35,7 +35,7 @@ export function useKanbanBoards() {
   return kanbanBoardsQuery;
 }
 
-export function useKanbanBoardsMutation() {
+export function useKanbanBoardMutation() {
   const queryClient = useQueryClient();
   const postKanbanBoardMutation = useMutation({
     mutationFn: postKanbanBoard,

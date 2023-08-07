@@ -2,15 +2,19 @@
   {
     "id": "1",
     "name": "Platform Launch",
-    "columns": [{ "title": "Todo" }, { "title": "Doing" }, { "title": "Done" }]
+    "columns": [
+      { "title": "Todo", "taskIds": ["1", "3", "4"] },
+      { "title": "Doing", "taskIds": ["9", "8", "10"] },
+      { "title": "Done", "taskIds": ["13", "16"] }
+    ]
   },
   {
     "id": "2",
     "name": "Marketing Plan",
     "columns": [
-      { "title": "Idea" },
-      { "title": "Planning" },
-      { "title": "Done" }
+      { "title": "Idea", "taskIds": [] },
+      { "title": "Planning", "taskIds": [] },
+      { "title": "Done", "taskIds": [] }
     ]
   }
 ]

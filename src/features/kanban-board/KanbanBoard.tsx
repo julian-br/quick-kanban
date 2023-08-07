@@ -1,4 +1,8 @@
-import { useKanbanBoard } from "../../api/kanbanBoard";
+import {
+  KanbanBoardColumn as KanbanBoardColumnData,
+  useKanbanBoard,
+  useKanbanBoardMutation,
+} from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
 import { useTaskMutation, useTasks } from "../../api/task";
@@ -12,14 +16,8 @@ interface KanbanBoardProps {
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   const boardQuery = useKanbanBoard(boardId);
   const tasksQuery = useTasks(boardId);
-  const taskUpdateMutation = useTaskMutation().update;
+  const boardUpdateMutation = useKanbanBoardMutation().update;
   const { showModal } = useAppModalManager();
-
-  function filterTasksByColumnIndex(columnIndex: number) {
-    return (
-      tasksQuery.data?.filter((task) => task.columnIndex === columnIndex) ?? []
-    );
-  }
 
   function handleCreateColumnClick() {
     showModal("editBoardModal", { boardId: boardId });
@@ -28,32 +26,57 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   function handleTaskDragEnd({
     draggableId: draggedTaskId,
     destination,
+    source,
   }: DropResult) {
-    if (!destination) {
+    if (!destination || !source || !boardQuery.isSuccess) {
       return;
     }
-    const rowIndex = destination.index;
-    const columnIndex = boardQuery.data!.columns.findIndex(
-      (column) => column.title === destination.droppableId
-    );
-    const taskToMutate = tasksQuery.data?.find(
-      (task) => task.id === draggedTaskId
-    );
+    const columns = structuredClone(boardQuery.data.columns);
 
-    if (taskToMutate !== undefined) {
-      taskUpdateMutation.mutate({ ...taskToMutate, columnIndex, rowIndex });
+    columns.forEach((column) => {
+      const isSourceColumn = column.title === source.droppableId;
+      const isDestinationColumn = column.title === destination.droppableId;
+
+      if (isSourceColumn) {
+        column.taskIds.splice(source.index, 1);
+      }
+
+      if (isDestinationColumn) {
+        column.taskIds.splice(destination.index, 0, draggedTaskId);
+      }
+    });
+
+    boardUpdateMutation.mutate({ ...boardQuery.data, columns });
+  }
+
+  function getTasksForColumn(column: KanbanBoardColumnData) {
+    const allTasks = tasksQuery.data;
+
+    if (allTasks === undefined) {
+      return [];
     }
+
+    const tasksForColumn = column.taskIds.map((taskId) => {
+      const correspondingTask = allTasks.find((task) => task.id === taskId);
+      if (correspondingTask === undefined) {
+        throw new Error("no Task with the id: " + taskId);
+      }
+
+      return correspondingTask;
+    });
+
+    return tasksForColumn;
   }
 
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
       {tasksQuery.isSuccess && boardQuery.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
-          {boardQuery.data.columns.map((column, columnIndex) => (
+          {boardQuery.data.columns.map((column) => (
             <KanbanBoardColumn
-              tasks={filterTasksByColumnIndex(columnIndex)}
+              columnTasks={getTasksForColumn(column)}
               key={column.title}
-              columnName={column.title}
+              column={column}
             />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />

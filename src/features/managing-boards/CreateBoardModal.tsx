@@ -4,7 +4,7 @@ import TextInput from "../../components/Input/TextInput";
 import { useState } from "react";
 import Form from "../../components/Form";
 import { useLocation } from "wouter";
-import { useKanbanBoardsMutation } from "../../api/kanbanBoard";
+import { useKanbanBoardMutation } from "../../api/kanbanBoard";
 import ListInput from "../../components/Input/ListInput";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
@@ -12,13 +12,14 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [boardName, setBoardName] = useState("");
 
   const [_, setLocation] = useLocation();
-  const boardPostMutation = useKanbanBoardsMutation().post;
+  const boardPostMutation = useKanbanBoardMutation().post;
 
   function handleSubmit() {
     const newBoard = {
       name: boardName,
       columns: boardColumnNames.map((columnName) => ({
         title: columnName,
+        taskIds: [],
       })),
     };
     boardPostMutation.mutate(newBoard, {
