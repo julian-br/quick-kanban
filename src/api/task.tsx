@@ -1,18 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { tasksData } from "../mock-data/mockData";
+import { boardsData, tasksData } from "../mock-data/mockData";
 import { Task } from "./types";
 import { kanbanBoardQueryKey, taskQueryKey } from "./queryKeys";
 
-export const TASKS_BASE_KEY = "tasks";
-export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
-  TASKS_BASE_KEY,
-  "for-board",
-  boardId,
-];
-
 export function useTaskQuery(taskId: string) {
   const taskQuery = useQuery({
-    queryKey: [TASKS_BASE_KEY, taskId],
+    queryKey: taskQueryKey(taskId),
     queryFn: () => fetchTask(taskId),
   });
 
@@ -21,12 +14,17 @@ export function useTaskQuery(taskId: string) {
 
 export function useTaskMutation() {
   const queryClient = useQueryClient();
+
   const taskPostMutation = useMutation({
     mutationFn: postTask,
-    onSuccess: (mutatedTask) =>
+    onSuccess: async (postedTask, { boardId }) => {
       queryClient.invalidateQueries({
-        queryKey: [""],
-      }),
+        queryKey: taskQueryKey(postedTask.id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: kanbanBoardQueryKey(boardId),
+      });
+    },
   });
 
   const taskUpdateMutation = useMutation({
@@ -39,12 +37,12 @@ export function useTaskMutation() {
 
   const taskDeleteMutation = useMutation({
     mutationFn: deleteTask,
-    onSuccess: (deletedTask) => {
+    onSuccess: (boardOfDeltedTask, taskId) => {
       queryClient.invalidateQueries({
-        queryKey: kanbanBoardQueryKey(),
+        queryKey: kanbanBoardQueryKey(boardOfDeltedTask),
       });
-      queryClient.invalidateQueries({
-        queryKey: ["boards"],
+      queryClient.removeQueries({
+        queryKey: taskQueryKey(taskId),
       });
     },
   });
@@ -65,17 +63,30 @@ async function fetchTask(taskId: string) {
   return structuredClone(matchingTask);
 }
 
-async function postTask(
-  taskToPost: Omit<Task, "id" | "columnIndex" | "rowIndex">
-) {
-  const taskId = findNextAvailableTaskId();
+type TaskPostBody = Omit<Task, "id" | "columnIndex" | "rowIndex">;
 
+async function postTask({
+  taskPostBody,
+  boardId,
+}: {
+  taskPostBody: TaskPostBody;
+  boardId: string;
+}) {
+  const newTaskId = findNextAvailableTaskId();
   const newTask = {
-    ...taskToPost,
-    id: taskId.toString(),
+    ...taskPostBody,
+    id: newTaskId.toString(),
   };
+
+  const matchingBoard = boardsData.find((board) => board.id === boardId);
+  if (matchingBoard === undefined) {
+    throw new Error("no board with the id: " + boardId);
+  }
+
+  matchingBoard.columns[0].taskIds.push(newTaskId);
   tasksData.push(newTask);
-  return taskToPost;
+
+  return newTask;
 }
 
 async function updateTask(taskToUpdate: Task) {
@@ -94,18 +105,20 @@ async function updateTask(taskToUpdate: Task) {
 }
 
 async function deleteTask(taskId: string) {
-  const indexOfTaskToDelete = tasksData.findIndex((task) => task.id === taskId);
-  if (indexOfTaskToDelete === -1) {
-    throw new Error("no task with this id");
+  for (const board of boardsData) {
+    for (const column of board.columns) {
+      const indexOfTaskId = column.taskIds.indexOf(taskId);
+      if (indexOfTaskId !== -1) {
+        column.taskIds.splice(indexOfTaskId, 1);
+        return board.id;
+      }
+    }
   }
 
-  const taskToDelete = tasksData[indexOfTaskToDelete];
-  tasksData.splice(indexOfTaskToDelete, 1);
-
-  return taskToDelete;
+  throw new Error("task could not be deleted");
 }
 
 function findNextAvailableTaskId() {
   const lastTaskId = tasksData.at(-1);
-  return lastTaskId ? parseInt(lastTaskId.id) + 1 : "1";
+  return lastTaskId ? (parseInt(lastTaskId.id) + 1).toString() : "1";
 }

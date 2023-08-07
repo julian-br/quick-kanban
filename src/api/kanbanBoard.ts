@@ -60,7 +60,8 @@ async function fetchKanbanBoardById(boardId: string) {
   return structuredClone(matchingBoard);
 }
 
-async function postKanbanBoard(kanbanBoard: Omit<KanbanBoard, "id">) {
+type KanbanBoardPostBody = Omit<KanbanBoard, "id">;
+async function postKanbanBoard(kanbanBoard: KanbanBoardPostBody) {
   const newBoardId = findNextAvailableBoardId();
 
   const newBoard = { ...kanbanBoard, id: newBoardId.toString() };
