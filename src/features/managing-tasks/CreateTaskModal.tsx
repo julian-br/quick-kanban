@@ -14,7 +14,6 @@ export default function CreateTaskModal(props: CreateTaskModalProps) {
   function handleSubmit(editedTask: EditedTask) {
     const newTask = {
       ...editedTask,
-      boardId: props.boardId,
     };
 
     taskPostMutation.mutate(newTask, { onSuccess: props.onClose });

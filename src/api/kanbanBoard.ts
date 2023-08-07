@@ -1,34 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import BoardsData from "../mock-data/boardData.json";
-import { deleteTasksForBoard, TASKS_FOR_BOARD_KEY } from "./task";
-import KanbanBoard from "../features/kanban-board/KanbanBoard";
-const boardsData: KanbanBoard[] = BoardsData;
+import { boardsData } from "../mock-data/mockData";
+import { KanbanBoard } from "./types";
+import { kanbanBoardQueryKey } from "./queryKeys";
 
-export interface KanbanBoard {
-  id: string;
-  name: string;
-  columns: KanbanBoardColumn[];
-}
-
-export interface KanbanBoardColumn {
-  title: string;
-  taskIds: string[];
-}
-
-const BOARDS_BASE_KEY = "boards";
-
-export function useKanbanBoard(boardId: string) {
+export function useKanbanBoardQuery(boardId: string) {
   const kanbanBoardQuery = useQuery({
-    queryKey: [BOARDS_BASE_KEY, boardId],
+    queryKey: kanbanBoardQueryKey(boardId),
     queryFn: () => fetchKanbanBoardById(boardId),
   });
 
   return kanbanBoardQuery;
 }
 
-export function useKanbanBoards() {
+export function useKanbanBoardsQuery() {
   const kanbanBoardsQuery = useQuery({
-    queryKey: [BOARDS_BASE_KEY],
+    queryKey: kanbanBoardQueryKey(),
     queryFn: fetchKanbanBoards,
   });
 
@@ -39,20 +25,19 @@ export function useKanbanBoardMutation() {
   const queryClient = useQueryClient();
   const postKanbanBoardMutation = useMutation({
     mutationFn: postKanbanBoard,
-    onSuccess: () => queryClient.invalidateQueries([BOARDS_BASE_KEY]),
+    onSuccess: () => queryClient.invalidateQueries(kanbanBoardQueryKey()),
   });
 
   const updateKanabanBoardMutation = useMutation({
     mutationFn: updateKanbanBoard,
-    onSuccess: () => queryClient.invalidateQueries([BOARDS_BASE_KEY]),
+    onSuccess: () => queryClient.invalidateQueries(kanbanBoardQueryKey()),
   });
 
   const deleteKanbanBoardMutation = useMutation({
     mutationFn: deleteKanbanBoard,
     onSuccess: (deletedBoard) => {
-      queryClient.removeQueries([BOARDS_BASE_KEY, deletedBoard.id]);
-      queryClient.invalidateQueries(TASKS_FOR_BOARD_KEY(deletedBoard.id));
-      return queryClient.invalidateQueries([BOARDS_BASE_KEY]);
+      queryClient.removeQueries(kanbanBoardQueryKey(deletedBoard.id));
+      return queryClient.invalidateQueries(kanbanBoardQueryKey());
     },
   });
 
@@ -92,8 +77,8 @@ async function updateKanbanBoard(kanbanBoard: KanbanBoard) {
     throw new Error("no board with this id found");
   }
 
-  boardsData[indexOfBoardToMutate] = { ...kanbanBoard } as KanbanBoard;
-  return kanbanBoard as KanbanBoard;
+  boardsData[indexOfBoardToMutate] = { ...kanbanBoard };
+  return kanbanBoard;
 }
 
 async function deleteKanbanBoard(boardId: string) {
@@ -106,8 +91,27 @@ async function deleteKanbanBoard(boardId: string) {
   }
 
   const deletedBoard = boardsData.splice(indexOfBoardToDelete, 1);
-  deleteTasksForBoard(boardId);
   return deletedBoard[0];
+}
+
+export function deleteTaskFromColumn(deleteTaskId: string, boardId: string) {
+  const boardToDeleteTaskFrom = boardsData.find(
+    (board) => board.id === boardId
+  );
+
+  if (boardToDeleteTaskFrom === undefined) {
+    throw new Error("no board with the id: " + boardId);
+  }
+
+  boardToDeleteTaskFrom.columns.forEach((column) =>
+    column.taskIds.forEach((taskId, rowIndex) => {
+      if (taskId === deleteTaskId) {
+        column.taskIds.splice(rowIndex, 1);
+      }
+    })
+  );
+
+  console.log(boardToDeleteTaskFrom);
 }
 
 function findNextAvailableBoardId() {

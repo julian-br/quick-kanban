@@ -1,6 +1,6 @@
 import Button from "../../components/Button";
 import { useLocation } from "wouter";
-import { useKanbanBoards } from "../../api/kanbanBoard";
+import { useKanbanBoardsQuery } from "../../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 import { useAppModalManager } from "../../appModalManager";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function KanbanBoardsNav({ boardId }: Props) {
-  const boards = useKanbanBoards();
+  const boards = useKanbanBoardsQuery();
   const [_, setLocation] = useLocation();
 
   function handleNavEntryClicked(boardId: string) {

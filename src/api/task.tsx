@@ -1,19 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import TaskData from "../mock-data/tasksData.json";
-let tasksData: Task[] = TaskData;
-
-export interface Task {
-  id: string;
-  boardId: string;
-  title: string;
-  description: string;
-  subtasks: Subtask[];
-}
-
-export interface Subtask {
-  title: string;
-  isCompleted: boolean;
-}
+import { tasksData } from "../mock-data/mockData";
+import { Task } from "./types";
+import { kanbanBoardQueryKey, taskQueryKey } from "./queryKeys";
 
 export const TASKS_BASE_KEY = "tasks";
 export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
@@ -22,7 +10,7 @@ export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
   boardId,
 ];
 
-export function useTask(taskId: string) {
+export function useTaskQuery(taskId: string) {
   const taskQuery = useQuery({
     queryKey: [TASKS_BASE_KEY, taskId],
     queryFn: () => fetchTask(taskId),
@@ -37,7 +25,7 @@ export function useTaskMutation() {
     mutationFn: postTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
-        queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
+        queryKey: [""],
       }),
   });
 
@@ -45,16 +33,20 @@ export function useTaskMutation() {
     mutationFn: updateTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
-        queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
+        queryKey: taskQueryKey(mutatedTask.id),
       }),
   });
 
   const taskDeleteMutation = useMutation({
     mutationFn: deleteTask,
-    onSuccess: (deletedTask) =>
+    onSuccess: (deletedTask) => {
       queryClient.invalidateQueries({
-        queryKey: TASKS_FOR_BOARD_KEY(deletedTask.boardId),
-      }),
+        queryKey: kanbanBoardQueryKey(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["boards"],
+      });
+    },
   });
 
   return {
@@ -62,15 +54,6 @@ export function useTaskMutation() {
     update: taskUpdateMutation,
     delete: taskDeleteMutation,
   };
-}
-
-export function useTasks(boardId: string) {
-  const tasksQuery = useQuery({
-    queryKey: TASKS_FOR_BOARD_KEY(boardId),
-    queryFn: () => fetchTasksForBoard(boardId),
-  });
-
-  return tasksQuery;
 }
 
 async function fetchTask(taskId: string) {
@@ -120,22 +103,6 @@ async function deleteTask(taskId: string) {
   tasksData.splice(indexOfTaskToDelete, 1);
 
   return taskToDelete;
-}
-
-async function fetchTasksForBoard(boardId: string) {
-  const matchingTasks = tasksData.filter(
-    (taskData) => taskData.boardId === boardId
-  );
-
-  return structuredClone(matchingTasks);
-}
-
-export function deleteTasksForBoard(boardId: string) {
-  const tasksDataWithDeletedTasks = tasksData.filter(
-    (task) => task.boardId !== boardId
-  );
-
-  tasksData = tasksDataWithDeletedTasks;
 }
 
 function findNextAvailableTaskId() {

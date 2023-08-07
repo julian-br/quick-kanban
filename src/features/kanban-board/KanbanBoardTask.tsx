@@ -1,31 +1,36 @@
-import { Draggable, DraggableProvided } from "react-beautiful-dnd";
-import { Task } from "../../api/task";
+import { Draggable } from "react-beautiful-dnd";
+import { useTaskQuery } from "../../api/task";
 import { useAppModalManager } from "../../appModalManager";
 
 interface KanbanBoardTaskProps {
-  taskData: Task;
+  taskId: string;
   rowIndex: number;
 }
 
 export default function KanbanBoardTask({
-  taskData,
+  taskId,
   rowIndex,
 }: KanbanBoardTaskProps) {
-  const amountOfSubtasks = taskData.subtasks.length;
-  const amountOfCompletedSubtasks = taskData.subtasks.filter(
-    (subtaskData) => subtaskData.isCompleted
-  ).length;
-
+  const taskQuery = useTaskQuery(taskId);
   const { showModal } = useAppModalManager();
+
+  if (!taskQuery.isSuccess) {
+    return <></>;
+  }
 
   function handleTaskClicked() {
     showModal("viewTaskModal", {
-      taskId: taskData.id,
+      taskId: taskQuery.data!.id,
     });
   }
 
+  const amountOfSubtasks = taskQuery.data.subtasks.length;
+  const amountOfCompletedSubtasks = taskQuery.data.subtasks.filter(
+    (subtaskData) => subtaskData.isCompleted
+  ).length;
+
   return (
-    <Draggable draggableId={taskData.id} index={rowIndex}>
+    <Draggable draggableId={taskQuery.data.id} index={rowIndex}>
       {(providedDraggable, { isDragging }) => (
         <div
           ref={providedDraggable.innerRef}
@@ -37,7 +42,7 @@ export default function KanbanBoardTask({
           onClick={handleTaskClicked}
         >
           <h4 className="text-lg font-bold text-slate-200 group-hover:text-primary-300">
-            {taskData.title}
+            {taskQuery.data.title}
           </h4>
           <p className="text-slate-400 text-sm font-bold mb-2">
             {amountOfCompletedSubtasks} of {amountOfSubtasks} subtasks

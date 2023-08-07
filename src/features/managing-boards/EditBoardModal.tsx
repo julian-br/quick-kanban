@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import {
-  KanbanBoardColumn,
-  useKanbanBoard,
+  useKanbanBoardQuery,
   useKanbanBoardMutation,
 } from "../../api/kanbanBoard";
 import Form from "../../components/Form";
@@ -9,6 +8,7 @@ import ListInput from "../../components/Input/ListInput";
 import TextInput from "../../components/Input/TextInput";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
+import { KanbanBoardColumn } from "../../api/types";
 
 interface EditBoardModalProps {
   boardId: string;
@@ -16,7 +16,7 @@ interface EditBoardModalProps {
 }
 
 export default function EditBoardModal(props: EditBoardModalProps) {
-  const activeBoardQuery = useKanbanBoard(props.boardId);
+  const activeBoardQuery = useKanbanBoardQuery(props.boardId);
 
   if (activeBoardQuery.data === undefined) {
     return <></>;

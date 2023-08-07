@@ -1,16 +1,12 @@
 import { Droppable } from "react-beautiful-dnd";
-import { Task } from "../../api/task";
 import KanbanBoardTask from "./KanbanBoardTask";
-import { KanbanBoardColumn as KanbanBoardColumnData } from "../../api/kanbanBoard";
+import { KanbanBoardColumn as KanbanBoardColumnData } from "../../api/types";
+
 interface KanbanBoardColumnProps {
   column: KanbanBoardColumnData;
-  columnTasks: Task[];
 }
 
-export default function KanbanBoardColumn({
-  column,
-  columnTasks,
-}: KanbanBoardColumnProps) {
+export default function KanbanBoardColumn({ column }: KanbanBoardColumnProps) {
   const ammountOfTask = column.taskIds.length;
 
   return (
@@ -23,36 +19,24 @@ export default function KanbanBoardColumn({
           </span>
         </div>
       </h3>
-      <TaskList columnName={column.title} tasks={columnTasks} />
+      <Droppable droppableId={column.title}>
+        {(providedDroppable) => (
+          <div
+            ref={providedDroppable.innerRef}
+            className="flex flex-col h-full"
+            {...providedDroppable.droppableProps}
+          >
+            {column.taskIds.map((taskId, rowIndex) => (
+              <KanbanBoardTask
+                rowIndex={rowIndex}
+                key={taskId}
+                taskId={taskId}
+              />
+            ))}
+            <div className="w-0">{providedDroppable.placeholder}</div>
+          </div>
+        )}
+      </Droppable>
     </div>
-  );
-}
-
-function TaskList({
-  columnName,
-  tasks,
-}: {
-  columnName: string;
-  tasks: Task[];
-}) {
-  return (
-    <Droppable droppableId={columnName}>
-      {(providedDroppable) => (
-        <div
-          ref={providedDroppable.innerRef}
-          className="flex flex-col h-full"
-          {...providedDroppable.droppableProps}
-        >
-          {tasks.map((taskData, rowIndex) => (
-            <KanbanBoardTask
-              rowIndex={rowIndex}
-              key={taskData.id}
-              taskData={taskData}
-            />
-          ))}
-          <div className="w-0">{providedDroppable.placeholder}</div>
-        </div>
-      )}
-    </Droppable>
   );
 }

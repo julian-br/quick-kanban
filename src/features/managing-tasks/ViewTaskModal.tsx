@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Subtask, Task, useTask, useTaskMutation } from "../../api/task";
+import { Subtask, Task, useTaskQuery, useTaskMutation } from "../../api/task";
 import Modal from "../../components/Modal";
 import SubtaskList from "./SubtaskList";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -12,7 +12,7 @@ interface ViewTaskModalProps {
 }
 
 export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
-  const taskQuery = useTask(taskId);
+  const taskQuery = useTaskQuery(taskId);
   const [taskDataToEdit, setTaskDataToEdit] = useState<Task>();
 
   const taskUpdateMutation = useTaskMutation().update;
@@ -85,7 +85,7 @@ function ViewTaskModalHeader({
   taskTitle: string;
 }) {
   const { showModal } = useAppModalManager();
-  const taskQuery = useTask(taskId);
+  const taskQuery = useTaskQuery(taskId);
 
   return (
     <>

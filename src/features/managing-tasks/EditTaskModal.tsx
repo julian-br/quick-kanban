@@ -1,4 +1,4 @@
-import { Task, useTask, useTaskMutation } from "../../api/task";
+import { useTaskQuery, useTaskMutation } from "../../api/task";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
 import TaskForm, { EditedTask } from "./TaskForm";
@@ -9,7 +9,7 @@ interface EditTaskModalProps {
 }
 
 export default function EditTaskModal(props: EditTaskModalProps) {
-  const taskQuery = useTask(props.taskId);
+  const taskQuery = useTaskQuery(props.taskId);
   const taskUpdateMutation = useTaskMutation().update;
 
   function handleSubmit(editedTaskData: EditedTask) {
@@ -17,7 +17,7 @@ export default function EditTaskModal(props: EditTaskModalProps) {
       return;
     }
 
-    const editedTask: Task = {
+    const editedTask = {
       ...taskQuery.data,
       title: editedTaskData.title,
       description: editedTaskData.description,

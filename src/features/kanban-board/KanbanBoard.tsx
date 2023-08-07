@@ -1,11 +1,9 @@
 import {
-  KanbanBoardColumn as KanbanBoardColumnData,
-  useKanbanBoard,
+  useKanbanBoardQuery,
   useKanbanBoardMutation,
 } from "../../api/kanbanBoard";
 import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
-import { useTaskMutation, useTasks } from "../../api/task";
 import { useAppModalManager } from "../../appModalManager";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
@@ -14,13 +12,12 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
-  const boardQuery = useKanbanBoard(boardId);
-  const tasksQuery = useTasks(boardId);
+  const boardQuery = useKanbanBoardQuery(boardId);
   const boardUpdateMutation = useKanbanBoardMutation().update;
   const { showModal } = useAppModalManager();
 
   function handleCreateColumnClick() {
-    showModal("editBoardModal", { boardId: boardId });
+    showModal("editBoardModal", { boardId });
   }
 
   function handleTaskDragEnd({
@@ -49,35 +46,12 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     boardUpdateMutation.mutate({ ...boardQuery.data, columns });
   }
 
-  function getTasksForColumn(column: KanbanBoardColumnData) {
-    const allTasks = tasksQuery.data;
-
-    if (allTasks === undefined) {
-      return [];
-    }
-
-    const tasksForColumn = column.taskIds.map((taskId) => {
-      const correspondingTask = allTasks.find((task) => task.id === taskId);
-      if (correspondingTask === undefined) {
-        throw new Error("no Task with the id: " + taskId);
-      }
-
-      return correspondingTask;
-    });
-
-    return tasksForColumn;
-  }
-
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
-      {tasksQuery.isSuccess && boardQuery.isSuccess && (
+      {boardQuery.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
           {boardQuery.data.columns.map((column) => (
-            <KanbanBoardColumn
-              columnTasks={getTasksForColumn(column)}
-              key={column.title}
-              column={column}
-            />
+            <KanbanBoardColumn key={column.title} column={column} />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />
         </div>

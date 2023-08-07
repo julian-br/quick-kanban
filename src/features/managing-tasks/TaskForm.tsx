@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Subtask, Task } from "../../api/task";
+import { Subtask, Task } from "../../api/types";
 import Form from "../../components/Form";
 import TextInput from "../../components/Input/TextInput";
 import TextArea from "../../components/Input/TextArea";
