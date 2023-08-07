@@ -8,7 +8,11 @@ const boardsData: KanbanBoard[] = BoardsData;
 export interface KanbanBoard {
   id: string;
   name: string;
-  columns: string[];
+  columns: KanbanBoardColumn[];
+}
+
+export interface KanbanBoardColumn {
+  title: string;
 }
 
 const BOARDS_BASE_KEY = "boards";

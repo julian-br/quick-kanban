@@ -2,7 +2,7 @@ import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import TextInput from "../../components/Input/TextInput";
 import { useState } from "react";
-import Form, { useFormValidation } from "../../components/Form";
+import Form from "../../components/Form";
 import { useLocation } from "wouter";
 import { useKanbanBoardsMutation } from "../../api/kanbanBoard";
 import ListInput from "../../components/Input/ListInput";
@@ -14,45 +14,19 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [_, setLocation] = useLocation();
   const boardPostMutation = useKanbanBoardsMutation().post;
 
-  const { formErrors, validateForm } = useFormValidation({
-    boardName: () => (boardName?.length > 0 ? true : "Can't be empty"),
-    boardColumnNames: validateColumnNames,
-  });
-
-  function validateColumnNames() {
-    const noColumnsProvided = boardColumnNames.length === 0;
-    if (noColumnsProvided) {
-      return "Please add at least one column.";
-    }
-
-    const hasEmptyValues =
-      boardColumnNames.filter((columnName) => columnName === "").length > 0;
-    if (hasEmptyValues) {
-      return "Please provide a name for each column.";
-    }
-
-    const columnNamesSet = new Set(boardColumnNames);
-    const hasDuplicateNames = columnNamesSet.size !== boardColumnNames.length;
-    if (hasDuplicateNames) {
-      return "Please provide a unique name for each column.";
-    }
-    return true;
-  }
-
   function handleSubmit() {
-    const formIsValid = validateForm();
-    if (formIsValid) {
-      const newBoard = {
-        name: boardName,
-        columns: boardColumnNames,
-      };
-      boardPostMutation.mutate(newBoard, {
-        onSuccess: (mutatedBoard) => {
-          setLocation(`/board/${mutatedBoard.id}`);
-          onClose();
-        },
-      });
-    }
+    const newBoard = {
+      name: boardName,
+      columns: boardColumnNames.map((columnName) => ({
+        title: columnName,
+      })),
+    };
+    boardPostMutation.mutate(newBoard, {
+      onSuccess: (mutatedBoard) => {
+        setLocation(`/board/${mutatedBoard.id}`);
+        onClose();
+      },
+    });
   }
 
   return (
@@ -61,7 +35,6 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
         <TextInput
           value={boardName}
           onInput={setBoardName}
-          errorMessage={formErrors.boardName}
           name="test"
           label="Board Name"
           placeholder="e.g. Web Design"
@@ -73,7 +46,6 @@ export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
           addButtonText="Add new Column"
           values={boardColumnNames}
           onChange={setBoardColumnNames}
-          errorMessage={formErrors.boardColumnNames}
         />
         <Button type="submit" className="w-full mb-3 mt-8" variant="primary">
           Create New Board

@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
-import { useKanbanBoard, useKanbanBoardsMutation } from "../../api/kanbanBoard";
+import {
+  KanbanBoardColumn,
+  useKanbanBoard,
+  useKanbanBoardsMutation,
+} from "../../api/kanbanBoard";
 import Form from "../../components/Form";
 import ListInput from "../../components/Input/ListInput";
 import TextInput from "../../components/Input/TextInput";
@@ -22,13 +26,13 @@ export default function EditBoardModal(props: EditBoardModalProps) {
   const boardUpdateMutation = useKanbanBoardsMutation().update;
   const isEdited = useRef(false);
 
-  function editBoardName(newBoardName: string) {
+  function handleBoardNameChange(newBoardName: string) {
     setBoardData({ ...boardData, name: newBoardName });
     isEdited.current = true;
   }
 
-  function editColumnNames(newColumnNames: string[]) {
-    setBoardData({ ...boardData, columns: newColumnNames });
+  function handleColumnChange(newColumns: KanbanBoardColumn[]) {
+    setBoardData({ ...boardData, columns: newColumns });
     isEdited.current = true;
   }
 
@@ -45,19 +49,64 @@ export default function EditBoardModal(props: EditBoardModalProps) {
         <TextInput
           label="Board Name"
           value={boardData.name}
-          onInput={editBoardName}
+          onInput={handleBoardNameChange}
         />
-        <ListInput
-          className="mt-6"
-          label="Board Columns"
-          addButtonText="Add Column"
-          values={boardData.columns}
-          onChange={editColumnNames}
+        <ColumnInput
+          columns={boardData.columns}
+          onChange={handleColumnChange}
         />
         <Button className="mt-6 w-full" variant="primary" type="submit">
           Save Changes
         </Button>
       </Form>
     </Modal>
+  );
+}
+
+function ColumnInput({
+  columns,
+  onChange,
+}: {
+  columns: KanbanBoardColumn[];
+  onChange: (newSubtasks: KanbanBoardColumn[]) => void;
+}) {
+  const columnTitles = columns.map((subtask) => subtask.title);
+
+  function handleColumnChange(newColumnTitles: string[]) {
+    const columnWasAdded = newColumnTitles.length > columns.length;
+    const columnWasDeleted = newColumnTitles.length < columns.length;
+
+    if (columnWasAdded) {
+      onChange([
+        ...columns,
+        {
+          title: "",
+        },
+      ]);
+      return;
+    }
+
+    if (columnWasDeleted) {
+      onChange(
+        columns.filter((column) => newColumnTitles.includes(column.title))
+      );
+      return;
+    }
+
+    onChange(
+      columns.map((column, index) => ({
+        ...column,
+        title: newColumnTitles[index],
+      }))
+    );
+  }
+  return (
+    <ListInput
+      label="Board Columns"
+      inputPlaceHolder="e.g. Todo"
+      addButtonText="Add new Column"
+      values={columnTitles}
+      onChange={handleColumnChange}
+    />
   );
 }

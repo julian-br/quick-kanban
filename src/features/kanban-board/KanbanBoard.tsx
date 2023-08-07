@@ -33,8 +33,8 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
       return;
     }
     const rowIndex = destination.index;
-    const columnIndex = boardQuery.data!.columns.indexOf(
-      destination.droppableId
+    const columnIndex = boardQuery.data!.columns.findIndex(
+      (column) => column.title === destination.droppableId
     );
     const taskToMutate = tasksQuery.data?.find(
       (task) => task.id === draggedTaskId
@@ -49,11 +49,11 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     <DragDropContext onDragEnd={handleTaskDragEnd}>
       {tasksQuery.isSuccess && boardQuery.isSuccess && (
         <div className="h-full pt-7 flex px-4 select-none">
-          {boardQuery.data.columns.map((columnName, columnIndex) => (
+          {boardQuery.data.columns.map((column, columnIndex) => (
             <KanbanBoardColumn
               tasks={filterTasksByColumnIndex(columnIndex)}
-              key={columnName}
-              columnName={columnName}
+              key={column.title}
+              columnName={column.title}
             />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />
