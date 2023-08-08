@@ -1,7 +1,8 @@
 import { useTaskQuery, useTaskMutation } from "../../api/task";
+import { Task } from "../../api/types";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
-import TaskForm, { EditedTask } from "./TaskForm";
+import TaskForm from "./TaskForm";
 
 interface EditTaskModalProps {
   taskId: string;
@@ -12,18 +13,7 @@ export default function EditTaskModal(props: EditTaskModalProps) {
   const taskQuery = useTaskQuery(props.taskId);
   const taskUpdateMutation = useTaskMutation().update;
 
-  function handleSubmit(editedTaskData: EditedTask) {
-    if (!taskQuery.isSuccess) {
-      return;
-    }
-
-    const editedTask = {
-      ...taskQuery.data,
-      title: editedTaskData.title,
-      description: editedTaskData.description,
-      subtasks: editedTaskData.subtasks,
-    };
-
+  function handleSubmit(editedTask: Task) {
     taskUpdateMutation.mutate(editedTask, { onSuccess: props.onClose });
   }
 

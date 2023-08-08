@@ -6,17 +6,23 @@ import TextArea from "../../components/Input/TextArea";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
 
-interface TaskFormProps {
-  task?: Task;
-  onSubmit: (editedTask: EditedTask) => void;
-}
+export type CreatedTask = Omit<Task, "id">;
 
-export type EditedTask = Omit<
-  Task,
-  "id" | "columnIndex" | "rowIndex" | "boardId"
->;
+type CreateTaskFormProps = {
+  task?: undefined;
+  onSubmit: (createdTask: CreatedTask) => void;
+};
 
-function createEmptyTask(): EditedTask {
+type EditTaskFormProps = {
+  task: Task;
+  onSubmit: (editedTask: Task) => void;
+};
+
+type TaskFormProps<T> = T extends Task
+  ? EditTaskFormProps
+  : CreateTaskFormProps;
+
+function createEmptyTask(): CreatedTask {
   return {
     subtasks: [{ title: "", isCompleted: false }],
     description: "",
@@ -24,46 +30,54 @@ function createEmptyTask(): EditedTask {
   };
 }
 
-export default function TaskForm(props: TaskFormProps) {
-  const [taskDataToEdit, setTaskDataToEdit] = useState<EditedTask>(
-    props.task ?? createEmptyTask()
+export default function TaskForm<T extends Task | undefined>({
+  task,
+  onSubmit,
+}: TaskFormProps<T>) {
+  const [editedTask, setEditedTask] = useState<Task | CreatedTask>(
+    task ?? createEmptyTask()
   );
 
-  const isEditingTask = props.task !== undefined;
+  const isEditingTask = task !== undefined;
 
   function handleTitleChanged(newTitle: string) {
-    setTaskDataToEdit({ ...taskDataToEdit, title: newTitle });
+    setEditedTask({ ...editedTask, title: newTitle });
   }
 
   function handleDescriptionChanged(newDescription: string) {
-    setTaskDataToEdit({ ...taskDataToEdit, description: newDescription });
+    setEditedTask({ ...editedTask, description: newDescription });
   }
 
   function handleSubtasksChanged(newSubtasks: Subtask[]) {
-    setTaskDataToEdit({ ...taskDataToEdit, subtasks: newSubtasks });
+    setEditedTask({ ...editedTask, subtasks: newSubtasks });
   }
 
   function handleSubmit() {
-    props.onSubmit(taskDataToEdit);
+    if (task === undefined) {
+      onSubmit(editedTask as CreatedTask);
+      return;
+    }
+
+    onSubmit(editedTask as Task);
   }
 
   return (
     <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
       <TextInput
         onInput={handleTitleChanged}
-        value={taskDataToEdit.title}
+        value={editedTask.title}
         label="Title"
         placeholder="e.g Take coffee break"
       />
       <TextArea
         onInput={handleDescriptionChanged}
-        value={taskDataToEdit.description}
+        value={editedTask.description}
         rows={4}
         label="Description"
         placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
       />
       <SubtaskInput
-        subtasks={taskDataToEdit.subtasks}
+        subtasks={editedTask.subtasks}
         onChange={handleSubtasksChanged}
       />
       <Button variant="primary" size="large" className="mt-3" type="submit">

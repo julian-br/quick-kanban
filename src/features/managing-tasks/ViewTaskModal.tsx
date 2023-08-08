@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Subtask, Task, useTaskQuery, useTaskMutation } from "../../api/task";
+import { useTaskQuery, useTaskMutation } from "../../api/task";
 import Modal from "../../components/Modal";
 import SubtaskList from "./SubtaskList";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ContextMenu from "../../components/ContextMenu";
 import { useAppModalManager } from "../../appModalManager";
+import { Subtask, Task } from "../../api/types";
 
 interface ViewTaskModalProps {
   taskId: string;

@@ -18,7 +18,7 @@ export function useTaskMutation() {
   const taskPostMutation = useMutation({
     mutationFn: postTask,
     onSuccess: async (postedTask, { boardId }) => {
-      queryClient.invalidateQueries({
+      queryClient.removeQueries({
         queryKey: taskQueryKey(postedTask.id),
       });
       queryClient.invalidateQueries({
