@@ -11,13 +11,11 @@ export default function KanbanBoardColumn({ column }: KanbanBoardColumnProps) {
 
   return (
     <div className="px-2 shrink-0 basis-[25rem] grow-0">
-      <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6">
-        <div className="flex items-center">
-          <span className="w-4 h-4 bg-amber-300 rounded-full mr-3"></span>
-          <span>
-            {column.title} ({ammountOfTask})
-          </span>
-        </div>
+      <h3 className="uppercase font-semibold text-slate-400 tracking-widest mb-6 flex items-center">
+        <span className="w-4 h-4 bg-slate-300 rounded-full mr-3"></span>
+        <span>
+          {column.title} ({ammountOfTask})
+        </span>
       </h3>
       <Droppable droppableId={column.title}>
         {(providedDroppable) => (

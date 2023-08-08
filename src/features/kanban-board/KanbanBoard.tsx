@@ -49,7 +49,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
       {boardQuery.isSuccess && (
-        <div className="h-full pt-7 flex px-4 select-none">
+        <div className="pt-7 flex px-4 select-none">
           {boardQuery.data.columns.map((column) => (
             <KanbanBoardColumn key={column.title} column={column} />
           ))}
