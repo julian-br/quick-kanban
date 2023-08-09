@@ -5,6 +5,7 @@ import TextInput from "../../components/Input/TextInput";
 import TextArea from "../../components/Input/TextArea";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 
 export type CreatedTask = Omit<Task, "id">;
 
@@ -22,63 +23,77 @@ type TaskFormProps<T> = T extends Task
   ? EditTaskFormProps
   : CreateTaskFormProps;
 
-function createEmptyTask(): CreatedTask {
-  return {
-    subtasks: [{ title: "", isCompleted: false }],
-    description: "",
-    title: "",
-  };
-}
-
 export default function TaskForm<T extends Task | undefined>({
   task,
   onSubmit,
 }: TaskFormProps<T>) {
-  const [editedTask, setEditedTask] = useState<Task | CreatedTask>(
-    task ?? createEmptyTask()
-  );
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const isEditingTask = task !== undefined;
 
-  function handleTitleChanged(newTitle: string) {
-    setEditedTask({ ...editedTask, title: newTitle });
-  }
-
-  function handleDescriptionChanged(newDescription: string) {
-    setEditedTask({ ...editedTask, description: newDescription });
-  }
-
-  function handleSubtasksChanged(newSubtasks: Subtask[]) {
-    setEditedTask({ ...editedTask, subtasks: newSubtasks });
-  }
-
-  function handleSubmit() {
+  function handleValidSubmit(data: FieldValues) {
     if (task === undefined) {
-      onSubmit(editedTask as CreatedTask);
+      onSubmit({
+        title: data.taskTitle,
+        description: data.taskDescription ?? "",
+        subtasks: data.subtasks,
+      });
       return;
     }
 
-    onSubmit(editedTask as Task);
+    onSubmit({
+      ...task,
+      title: data.taskTitle,
+      description: data.taskDescription ?? "",
+      subtasks: data.subtasks,
+    });
+  }
+
+  function validateSubtasks(subtasks: Subtask[]) {
+    for (const subtask of subtasks) {
+      if (subtask.title === "") {
+        return false;
+      }
+    }
+    return true;
   }
 
   return (
-    <Form onSubmit={handleSubmit} className="mt-7 mb-4 flex flex-col gap-6">
+    <Form
+      onSubmit={handleSubmit(handleValidSubmit)}
+      className="mt-7 mb-4 flex flex-col gap-6"
+    >
       <TextInput
-        onInput={handleTitleChanged}
-        value={editedTask.title}
+        {...register("taskTitle", { required: true })}
+        defaultValue={task?.title}
         label="Title"
         placeholder="e.g Take coffee break"
+        errorMessage={errors.taskTitle && "Can't be empty"}
       />
       <TextArea
-        onInput={handleDescriptionChanged}
-        value={editedTask.description}
+        {...register("taskDescription")}
+        defaultValue={task?.description}
         rows={4}
         label="Description"
         placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
       />
-      <SubtaskInput
-        subtasks={editedTask.subtasks}
-        onChange={handleSubtasksChanged}
+      <Controller
+        name="subtasks"
+        rules={{ validate: validateSubtasks }}
+        defaultValue={task?.subtasks ?? [{ title: "", isCompleted: false }]}
+        control={control}
+        render={({ field }) => (
+          <SubtaskInput
+            subtasks={field.value}
+            onChange={field.onChange}
+            errorMessage={errors.boardColumns && "Subtask names can't be empty"}
+          />
+        )}
       />
       <Button variant="primary" size="large" className="mt-3" type="submit">
         {isEditingTask ? "Save Changes" : "Add New Task"}
@@ -90,34 +105,15 @@ export default function TaskForm<T extends Task | undefined>({
 function SubtaskInput({
   subtasks,
   onChange,
+  errorMessage,
 }: {
   subtasks: Subtask[];
+  errorMessage?: string;
   onChange: (newSubtasks: Subtask[]) => void;
 }) {
   const subtaskTitles = subtasks.map((subtask) => subtask.title);
 
-  function handleSubtaskChange(newSubtaskTitles: string[]) {
-    const subtaskWasAdded = newSubtaskTitles.length > subtasks.length;
-    const subtaskWasDelted = newSubtaskTitles.length < subtasks.length;
-
-    if (subtaskWasAdded) {
-      onChange([
-        ...subtasks,
-        {
-          title: "",
-          isCompleted: false,
-        },
-      ]);
-      return;
-    }
-
-    if (subtaskWasDelted) {
-      onChange(
-        subtasks.filter((subtask) => newSubtaskTitles.includes(subtask.title))
-      );
-      return;
-    }
-
+  function handleSubtaskEdit(newSubtaskTitles: string[]) {
     onChange(
       subtasks.map((subtask, index) => ({
         ...subtask,
@@ -125,12 +121,29 @@ function SubtaskInput({
       }))
     );
   }
+  function handleSubtaskAdded() {
+    onChange([
+      ...subtasks,
+      {
+        title: "",
+        isCompleted: false,
+      },
+    ]);
+  }
+
+  function handleSubtaskDeleted(index: number) {
+    onChange(subtasks.filter((_, subtaskIndex) => subtaskIndex !== index));
+  }
+
   return (
     <ListInput
       label="Subtasks"
       values={subtaskTitles}
-      onChange={handleSubtaskChange}
+      onEdit={handleSubtaskEdit}
+      onAdd={handleSubtaskAdded}
+      onDelete={(_, index) => handleSubtaskDeleted(index)}
       addButtonText="Add New Subtask"
+      errorMessage={errorMessage}
       inputPlaceHolder="e.g Make coffee"
     />
   );

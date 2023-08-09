@@ -34,7 +34,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
 
   const isEditingBoard = board !== undefined;
 
-  function handleSubmitTest(data: FieldValues) {
+  function handleValidSubmit(data: FieldValues) {
     if (board === undefined) {
       onSubmit({ name: data.boardName, columns: data.boardColumns });
       return;
@@ -54,7 +54,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
 
   return (
     <Form
-      onSubmit={handleSubmit(handleSubmitTest)}
+      onSubmit={handleSubmit(handleValidSubmit)}
       className="mt-7 mb-4 flex flex-col gap-6"
     >
       <TextInput
@@ -65,7 +65,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
         placeholder="e.g Web Design"
       />
       <Controller
-        name="boardColumns"
+        name="subtasks"
         rules={{ validate: validateColumns }}
         defaultValue={board?.columns ?? [{ title: "", taskIds: [] }]}
         control={control}
@@ -95,7 +95,7 @@ function ColumnInput({
 }) {
   const columnTitles = columns.map((column) => column.title);
 
-  function handleColumnEdit(newColumnTitles: string[]) {
+  function handleColumnEdited(newColumnTitles: string[]) {
     onChange(
       columns.map((column, index) => ({
         ...column,
@@ -104,11 +104,11 @@ function ColumnInput({
     );
   }
 
-  function handleColumnAdd() {
+  function handleColumnAdded() {
     onChange([...columns, { title: "", taskIds: [] }]);
   }
 
-  function handleColumnDelete(index: number) {
+  function handleColumnDeleted(index: number) {
     onChange(columns.filter((_, colIndex) => colIndex !== index));
   }
 
@@ -119,9 +119,9 @@ function ColumnInput({
       addButtonText="Add new Column"
       errorMessage={errorMessage}
       values={columnTitles}
-      onEdit={handleColumnEdit}
-      onAdd={handleColumnAdd}
-      onDelete={(_, index) => handleColumnDelete(index)}
+      onEdit={handleColumnEdited}
+      onAdd={handleColumnAdded}
+      onDelete={(_, index) => handleColumnDeleted(index)}
     />
   );
 }
