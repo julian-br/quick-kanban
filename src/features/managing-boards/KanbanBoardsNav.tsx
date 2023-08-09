@@ -1,6 +1,6 @@
 import Button from "../../components/Button";
 import { useLocation } from "wouter";
-import { useKanbanBoards } from "../../api/kanbanBoard";
+import { useKanbanBoardsQuery } from "../../api/kanbanBoard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 import { useAppModalManager } from "../../appModalManager";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function KanbanBoardsNav({ boardId }: Props) {
-  const boards = useKanbanBoards();
+  const boards = useKanbanBoardsQuery();
   const [_, setLocation] = useLocation();
 
   function handleNavEntryClicked(boardId: string) {
@@ -44,19 +44,16 @@ export default function KanbanBoardsNav({ boardId }: Props) {
 }
 
 function CreateNewBoardButton() {
-  const appModalManager = useAppModalManager();
+  const { showModal } = useAppModalManager();
 
   return (
     <Button
       variant="custom"
-      onClick={() => appModalManager.showModal("createBoardModal")}
+      onClick={() => showModal("createBoardModal")}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
       <div className="flex items-baseline ml-1">
-        <FontAwesomeIcon
-          className="h-3 mr-1 text-primary-300"
-          icon={faPlus}
-        ></FontAwesomeIcon>
+        <FontAwesomeIcon className="h-3 mr-1 text-primary-300" icon={faPlus} />
         <span className="text-primary-300">Create New Board</span>
       </div>
     </Button>

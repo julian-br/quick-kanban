@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Subtask, Task, useTask, useTaskMutation } from "../../api/task";
+import { useTaskQuery, useTaskMutation } from "../../api/task";
 import Modal from "../../components/Modal";
 import SubtaskList from "./SubtaskList";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ContextMenu from "../../components/ContextMenu";
 import { useAppModalManager } from "../../appModalManager";
+import { Subtask, Task } from "../../api/types";
 
 interface ViewTaskModalProps {
   taskId: string;
@@ -12,10 +13,10 @@ interface ViewTaskModalProps {
 }
 
 export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
-  const taskQuery = useTask(taskId);
+  const taskQuery = useTaskQuery(taskId);
   const [taskDataToEdit, setTaskDataToEdit] = useState<Task>();
 
-  const taskPutMutation = useTaskMutation().put;
+  const taskUpdateMutation = useTaskMutation().update;
 
   useEffect(() => {
     setTaskDataToEdit(taskQuery.data);
@@ -42,10 +43,10 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
       onClose();
       return;
     }
-    taskPutMutation.mutate(taskDataToEdit, { onSuccess: onClose });
+    taskUpdateMutation.mutate(taskDataToEdit, { onSuccess: onClose });
   }
 
-  const isLoading = taskPutMutation.isLoading || taskQuery.isLoading;
+  const isLoading = taskUpdateMutation.isLoading || taskQuery.isLoading;
 
   return (
     <Modal
@@ -85,7 +86,7 @@ function ViewTaskModalHeader({
   taskTitle: string;
 }) {
   const { showModal } = useAppModalManager();
-  const taskQuery = useTask(taskId);
+  const taskQuery = useTaskQuery(taskId);
 
   return (
     <>

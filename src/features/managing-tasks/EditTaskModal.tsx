@@ -1,7 +1,8 @@
-import { useTask, useTaskMutation } from "../../api/task";
+import { useTaskQuery, useTaskMutation } from "../../api/task";
+import { Task } from "../../api/types";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
-import TaskForm, { EditedTask } from "./TaskForm";
+import TaskForm from "./TaskForm";
 
 interface EditTaskModalProps {
   taskId: string;
@@ -9,31 +10,21 @@ interface EditTaskModalProps {
 }
 
 export default function EditTaskModal(props: EditTaskModalProps) {
-  const taskQuery = useTask(props.taskId);
-  const taskPutMutation = useTaskMutation().put;
+  const taskQuery = useTaskQuery(props.taskId);
+  const taskUpdateMutation = useTaskMutation().update;
 
-  function handleSubmit(newTaskData: EditedTask) {
-    if (!taskQuery.isSuccess) {
-      return;
-    }
-
-    const editedTask = {
-      ...newTaskData,
-      id: taskQuery.data.id,
-      boardId: taskQuery.data.boardId,
-    };
-
-    taskPutMutation.mutate(editedTask, { onSuccess: props.onClose });
+  function handleSubmit(editedTask: Task) {
+    taskUpdateMutation.mutate(editedTask, { onSuccess: props.onClose });
   }
 
   return (
     <Modal onClose={props.onClose} header="Edit Task">
-      {taskPutMutation.isLoading && (
+      {taskUpdateMutation.isLoading && (
         <div className="h-52 mb-16 flex items-center justify-center">
           <LoadingSpinner />
         </div>
       )}
-      {taskPutMutation.isIdle && taskQuery.isSuccess && (
+      {taskUpdateMutation.isIdle && taskQuery.isSuccess && (
         <TaskForm task={taskQuery.data} onSubmit={handleSubmit} />
       )}
     </Modal>

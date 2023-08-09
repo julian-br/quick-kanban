@@ -1,44 +1,4 @@
-import { ReactNode, useState } from "react";
-
-interface Schema {
-  [key: string]: () => string | true;
-}
-
-export function useFormValidation<T extends Schema>(schema: T) {
-  type errors = {
-    [Property in keyof typeof schema]: string;
-  };
-
-  const [formErrors, setFormErrors] = useState<errors>(
-    getInititalErrorMessages()
-  );
-
-  function getInititalErrorMessages() {
-    const constructedErrors: any = {};
-    for (const key in schema) {
-      constructedErrors[key] = "";
-    }
-
-    return constructedErrors as errors;
-  }
-
-  function validateForm() {
-    const constructedErrors: any = {};
-    let formIsValid = true;
-
-    for (const key in schema) {
-      const validationResult = schema[key]();
-      if (validationResult !== true) {
-        formIsValid = false;
-        constructedErrors[key] = validationResult;
-      }
-    }
-
-    setFormErrors(constructedErrors as errors);
-    return formIsValid;
-  }
-  return { formErrors, validateForm };
-}
+import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;

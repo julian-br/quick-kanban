@@ -39,7 +39,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               <ContextMenu.Entry onClick={handleEditBoardClicked}>
                 Edit Board
               </ContextMenu.Entry>
-              <ContextMenu.Entry onClick={() => handleDelteBoardClicked}>
+              <ContextMenu.Entry onClick={handleDelteBoardClicked}>
                 <span className="text-danger-400">Delete Board</span>
               </ContextMenu.Entry>
             </ContextMenu>

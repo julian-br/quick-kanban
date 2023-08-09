@@ -38,7 +38,7 @@ function Navbar({ children }: { children?: ReactNode }) {
 
   return (
     <nav
-      className="bg-slate-800 border-b bg-opacity-20 border-slate-700 border-opacity-40  px-7 flex  items-center"
+      className="bg-slate-800 border-b bg-opacity-30 border-slate-700 border-opacity-40  px-7 flex  items-center"
       style={navBarSize}
     >
       <div className="text-3xl font-bold uppercase pr-24">
@@ -71,7 +71,7 @@ function SideBar({ children }: { children: ReactNode }) {
 
   return (
     <nav
-      className="bg-slate-800 border-r bg-opacity-40 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75"
+      className="bg-slate-800 border-r bg-opacity-20 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75"
       style={sideBarSize}
     >
       <Button

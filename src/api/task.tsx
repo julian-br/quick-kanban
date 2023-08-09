@@ -1,66 +1,57 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import TaskData from "../mock-data/tasksData.json";
-import { Optional } from "../utils/utilityTypes";
-let tasksData: Task[] = TaskData;
+import { boardsData, tasksData } from "../mock-data/mockData";
+import { Task } from "./types";
+import { kanbanBoardQueryKey, taskQueryKey } from "./queryKeys";
 
-export interface Task {
-  id: string;
-  boardId: string;
-  title: string;
-  description: string;
-  columnIndex: number;
-  subtasks: Subtask[];
-}
-
-export interface Subtask {
-  title: string;
-  isCompleted: boolean;
-}
-
-export const TASKS_BASE_KEY = "tasks";
-export const TASKS_FOR_BOARD_KEY = (boardId: string) => [
-  TASKS_BASE_KEY,
-  "for-board",
-  boardId,
-];
-
-export function useTask(taskId: string) {
+export function useTaskQuery(taskId: string) {
   const taskQuery = useQuery({
-    queryKey: [TASKS_BASE_KEY, taskId],
+    queryKey: taskQueryKey(taskId),
     queryFn: () => fetchTask(taskId),
   });
 
   return taskQuery;
 }
 
-export function useTasks(boardId: string) {
-  const tasksQuery = useQuery({
-    queryKey: TASKS_FOR_BOARD_KEY(boardId),
-    queryFn: () => fetchTasksForBoard(boardId),
-  });
-
-  return tasksQuery;
-}
-
 export function useTaskMutation() {
   const queryClient = useQueryClient();
-  const taskPutMutation = useMutation({
-    mutationFn: putTask,
+
+  const taskPostMutation = useMutation({
+    mutationFn: postTask,
+    onSuccess: async (postedTask, { boardId }) => {
+      queryClient.removeQueries({
+        queryKey: taskQueryKey(postedTask.id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: kanbanBoardQueryKey(boardId),
+      });
+    },
+  });
+
+  const taskUpdateMutation = useMutation({
+    mutationFn: updateTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
-        queryKey: TASKS_FOR_BOARD_KEY(mutatedTask.boardId),
+        queryKey: taskQueryKey(mutatedTask.id),
       }),
   });
 
   const taskDeleteMutation = useMutation({
     mutationFn: deleteTask,
-    onSuccess: (deletedTask) =>
+    onSuccess: (boardOfDeltedTask, taskId) => {
       queryClient.invalidateQueries({
-        queryKey: TASKS_FOR_BOARD_KEY(deletedTask.boardId),
-      }),
+        queryKey: kanbanBoardQueryKey(boardOfDeltedTask),
+      });
+      queryClient.removeQueries({
+        queryKey: taskQueryKey(taskId),
+      });
+    },
   });
 
-  return { put: taskPutMutation, delete: taskDeleteMutation };
+  return {
+    post: taskPostMutation,
+    update: taskUpdateMutation,
+    delete: taskDeleteMutation,
+  };
 }
 
 async function fetchTask(taskId: string) {
@@ -69,52 +60,65 @@ async function fetchTask(taskId: string) {
     throw new Error(`No Task with the id: ${taskId}`);
   }
 
-  return matchingTask;
+  return structuredClone(matchingTask);
 }
 
-async function putTask(task: Optional<Task, "id">) {
-  if (task.id === undefined) {
-    const taskId = parseInt(tasksData.at(-1)!.id) + 1;
-    const newTask = { ...task, id: taskId.toString() };
-    tasksData.push(newTask);
-    return newTask;
+type TaskPostBody = Omit<Task, "id" | "columnIndex" | "rowIndex">;
+
+async function postTask({
+  taskPostBody,
+  boardId,
+}: {
+  taskPostBody: TaskPostBody;
+  boardId: string;
+}) {
+  const newTaskId = findNextAvailableTaskId();
+  const newTask = {
+    ...taskPostBody,
+    id: newTaskId.toString(),
+  };
+
+  const matchingBoard = boardsData.find((board) => board.id === boardId);
+  if (matchingBoard === undefined) {
+    throw new Error("no board with the id: " + boardId);
+  }
+
+  matchingBoard.columns[0].taskIds.push(newTaskId);
+  tasksData.push(newTask);
+
+  return newTask;
+}
+
+async function updateTask(taskToUpdate: Task) {
+  const oldTaskData = tasksData.find((task) => task.id === taskToUpdate.id);
+  if (oldTaskData === undefined) {
+    throw new Error("no task with this id: " + taskToUpdate.id);
   }
 
   const indexOfTaskToUpdate = tasksData.findIndex(
-    (taskData) => taskData.id === task.id
+    (taskData) => taskData.id === taskToUpdate.id
   );
-  if (indexOfTaskToUpdate === -1) {
-    throw new Error("no task with this id");
-  }
 
-  tasksData[indexOfTaskToUpdate] = task as Task;
+  tasksData[indexOfTaskToUpdate] = taskToUpdate;
 
-  return task;
+  return taskToUpdate;
 }
 
 async function deleteTask(taskId: string) {
-  const indexOfTaskToDelete = tasksData.findIndex((task) => task.id === taskId);
-  if (indexOfTaskToDelete === -1) {
-    throw new Error("no task with this id");
+  for (const board of boardsData) {
+    for (const column of board.columns) {
+      const indexOfTaskId = column.taskIds.indexOf(taskId);
+      if (indexOfTaskId !== -1) {
+        column.taskIds.splice(indexOfTaskId, 1);
+        return board.id;
+      }
+    }
   }
 
-  const taskToDelete = tasksData[indexOfTaskToDelete];
-  tasksData.splice(indexOfTaskToDelete, 1);
-  return taskToDelete;
+  throw new Error("task could not be deleted");
 }
 
-async function fetchTasksForBoard(boardId: string) {
-  const matchingTasks = tasksData.filter(
-    (taskData) => taskData.boardId === boardId
-  );
-
-  return matchingTasks;
-}
-
-export function deleteTasksForBoard(boardId: string) {
-  const tasksDataWithDeletedTasks = tasksData.filter(
-    (task) => task.boardId !== boardId
-  );
-
-  tasksData = tasksDataWithDeletedTasks;
+function findNextAvailableTaskId() {
+  const lastTaskId = tasksData.at(-1);
+  return lastTaskId ? (parseInt(lastTaskId.id) + 1).toString() : "1";
 }

@@ -1,5 +1,5 @@
 import Button from "../../components/Button";
-import { Subtask } from "../../api/task";
+import { Subtask } from "../../api/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 interface Props {
