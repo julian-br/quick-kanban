@@ -9,7 +9,9 @@ interface Props {
   label?: string;
   addButtonText: string;
   inputPlaceHolder?: string;
-  onChange: (values: string[]) => void;
+  onEdit: (values: string[]) => void;
+  onAdd: () => void;
+  onDelete: (value: string, index: number) => void;
   errorMessage?: string;
   className?: string;
 }
@@ -19,29 +21,30 @@ export default function ListInput({
   label,
   addButtonText,
   inputPlaceHolder,
-  onChange,
+  onEdit,
+  onAdd,
+  onDelete,
   errorMessage,
   className,
 }: Props) {
   function addInputField() {
-    onChange([...values, ""]);
+    onAdd();
   }
 
-  function removeInputField(indexToDelete: number) {
-    const valuesCopy = [...values];
-    valuesCopy.splice(indexToDelete, 1);
-    onChange(valuesCopy);
+  function removeInputField(value: string, indexToDelete: number) {
+    onDelete(value, indexToDelete);
   }
 
   function updateValue(indexToUpdate: number, newValue: string) {
     const valuesCopy = [...values];
     valuesCopy[indexToUpdate] = newValue;
-    onChange(valuesCopy);
+    onEdit(valuesCopy);
   }
 
   return (
     <div className={className}>
       <InputLabel>{label}</InputLabel>
+      <div className="text-danger-400">{errorMessage}</div>
       <div className="flex flex-col gap-2">
         {values.map((value, index) => (
           <div key={index} className="flex items-center">
@@ -51,10 +54,11 @@ export default function ListInput({
               placeholder={inputPlaceHolder}
               onInput={(value) => updateValue(index, value)}
             />
-            <RemoveInputFieldButton onClick={() => removeInputField(index)} />
+            <RemoveInputFieldButton
+              onClick={() => removeInputField(value, index)}
+            />
           </div>
         ))}
-        <div className="text-danger-400">{errorMessage}</div>
         <AddInputFieldButton text={addButtonText} onClick={addInputField} />
       </div>
     </div>
