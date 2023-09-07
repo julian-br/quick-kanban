@@ -32,7 +32,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   return (
     <>
       <AppShell
-        navBar={
+        navBarContent={
           <div className="flex ml-auto gap-3 items-center">
             <AddTaskButton onClick={handleAddTaskClicked} />
             <ContextMenu>
@@ -45,8 +45,8 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             </ContextMenu>
           </div>
         }
-        sideBar={<KanbanBoardsNav boardId={boardId} />}
-        main={<KanbanBoard boardId={boardId} />}
+        sideBarContent={<KanbanBoardsNav boardId={boardId} />}
+        mainContent={<KanbanBoard boardId={boardId} />}
       />
     </>
   );

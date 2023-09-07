@@ -1,29 +1,22 @@
-import { CSSProperties, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTable } from "@fortawesome/free-solid-svg-icons";
 
 interface AppShellProps {
-  main: ReactNode;
-  sideBar?: ReactNode;
-  navBar?: ReactNode;
+  mainContent: ReactNode;
+  sideBarContent?: ReactNode;
+  navBarContent?: ReactNode;
 }
 
-const NAVBAR_HEIGHT = "5.5rem";
-const SIDE_BAR_OPEN_WIDTH = "21rem";
-const SIDE_BAR_CLOSED_WIDTH = "5rem";
-
 export default function AppShell(props: AppShellProps) {
-  const mainContentSize: CSSProperties = {
-    height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-  };
   return (
-    <div className="h-screen w-screen font-jakarta bg-gray-900">
-      <Navbar>{props.navBar}</Navbar>
-      <div className={`w-screen flex items-stretch`}>
-        {props.sideBar && <SideBar>{props.sideBar} </SideBar>}
-        <main className="overflow-hidden flex-grow" style={mainContentSize}>
-          <div className="w-full h-full overflow-auto">{props.main}</div>
+    <div className="h-screen w-screen flex flex-col font-jakarta bg-gray-900">
+      <Navbar>{props.navBarContent}</Navbar>
+      <div className="w-full flex items-stretch flex-grow h-0">
+        {props.sideBarContent && <SideBar>{props.sideBarContent} </SideBar>}
+        <main className="overflow-hidden flex-grow">
+          <div className="w-full h-full overflow-auto">{props.mainContent}</div>
         </main>
       </div>
     </div>
@@ -31,22 +24,16 @@ export default function AppShell(props: AppShellProps) {
 }
 
 function Navbar({ children }: { children?: ReactNode }) {
-  const navBarSize: CSSProperties = {
-    width: "100vw",
-    height: NAVBAR_HEIGHT,
-  };
-
   return (
-    <nav
-      className="bg-slate-800 border-b bg-opacity-30 border-slate-700 border-opacity-40  px-7 flex  items-center"
-      style={navBarSize}
-    >
-      <div className="text-3xl font-bold uppercase pr-24">
+    <nav className="bg-slate-800 w-full h-24 border-b bg-opacity-30 border-slate-700 border-opacity-40  px-7 flex  items-center">
+      <div className="flex items-center gap-4">
         <FontAwesomeIcon
           icon={faTable}
-          className="text-primary-500 mr-3"
+          className="text-primary-500 h-7"
         ></FontAwesomeIcon>
-        <span className="text-white">Kanban Board</span>
+        <span className="text-white text-2xl font-bold uppercase">
+          Kanban Board
+        </span>
       </div>
       {children}
     </nav>
@@ -56,23 +43,15 @@ function Navbar({ children }: { children?: ReactNode }) {
 function SideBar({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const sideBarWidth = isOpen ? SIDE_BAR_OPEN_WIDTH : SIDE_BAR_CLOSED_WIDTH;
-
-  const sideBarSize: CSSProperties = {
-    width: sideBarWidth,
-    height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-    flexGrow: 0,
-    flexShrink: 0,
-  };
-
   function toggleSideBar() {
     setIsOpen((prev) => !prev);
   }
 
   return (
     <nav
-      className="bg-slate-800 border-r bg-opacity-20 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75"
-      style={sideBarSize}
+      className={`${
+        isOpen ? "w-[22rem]" : "w-16"
+      } bg-slate-800 border-r flex-shrink-0  bg-opacity-20 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75`}
     >
       <Button
         onClick={toggleSideBar}
