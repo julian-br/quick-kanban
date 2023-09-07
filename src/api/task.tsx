@@ -15,7 +15,7 @@ export function useTaskQuery(taskId: string) {
 export function useTaskMutation() {
   const queryClient = useQueryClient();
 
-  const taskPostMutation = useMutation({
+  const postTaskMutation = useMutation({
     mutationFn: postTask,
     onSuccess: async (postedTask, { boardId }) => {
       queryClient.removeQueries({
@@ -27,15 +27,15 @@ export function useTaskMutation() {
     },
   });
 
-  const taskUpdateMutation = useMutation({
-    mutationFn: updateTask,
+  const putTaskMutation = useMutation({
+    mutationFn: putTask,
     onSuccess: (mutatedTask) =>
       queryClient.invalidateQueries({
         queryKey: taskQueryKey(mutatedTask.id),
       }),
   });
 
-  const taskDeleteMutation = useMutation({
+  const deleteTaskMutation = useMutation({
     mutationFn: deleteTask,
     onSuccess: (boardOfDeltedTask, taskId) => {
       queryClient.invalidateQueries({
@@ -48,9 +48,9 @@ export function useTaskMutation() {
   });
 
   return {
-    post: taskPostMutation,
-    update: taskUpdateMutation,
-    delete: taskDeleteMutation,
+    post: postTaskMutation,
+    put: putTaskMutation,
+    delete: deleteTaskMutation,
   };
 }
 
@@ -89,7 +89,7 @@ async function postTask({
   return newTask;
 }
 
-async function updateTask(taskToUpdate: Task) {
+async function putTask(taskToUpdate: Task) {
   const oldTaskData = tasksData.find((task) => task.id === taskToUpdate.id);
   if (oldTaskData === undefined) {
     throw new Error("no task with this id: " + taskToUpdate.id);

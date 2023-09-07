@@ -28,9 +28,10 @@ export function useKanbanBoardMutation() {
     onSuccess: () => queryClient.invalidateQueries(kanbanBoardQueryKey()),
   });
 
-  const updateKanabanBoardMutation = useMutation({
-    mutationFn: updateKanbanBoard,
-    onSuccess: () => queryClient.invalidateQueries(kanbanBoardQueryKey()),
+  const putKanabanBoardMutation = useMutation({
+    mutationFn: putKanbanBoard,
+    onSuccess: (updatedBoard) =>
+      queryClient.invalidateQueries(kanbanBoardQueryKey(updatedBoard.id)),
   });
 
   const deleteKanbanBoardMutation = useMutation({
@@ -43,7 +44,7 @@ export function useKanbanBoardMutation() {
 
   return {
     post: postKanbanBoardMutation,
-    update: updateKanabanBoardMutation,
+    put: putKanabanBoardMutation,
     delete: deleteKanbanBoardMutation,
   };
 }
@@ -69,7 +70,7 @@ async function postKanbanBoard(kanbanBoard: KanbanBoardPostBody) {
   return newBoard as KanbanBoard;
 }
 
-async function updateKanbanBoard(kanbanBoard: KanbanBoard) {
+async function putKanbanBoard(kanbanBoard: KanbanBoard) {
   const indexOfBoardToMutate = boardsData.findIndex(
     (boardData) => boardData.id === kanbanBoard.id
   );
@@ -111,8 +112,6 @@ export function deleteTaskFromColumn(deleteTaskId: string, boardId: string) {
       }
     })
   );
-
-  console.log(boardToDeleteTaskFrom);
 }
 
 function findNextAvailableBoardId() {

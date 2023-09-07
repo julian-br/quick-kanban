@@ -16,7 +16,7 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
   const taskQuery = useTaskQuery(taskId);
   const [taskDataToEdit, setTaskDataToEdit] = useState<Task>();
 
-  const taskUpdateMutation = useTaskMutation().update;
+  const taskUpdateMutation = useTaskMutation().put;
 
   useEffect(() => {
     setTaskDataToEdit(taskQuery.data);

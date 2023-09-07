@@ -65,7 +65,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
         placeholder="e.g Web Design"
       />
       <Controller
-        name="subtasks"
+        name="boardColumns"
         rules={{ validate: validateColumns }}
         defaultValue={board?.columns ?? [{ title: "", taskIds: [] }]}
         control={control}

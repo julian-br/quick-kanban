@@ -13,10 +13,10 @@ interface EditBoardModalProps {
 
 export default function EditBoardModal(props: EditBoardModalProps) {
   const boardQuery = useKanbanBoardQuery(props.boardId);
-  const boardUpdateMutation = useKanbanBoardMutation().update;
+  const boardPutMutation = useKanbanBoardMutation().put;
 
   function updateBoardData(editedBoard: KanbanBoard) {
-    boardUpdateMutation.mutate(editedBoard, { onSuccess: () => props.onClose });
+    boardPutMutation.mutate(editedBoard, { onSuccess: () => props.onClose });
     props.onClose();
   }
 

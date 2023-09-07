@@ -21,16 +21,16 @@ type Modals = {
   [key: string]: PassedModalComponent<any>;
 };
 
-export function createModalManager<PassedModals extends Modals>(
-  modals: PassedModals
+export function createModalManager<TPassedModals extends Modals>(
+  modals: TPassedModals
 ) {
   type AvailableModalKeys = keyof typeof modals | "none";
 
   type ModalManagerContext = {
     activeModal: AvailableModalKeys;
-    showModal: <ActiveModal extends AvailableModalKeys>(
-      modal: ActiveModal,
-      data?: Optional<Parameters<(typeof modals)[ActiveModal]>[0], "onClose">
+    showModal: <TActiveModal extends AvailableModalKeys>(
+      modal: TActiveModal,
+      data?: Optional<Parameters<(typeof modals)[TActiveModal]>[0], "onClose">
     ) => void;
   };
 
@@ -56,9 +56,9 @@ export function createModalManager<PassedModals extends Modals>(
       <ModalManagerContext.Provider
         value={{
           activeModal: activeModal,
-          showModal: <ActiveModal extends AvailableModalKeys>(
-            modal: ActiveModal,
-            data: Parameters<(typeof modals)[ActiveModal]>[0]
+          showModal: <TActiveModal extends AvailableModalKeys>(
+            modal: TActiveModal,
+            data: Parameters<(typeof modals)[TActiveModal]>[0]
           ) => {
             setActiveModal(modal);
             modalData.current = data;

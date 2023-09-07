@@ -13,7 +13,7 @@ interface KanbanBoardProps {
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   const boardQuery = useKanbanBoardQuery(boardId);
-  const boardUpdateMutation = useKanbanBoardMutation().update;
+  const boardPutMutation = useKanbanBoardMutation().put;
   const { showModal } = useAppModalManager();
 
   function handleCreateColumnClick() {
@@ -43,7 +43,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
       }
     });
 
-    boardUpdateMutation.mutate({ ...boardQuery.data, columns });
+    boardPutMutation.mutate({ ...boardQuery.data, columns });
   }
 
   return (

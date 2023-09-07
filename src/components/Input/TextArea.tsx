@@ -31,6 +31,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       <div className={`${passedClassName ?? ""}`}>
         <InputLabel>{label}</InputLabel>
         <textarea
+          ref={ref}
           {...htmlTextAreaProps}
           onChange={(e) => handleInput(e.target.value)}
           className={`${

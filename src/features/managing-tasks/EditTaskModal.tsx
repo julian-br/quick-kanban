@@ -11,7 +11,7 @@ interface EditTaskModalProps {
 
 export default function EditTaskModal(props: EditTaskModalProps) {
   const taskQuery = useTaskQuery(props.taskId);
-  const taskUpdateMutation = useTaskMutation().update;
+  const taskUpdateMutation = useTaskMutation().put;
 
   function handleSubmit(editedTask: Task) {
     taskUpdateMutation.mutate(editedTask, { onSuccess: props.onClose });
