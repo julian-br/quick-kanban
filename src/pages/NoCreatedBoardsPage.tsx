@@ -3,10 +3,9 @@ import Button from "../components/Button";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
 import { useLocation } from "wouter";
 import { useKanbanBoardsQuery } from "../api/kanbanBoard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
+import { PlusIcon } from "lucide-react";
 
 export default function NoCreatedBoardsPage() {
   const [_, setLocation] = useLocation();
@@ -43,7 +42,7 @@ export default function NoCreatedBoardsPage() {
                 size="large"
               >
                 <div className="flex items-baseline">
-                  <FontAwesomeIcon className="h-[0.6rem] mr-1" icon={faPlus} />
+                  <PlusIcon className="h-[0.6rem] mr-1" />
                   <span>Create New Board</span>
                 </div>
               </Button>

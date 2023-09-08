@@ -1,8 +1,8 @@
 import Button from "../../components/Button";
 import { useLocation } from "wouter";
 import { useKanbanBoardsQuery } from "../../api/kanbanBoard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { ColumnsIcon } from "lucide-react";
+
 import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
@@ -52,9 +52,9 @@ function CreateNewBoardButton() {
       onClick={() => showModal("createBoardModal")}
       className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
     >
-      <div className="flex items-baseline ml-1">
-        <FontAwesomeIcon className="h-3 mr-1 text-primary-300" icon={faPlus} />
-        <span className="text-primary-300">Create New Board</span>
+      <div className="flex items-baseline text-primary-300 gap-1">
+        <span className="text-sm">+</span>
+        <span>Create New Board</span>
       </div>
     </Button>
   );
@@ -79,9 +79,9 @@ function BoardNavEntry({
           : "text-slate-400 hover:text-primary-300 hover:bg-slate-700"
       }`}
     >
-      <div className="flex items-center">
-        <FontAwesomeIcon icon={faTableColumns} />
-        <span className="ml-3">{title}</span>
+      <div className="flex items-center gap-1">
+        <ColumnsIcon className="h-5" />
+        <span>{title}</span>
       </div>
     </Button>
   );

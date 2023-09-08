@@ -1,8 +1,7 @@
 import Button from "../Button";
 import InputLabel from "./InputLabel";
 import TextInput from "./TextInput";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { XIcon } from "lucide-react";
 
 interface Props {
   values: string[];
@@ -72,10 +71,7 @@ function RemoveInputFieldButton({ onClick }: { onClick: () => void }) {
       className=" ml-1 rounded-lg h-full w-8 mt-1 group"
       variant="custom"
     >
-      <FontAwesomeIcon
-        icon={faXmark}
-        className="text-slate-400 h-7 group-hover:text-primary-400"
-      />
+      <XIcon className="text-slate-400 h-7 group-hover:text-primary-400" />
     </Button>
   );
 }

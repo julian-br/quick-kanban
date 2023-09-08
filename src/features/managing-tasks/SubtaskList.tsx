@@ -1,7 +1,6 @@
 import Button from "../../components/Button";
 import { Subtask } from "../../api/types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { CheckIcon } from "lucide-react";
 interface Props {
   subtasks: Subtask[];
   onSubtaskClick: (subtask: Subtask) => void;
@@ -45,19 +44,17 @@ function SubtaskListEntry({
       className="bg-slate-700 p-3 rounded-md flex items-center w-full hover:bg-slate-600 text-left group"
     >
       <span
-        className={`w-[1.9rem] h-7 rounded  ${
+        className={`w-6 h-6 rounded shrink-0 flex items-center  ${
           subtask.isCompleted
             ? "bg-primary-400 group-hover:bg-primary-300"
             : "bg-slate-500 group-hover:bg-slate-400"
         }`}
       >
-        {subtask.isCompleted && (
-          <FontAwesomeIcon className="h-4 ml-2 text-white" icon={faCheck} />
-        )}
+        {subtask.isCompleted && <CheckIcon className=" p-1 text-white" />}
       </span>
 
       <span
-        className={`font-bold ml-4 w-full ${
+        className={`font-semibold ml-4 w-full ${
           subtask.isCompleted ? "text-slate-400 line-through" : "text-slate-100"
         }`}
       >

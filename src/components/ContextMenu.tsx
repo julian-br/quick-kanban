@@ -1,7 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { MoreVerticalIcon } from "lucide-react";
 
 interface ContextMenuProps {
   children: ReactNode[] | ReactNode;
@@ -12,10 +11,7 @@ function ContextMenu({ children }: ContextMenuProps) {
     <div>
       <Menu as="nav" className="relative">
         <Menu.Button className="rounded-full py-3 px-3 w-1 group">
-          <FontAwesomeIcon
-            icon={faEllipsisVertical}
-            className="h-[1.7rem] text-slate-500 group-hover:text-slate-400"
-          />
+          <MoreVerticalIcon className="h-[1.7rem] text-slate-500 group-hover:text-slate-400" />
         </Menu.Button>
         <Transition
           as={Fragment}

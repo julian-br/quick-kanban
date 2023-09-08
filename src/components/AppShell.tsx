@@ -1,7 +1,6 @@
 import { ReactNode, useState } from "react";
 import Button from "./Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTable } from "@fortawesome/free-solid-svg-icons";
+import { LayoutDashboardIcon, MenuIcon } from "lucide-react";
 
 interface AppShellProps {
   mainContent: ReactNode;
@@ -11,7 +10,7 @@ interface AppShellProps {
 
 export default function AppShell(props: AppShellProps) {
   return (
-    <div className="h-screen w-screen flex flex-col font-jakarta bg-gray-900">
+    <div className="h-screen w-screen flex flex-col font-nunito bg-gray-900">
       <Navbar>{props.navBarContent}</Navbar>
       <div className="w-full flex items-stretch flex-grow h-0">
         {props.sideBarContent && <SideBar>{props.sideBarContent} </SideBar>}
@@ -27,10 +26,7 @@ function Navbar({ children }: { children?: ReactNode }) {
   return (
     <nav className="bg-slate-800 w-full h-24 border-b bg-opacity-30 border-slate-700 border-opacity-40  px-7 flex  items-center">
       <div className="flex items-center gap-4">
-        <FontAwesomeIcon
-          icon={faTable}
-          className="text-primary-500 h-7"
-        ></FontAwesomeIcon>
+        <LayoutDashboardIcon className="text-primary-500" />
         <span className="text-white text-2xl font-bold uppercase">
           Kanban Board
         </span>
@@ -60,10 +56,7 @@ function SideBar({ children }: { children: ReactNode }) {
           isOpen ? "right-2" : "mx-auto left-0 right-0"
         } w-fit top-3 p-2 absolute mx-auto font-bold text-xl text-slate-400 rounded-lg hover:bg-slate-800 hover:text-primary-400`}
       >
-        <FontAwesomeIcon
-          className="h-[1.65rem]"
-          icon={faBars}
-        ></FontAwesomeIcon>
+        <MenuIcon />
       </Button>
       <div
         className={`${

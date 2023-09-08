@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'jakarta': '"Plus Jakarta Sans"'
+        'nunito': '"Nunito Variable"'
       },
       colors: {
         'primary': {
