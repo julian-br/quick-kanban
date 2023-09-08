@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { cn } from "../lib/utils";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: keyof typeof variantClassMap;
@@ -18,13 +19,14 @@ const variantClassMap = {
 
 const sizeClassMap = {
   medium: "px-7 py-2 rounded-xl",
-  large: "text-lg px-7 py-3 h-13 rounded-xl",
+  large: "text-lg px-7 py-3 rounded-xl",
 } as const;
 
 export default function Button({
   variant,
   size,
   children,
+  className,
   ...reactButtonProps
 }: Props) {
   const variantClasses = variantClassMap[variant];
@@ -37,7 +39,12 @@ export default function Button({
     <button
       {...reactButtonProps}
       type={reactButtonProps.type ?? "button"}
-      className={`focus-visible:outline-none focus-visible:ring-2 ${variantClasses} ${sizeClasses} ${reactButtonProps.className}`}
+      className={cn(
+        "focus-visible:outline-none focus-visible:ring-2",
+        variantClasses,
+        sizeClasses,
+        className
+      )}
     >
       {children}
     </button>

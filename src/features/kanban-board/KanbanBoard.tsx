@@ -62,7 +62,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
 
 function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
   return (
-    <div className="basis-[26rem] mt-2 px-4 shrink-0 h-[80vh]">
+    <div className="basis-[26rem] hidden md:block mt-2 px-4 shrink-0 h-[80vh]">
       <Button
         variant="custom"
         onClick={onClick}

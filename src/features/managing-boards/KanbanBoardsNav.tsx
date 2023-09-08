@@ -6,10 +6,10 @@ import { ColumnsIcon } from "lucide-react";
 import { useAppModalManager } from "../../appModalManager";
 
 interface Props {
-  boardId: string;
+  activeBoardId: string;
 }
 
-export default function KanbanBoardsNav({ boardId }: Props) {
+export default function KanbanBoardsNav({ activeBoardId }: Props) {
   const boards = useKanbanBoardsQuery();
   const [_, setLocation] = useLocation();
 
@@ -32,7 +32,7 @@ export default function KanbanBoardsNav({ boardId }: Props) {
                 key={board.id}
                 onClick={() => handleNavEntryClicked(board.id)}
                 title={board.name}
-                isActive={board.id === boardId}
+                isActive={board.id === activeBoardId}
               />
             ))}
           </div>

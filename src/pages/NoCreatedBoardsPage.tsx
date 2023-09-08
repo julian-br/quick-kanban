@@ -27,7 +27,7 @@ export default function NoCreatedBoardsPage() {
       <AppShell
         sideBarContent={
           <div className="mt-7">
-            <KanbanBoardsNav boardId="" />
+            <KanbanBoardsNav activeBoardId="" />
           </div>
         }
         mainContent={

@@ -24,11 +24,11 @@ export default function AppShell(props: AppShellProps) {
 
 function Navbar({ children }: { children?: ReactNode }) {
   return (
-    <nav className="bg-slate-800 w-full h-24 border-b bg-opacity-30 border-slate-700 border-opacity-40  px-7 flex  items-center">
+    <nav className="bg-slate-800/30 w-full h-24 border-b border-slate-700/40 px-7 flex  items-center">
       <div className="flex items-center gap-4">
         <LayoutDashboardIcon className="text-primary-500" />
-        <span className="text-white text-2xl font-bold uppercase">
-          Kanban Board
+        <span className="text-white text-2xl font-bold uppercase hidden md:block">
+          Kanban
         </span>
       </div>
       {children}
@@ -46,8 +46,8 @@ function SideBar({ children }: { children: ReactNode }) {
   return (
     <nav
       className={`${
-        isOpen ? "w-[22rem]" : "w-16"
-      } bg-slate-800 border-r flex-shrink-0  bg-opacity-20 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75`}
+        isOpen ? "w-[23rem]" : "w-16"
+      } hidden md:block bg-slate-800 border-r flex-shrink-0  bg-opacity-20 border-slate-700 border-opacity-40 relative overflow-hidden transition-[width] ease-linear duration-75`}
     >
       <Button
         onClick={toggleSideBar}

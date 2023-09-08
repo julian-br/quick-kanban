@@ -6,6 +6,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import ContextMenu from "../../components/ContextMenu";
 import { useAppModalManager } from "../../appModalManager";
 import { Subtask, Task } from "../../api/types";
+import { PenIcon, TrashIcon } from "lucide-react";
 
 interface ViewTaskModalProps {
   taskId: string;
@@ -101,11 +102,13 @@ function ViewTaskModalHeader({
                 })
               }
             >
-              Edit Task
+              <PenIcon className="h-4 mr-1" />
+              <span>Edit Task</span>
             </ContextMenu.Entry>
             <ContextMenu.Entry
               onClick={() => showModal("deleteTaskModal", { taskId })}
             >
+              <TrashIcon className="text-danger-400 h-4 mr-1" />
               <span className="text-danger-400">Delete Task</span>
             </ContextMenu.Entry>
           </ContextMenu>
