@@ -8,9 +8,9 @@ interface ContextMenuProps {
 
 function ContextMenu({ children }: ContextMenuProps) {
   return (
-    <Menu as="nav" className="relative">
-      <Menu.Button className="rounded-full py-3 px-3 w-1 group">
-        <MoreVerticalIcon className="h-[1.7rem] text-slate-500 group-hover:text-slate-400" />
+    <Menu as="nav" className="relative rounded-full">
+      <Menu.Button className="rounded-full group flex">
+        <MoreVerticalIcon className="h-10 text-slate-500 group-hover:text-slate-400" />
       </Menu.Button>
       <Transition
         as={Fragment}

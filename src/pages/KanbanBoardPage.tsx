@@ -43,7 +43,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               className="block ml-4 md:hidden"
               activeBoardId={boardId}
             />
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
               <AddTaskButton onClick={handleAddTaskClicked} />
               <ContextMenu>
                 <ContextMenu.Entry onClick={handleEditBoardClicked}>
@@ -72,9 +72,9 @@ function AddTaskButton({ onClick }: { onClick: () => void }) {
         onClick={onClick}
         variant="primary"
         size="medium"
-        className="text-2xl py-1 px-4 md:hidden"
+        className="text-2xl py-1 px-4 md:hidden flex"
       >
-        +
+        <span className="mb-1">+</span>
       </Button>
       <Button
         onClick={onClick}

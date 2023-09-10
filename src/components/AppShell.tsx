@@ -24,7 +24,7 @@ export default function AppShell(props: AppShellProps) {
 
 function Navbar({ children }: { children?: ReactNode }) {
   return (
-    <nav className="bg-slate-800/30 w-full h-24 border-b border-slate-700/40 px-7 flex  items-center">
+    <nav className="bg-slate-800/30 w-full h-24 border-b border-slate-700/40 pl-7 pr-2 md:pr-7 flex  items-center">
       <div className="flex items-center gap-4">
         <LayoutDashboardIcon className="text-primary-500" />
         <span className="text-white text-2xl font-bold uppercase hidden md:block">
