@@ -5,6 +5,7 @@ import TextArea from "../../components/Input/TextArea";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
 import { Controller, FieldValues, useForm } from "react-hook-form";
+import Modal from "../../components/Modal";
 
 export type CreatedTask = Omit<Task, "id">;
 
@@ -90,7 +91,7 @@ export default function TaskForm<T extends Task | undefined>({
           <SubtaskInput
             subtasks={field.value}
             onChange={field.onChange}
-            errorMessage={errors.boardColumns && "Subtask names can't be empty"}
+            errorMessage={errors.subtasks && "Subtask names can't be empty"}
           />
         )}
       />
