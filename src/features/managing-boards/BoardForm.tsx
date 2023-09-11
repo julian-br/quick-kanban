@@ -44,6 +44,9 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
   }
 
   function validateColumns(columns: KanbanBoardColumn[]) {
+    if (columns.length === 0) {
+      return false;
+    }
     for (const column of columns) {
       if (column.title === "") {
         return false;
@@ -73,7 +76,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
           <ColumnInput
             columns={field.value}
             onChange={field.onChange}
-            errorMessage={errors.boardColumns && "Column names can't be empty"}
+            errorMessage={errors.boardColumns && "Columns can't be empty"}
           />
         )}
       />

@@ -1,58 +1,49 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment, ReactNode } from "react";
-import { MoreVerticalIcon } from "lucide-react";
+import { ReactNode, forwardRef } from "react";
+import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import { cn } from "../lib/utils";
 
 interface ContextMenuProps {
-  children: ReactNode[] | ReactNode;
-}
-
-function ContextMenu({ children }: ContextMenuProps) {
-  return (
-    <Menu as="nav" className="relative rounded-full">
-      <Menu.Button className="rounded-full group flex">
-        <MoreVerticalIcon className="h-10 text-slate-500 group-hover:text-slate-400" />
-      </Menu.Button>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="z-50 absolute right-0 py-3 w-56 rounded-xl bg-slate-700 shadow-lg">
-          {children}
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  );
-}
-
-function ContextMenuEntry({
-  onClick,
-  children,
-}: {
-  onClick?: () => void;
   children: ReactNode;
-}) {
-  function handleEntryClicked() {
-    if (onClick !== undefined) {
-      onClick();
-    }
-  }
-
-  return (
-    <Menu.Item>
-      <div
-        onClick={handleEntryClicked}
-        className="flex items-center w-full text-left py-2 px-3 hover:bg-slate-600 font-medium text-base text-slate-300 cursor-pointer"
-      >
-        {children}
-      </div>
-    </Menu.Item>
-  );
 }
+function ContextMenu({ children }: ContextMenuProps) {
+  return <ContextMenuPrimitive.Root>{children}</ContextMenuPrimitive.Root>;
+}
+const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
 
-ContextMenu.Entry = ContextMenuEntry;
+const ContextMenuContent = forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <ContextMenuPrimitive.Portal>
+    <ContextMenuPrimitive.Content
+      ref={ref}
+      className={cn(
+        "z-50 min-w-[15rem] overflow-hidden rounded-lg border border-slate-300/30 bg-slate-900 p-1 text-popover-foreground shadow-md",
+        className
+      )}
+      {...props}
+    />
+  </ContextMenuPrimitive.Portal>
+));
+
+const ContextMenuItem = forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
+    inset?: boolean;
+  }
+>(({ className, inset, ...props }, ref) => (
+  <ContextMenuPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex text-slate-200 text-sm cursor-default select-none items-center rounded-sm px-2 py-1.5 outline-none focus:bg-slate-800 focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      inset && "pl-8",
+      className
+    )}
+    {...props}
+  />
+));
+
+ContextMenu.Trigger = ContextMenuTrigger;
+ContextMenu.Content = ContextMenuContent;
+ContextMenu.Item = ContextMenuItem;
 export default ContextMenu;

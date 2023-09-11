@@ -1,7 +1,7 @@
 import KanbanBoard from "../features/kanban-board/KanbanBoard";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
 import Button from "../components/Button";
-import ContextMenu from "../components/ContextMenu";
+import SettingsMenu from "../components/SettingsMenu";
 import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
 import ActiveKanabanBoardSelect from "../features/managing-boards/ActiveKanabanBoardSelect";
@@ -45,16 +45,16 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
             />
             <div className="flex items-center gap-1">
               <AddTaskButton onClick={handleAddTaskClicked} />
-              <ContextMenu>
-                <ContextMenu.Entry onClick={handleEditBoardClicked}>
+              <SettingsMenu>
+                <SettingsMenu.Entry onClick={handleEditBoardClicked}>
                   <PenIcon className="h-4 mr-1" />
                   <span>Edit Board</span>
-                </ContextMenu.Entry>
-                <ContextMenu.Entry onClick={handleDelteBoardClicked}>
+                </SettingsMenu.Entry>
+                <SettingsMenu.Entry onClick={handleDelteBoardClicked}>
                   <TrashIcon className="text-danger-400 h-4 mr-1" />
                   <span className="text-danger-400">Delete Board</span>
-                </ContextMenu.Entry>
-              </ContextMenu>
+                </SettingsMenu.Entry>
+              </SettingsMenu>
             </div>
           </div>
         }
