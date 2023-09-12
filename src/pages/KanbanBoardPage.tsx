@@ -43,7 +43,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               className="block ml-4 md:hidden"
               activeBoardId={boardId}
             />
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <AddTaskButton onClick={handleAddTaskClicked} />
               <SettingsMenu>
                 <SettingsMenu.Entry onClick={handleEditBoardClicked}>

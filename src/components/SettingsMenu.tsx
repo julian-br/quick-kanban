@@ -21,7 +21,7 @@ function SettingsMenu({ children }: SettingsMenuProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="z-50 absolute right-0 py-3 w-56 border border-slate-800 rounded-xl bg-slate-900 shadow-lg">
+        <Menu.Items className="z-50 absolute right-0 py-3 w-56 border border-slate-700 rounded-xl bg-slate-800 shadow-lg">
           {children}
         </Menu.Items>
       </Transition>
@@ -48,8 +48,8 @@ function SettingsMenuEntry({
         <div
           onClick={handleEntryClicked}
           className={`${
-            active ? "bg-slate-800" : ""
-          } flex items-center w-full text-left py-2 px-3 font-medium text-base text-slate-400 cursor-pointer`}
+            active ? "bg-slate-700" : ""
+          } flex items-center w-full text-left py-2 px-3 font-medium text-base text-slate-300 cursor-pointer`}
         >
           {children}
         </div>

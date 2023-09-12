@@ -62,6 +62,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
     >
       <TextInput
         label="Board Name"
+        autoComplete="off"
         {...register("boardName", { required: true })}
         errorMessage={errors.boardName && "Can't be empty"}
         defaultValue={board?.name}

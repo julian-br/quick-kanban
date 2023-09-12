@@ -18,7 +18,7 @@ const ContextMenuContent = forwardRef<
     <ContextMenuPrimitive.Content
       ref={ref}
       className={cn(
-        "z-50 min-w-[15rem] overflow-hidden rounded-lg border border-slate-300/30 bg-slate-900 p-1 text-popover-foreground shadow-md",
+        "min-w-[15rem] z-50 overflow-hidden rounded-lg border border-slate-300/30 pt-2 pb-3 bg-slate-900 shadow-md",
         className
       )}
       {...props}
@@ -35,7 +35,7 @@ const ContextMenuItem = forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex text-slate-200 text-sm cursor-default select-none items-center rounded-sm px-2 py-1.5 outline-none focus:bg-slate-800 focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex text-slate-300 z-10 cursor-default select-none items-center rounded-sm px-4 py-1.5 outline-none focus:bg-slate-800 focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "pl-8",
       className
     )}

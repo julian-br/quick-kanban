@@ -7,6 +7,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@radix-ui/react-context-menu";
+import { MouseEvent, MouseEventHandler } from "react";
 
 interface KanbanBoardTaskProps {
   taskId: string;
@@ -25,8 +26,22 @@ export default function KanbanBoardTask({
   }
 
   function handleTaskClicked() {
+    console.log("test2");
     showModal("viewTaskModal", {
-      taskId: taskQuery.data!.id,
+      taskId,
+    });
+  }
+  function handleEditTaskClick(e: MouseEvent) {
+    e.stopPropagation();
+    showModal("editTaskModal", {
+      taskId,
+    });
+  }
+
+  function handleDeleteTaskClick(e: MouseEvent) {
+    e.stopPropagation();
+    showModal("deleteTaskModal", {
+      taskId,
     });
   }
 
@@ -57,8 +72,12 @@ export default function KanbanBoardTask({
               </p>
 
               <ContextMenu.Content>
-                <ContextMenu.Item>Edit Task</ContextMenu.Item>
-                <ContextMenu.Item>Delete Task</ContextMenu.Item>
+                <ContextMenu.Item onClick={handleEditTaskClick}>
+                  Edit Task
+                </ContextMenu.Item>
+                <ContextMenu.Item onClick={handleDeleteTaskClick}>
+                  Delete Task
+                </ContextMenu.Item>
               </ContextMenu.Content>
             </div>
           </ContextMenu.Trigger>

@@ -1,8 +1,7 @@
 import Button from "../../components/Button";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
-import { useTaskMutation } from "../../api/task";
-import { useAppModalManager } from "../../appModalManager";
+import { useTaskMutation, useTaskQuery } from "../../api/task";
 
 interface DeleteTaskModalProps {
   taskId: string;
@@ -14,15 +13,9 @@ export default function DeleteTaskModal({
   taskId,
 }: DeleteTaskModalProps) {
   const taskDeleteMutation = useTaskMutation().delete;
-  const { showModal } = useAppModalManager();
 
-  function handleDeleteTaskClicked() {
+  function handleDeleteTaskClick() {
     taskDeleteMutation.mutate(taskId, { onSuccess: onClose });
-  }
-
-  function handleCancelClicked() {
-    onClose();
-    showModal("viewTaskModal", { taskId });
   }
 
   return (
@@ -35,11 +28,6 @@ export default function DeleteTaskModal({
       onClose={onClose}
     >
       <div>
-        {taskDeleteMutation.isLoading && (
-          <div className="flex pb-7 h-full items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        )}
         {taskDeleteMutation.isIdle && (
           <div>
             <p className="mt-7 text-slate-200">
@@ -50,15 +38,11 @@ export default function DeleteTaskModal({
               <Button
                 variant="danger"
                 className="w-1/2"
-                onClick={handleDeleteTaskClicked}
+                onClick={handleDeleteTaskClick}
               >
                 Delete
               </Button>
-              <Button
-                variant="secondary"
-                className="w-1/2"
-                onClick={handleCancelClicked}
-              >
+              <Button variant="secondary" className="w-1/2" onClick={onClose}>
                 Cancel
               </Button>
             </div>
