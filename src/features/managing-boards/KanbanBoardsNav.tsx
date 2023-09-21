@@ -7,11 +7,13 @@ import { useAppModalManager } from "../../appModalManager";
 import ContextMenu from "../../components/ContextMenu";
 import { MouseEvent } from "react";
 
-interface Props {
+interface KanbanBoardsNavProps {
   activeBoardId: string;
 }
 
-export default function KanbanBoardsNav({ activeBoardId }: Props) {
+export default function KanbanBoardsNav({
+  activeBoardId,
+}: KanbanBoardsNavProps) {
   const boards = useKanbanBoardsQuery();
   const [_, setLocation] = useLocation();
 
@@ -28,7 +30,7 @@ export default function KanbanBoardsNav({ activeBoardId }: Props) {
           all boards ({amountOfCreatedBoards})
         </h2>
         {boards.isSuccess && (
-          <div className="mb-3 mx-4 flex-col flex gap-3">
+          <div className="mb-6 mx-4 flex-col flex gap-3">
             {boards.data.map((board) => (
               <BoardNavEntry
                 key={board.id}
@@ -53,9 +55,9 @@ function CreateNewBoardButton() {
     <Button
       variant="custom"
       onClick={() => showModal("createBoardModal")}
-      className="w-full py-4 font-semibold text-lg  px-7 flex items-center hover:bg-slate-700"
+      className="w-full py-4 font-semibold text-lg text-primary-300  px-7 flex items-center hover:text-primary-200 hover:bg-slate-800"
     >
-      <div className="flex items-baseline text-primary-300 gap-1">
+      <div className="flex items-baseline  gap-1">
         <span className="text-sm">+</span>
         <span>Create New Board</span>
       </div>
@@ -93,7 +95,7 @@ function BoardNavEntry({
           className={`w-full py-2 font-semibold text-lg  rounded-lg px-4 flex ${
             isActive
               ? "text-slate-100 bg-primary-500"
-              : "text-slate-400 hover:text-primary-300 hover:bg-slate-700"
+              : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
           }`}
         >
           <div className="flex items-center gap-1">

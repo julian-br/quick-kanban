@@ -25,7 +25,7 @@ export default function Modal({ children, onClose, header }: ModalProps) {
           enterFrom="opacity-0"
           enterTo="opacity-100"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-40 transition-opacity backdrop-blur-sm" />
+          <div className="fixed inset-0 bg-black/30 transition-opacity backdrop-blur-md" />
         </Transition.Child>
 
         <Transition.Child
@@ -36,7 +36,7 @@ export default function Modal({ children, onClose, header }: ModalProps) {
         >
           <div className="fixed inset-0 left overflow-y-auto">
             <div className="relative flex h-full justify-center text-center items-center">
-              <Dialog.Panel className="relative h-fit rounded-lg px-9 pb-12 mx-3 pt-8 bg-slate-800 w-full md:w-[40rem]">
+              <Dialog.Panel className="relative h-fit rounded-lg px-9 pb-12 mx-3 pt-8 bg-slate-900 border border-slate-700/70 w-full md:w-[40rem]">
                 <Dialog.Title className="text-xl text-left font-bold leading-6 mb-2 text-slate-100">
                   {header}
                 </Dialog.Title>

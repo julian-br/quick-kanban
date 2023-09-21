@@ -36,7 +36,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           onChange={(e) => handleInput(e.target.value)}
           className={`${
             isValid ? "border-slate-700" : "border-danger-500"
-          } block w-full text-slate-100 rounded-md text-md bg-slate-700 py-3 placeholder:text-slate-400 focus:border-primary-600 resize-none`}
+          } block w-full text-slate-100 rounded-md text-md bg-slate-700/60 py-3 placeholder:text-slate-400 focus:border-primary-600 resize-none`}
         />
 
         {!isValid && (

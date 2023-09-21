@@ -16,8 +16,8 @@ interface KanbanBoardPageProps {
 
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const { boardId } = urlParams;
-  const { showModal } = useAppModalManager();
   const boardQuery = useKanbanBoardQuery(boardId);
+  const { showModal } = useAppModalManager();
 
   function handleAddTaskClicked() {
     showModal("createTaskModal", { boardId });

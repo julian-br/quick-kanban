@@ -28,7 +28,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           type="text"
           className={`${
             isValid ? "border-none" : "border-danger-400"
-          } block w-full text-slate-100 bg-slate-700 rounded-md text-md py-3 placeholder:text-slate-400 focus:border-primary-200`}
+          } block w-full text-slate-100 bg-slate-700/60 rounded-lg text-md py-3 placeholder:text-slate-400 focus:border-primary-200`}
         />
 
         {!isValid && (
