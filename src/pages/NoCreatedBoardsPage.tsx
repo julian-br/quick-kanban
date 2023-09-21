@@ -5,7 +5,6 @@ import { useLocation } from "wouter";
 import { useKanbanBoardsQuery } from "../api/kanbanBoard";
 import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
-import { PlusIcon } from "lucide-react";
 
 export default function NoCreatedBoardsPage() {
   const [_, setLocation] = useLocation();
@@ -31,8 +30,8 @@ export default function NoCreatedBoardsPage() {
           </div>
         }
         mainContent={
-          <div className="flex items-center">
-            <div className="mx-auto mt-96 text-center">
+          <div className="flex justify-center h-[70%] items-center">
+            <div className="text-center">
               <p className="text-lg font-medium text-slate-400 mb-5">
                 No board has been created yet.
               </p>
@@ -42,8 +41,7 @@ export default function NoCreatedBoardsPage() {
                 size="large"
               >
                 <div className="flex items-baseline">
-                  <PlusIcon className="h-[0.6rem] mr-1" />
-                  <span>Create New Board</span>
+                  <span>+ Create New Board</span>
                 </div>
               </Button>
             </div>

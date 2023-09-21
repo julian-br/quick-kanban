@@ -5,7 +5,9 @@ import NoCreatedBoardsPage from "./pages/NoCreatedBoardsPage";
 import { AppModalManagerProvider } from "./appModalManager";
 import "@fontsource-variable/nunito";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 function App() {
   return (

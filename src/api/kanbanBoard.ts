@@ -30,8 +30,7 @@ export function useKanbanBoardMutation() {
 
   const putKanabanBoardMutation = useMutation({
     mutationFn: putKanbanBoard,
-    onSuccess: (updatedBoard) =>
-      queryClient.invalidateQueries(kanbanBoardQueryKey(updatedBoard.id)),
+    onSuccess: () => queryClient.invalidateQueries(kanbanBoardQueryKey()),
   });
 
   const deleteKanbanBoardMutation = useMutation({

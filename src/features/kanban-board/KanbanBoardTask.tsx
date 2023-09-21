@@ -2,12 +2,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { useTaskQuery } from "../../api/task";
 import { useAppModalManager } from "../../appModalManager";
 import ContextMenu from "../../components/ContextMenu";
-import {
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@radix-ui/react-context-menu";
-import { MouseEvent, MouseEventHandler } from "react";
+import { MouseEvent } from "react";
 
 interface KanbanBoardTaskProps {
   taskId: string;
@@ -26,7 +21,6 @@ export default function KanbanBoardTask({
   }
 
   function handleTaskClicked() {
-    console.log("test2");
     showModal("viewTaskModal", {
       taskId,
     });
@@ -51,17 +45,15 @@ export default function KanbanBoardTask({
   ).length;
 
   return (
-    <Draggable draggableId={taskQuery.data.id} index={rowIndex}>
-      {(providedDraggable, { isDragging }) => (
-        <ContextMenu>
-          <ContextMenu.Trigger>
+    <ContextMenu>
+      <ContextMenu.Trigger>
+        <Draggable draggableId={taskQuery.data.id} index={rowIndex}>
+          {(providedDraggable) => (
             <div
               ref={providedDraggable.innerRef}
               {...providedDraggable.dragHandleProps}
               {...providedDraggable.draggableProps}
-              className={`${
-                isDragging ? "shadow-lg " : ""
-              } bg-slate-900 w-full px-5 py-4 rounded-xl group hover:scale-[1.025] border-slate-700/70 border mb-4`}
+              className="bg-slate-900 w-full px-5 py-4 rounded-xl group hover:scale-[1.025] border-slate-700/70 border mb-4"
               onClick={handleTaskClicked}
             >
               <h4 className="text-lg font-bold text-slate-300 group-hover:text-primary-300">
@@ -80,9 +72,9 @@ export default function KanbanBoardTask({
                 </ContextMenu.Item>
               </ContextMenu.Content>
             </div>
-          </ContextMenu.Trigger>
-        </ContextMenu>
-      )}
-    </Draggable>
+          )}
+        </Draggable>
+      </ContextMenu.Trigger>
+    </ContextMenu>
   );
 }

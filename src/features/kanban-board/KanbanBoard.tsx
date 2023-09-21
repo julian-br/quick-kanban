@@ -6,6 +6,8 @@ import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
 import { useAppModalManager } from "../../appModalManager";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { FileXIcon } from "lucide-react";
+import { Link } from "wouter";
 
 interface KanbanBoardProps {
   boardId: string;
@@ -56,6 +58,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
           <CreateNewColumnButton onClick={handleCreateColumnClick} />
         </div>
       )}
+      {boardQuery.isError && <ErrorMessage />}
     </DragDropContext>
   );
 }
@@ -71,6 +74,25 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>
       </Button>
+    </div>
+  );
+}
+
+function ErrorMessage() {
+  return (
+    <div className="h-[50%]  flex items-center justify-center">
+      <div className="flex flex-col items-center gap-5">
+        <FileXIcon size={"2.6rem"} className="text-danger-400" />
+        <div className="text-lg text-slate-400">
+          Board does not exist or could not be loaded.
+        </div>
+        <Link
+          className="text-lg text-slate-300 underline hover:text-primary-400"
+          href="/"
+        >
+          Return to Home
+        </Link>
+      </div>
     </div>
   );
 }

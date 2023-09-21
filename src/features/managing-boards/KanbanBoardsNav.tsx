@@ -21,7 +21,7 @@ export default function KanbanBoardsNav({
     setLocation("/board/" + boardId);
   }
 
-  const amountOfCreatedBoards = boards.data?.length;
+  const amountOfCreatedBoards = boards.data?.length ?? 0;
 
   return (
     <div>
@@ -29,7 +29,7 @@ export default function KanbanBoardsNav({
         <h2 className="uppercase font-semibold text-slate-300 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
-        {boards.isSuccess && (
+        {boards.isSuccess && amountOfCreatedBoards > 0 && (
           <div className="mb-6 mx-4 flex-col flex gap-3">
             {boards.data.map((board) => (
               <BoardNavEntry

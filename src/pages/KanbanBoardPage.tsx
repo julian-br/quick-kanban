@@ -19,15 +19,15 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const boardQuery = useKanbanBoardQuery(boardId);
   const { showModal } = useAppModalManager();
 
-  function handleAddTaskClicked() {
+  function handleAddTaskClick() {
     showModal("createTaskModal", { boardId });
   }
 
-  function handleEditBoardClicked() {
+  function handleEditBoardClick() {
     showModal("editBoardModal", { boardId });
   }
 
-  function handleDelteBoardClicked() {
+  function handleDeleteBoardClick() {
     showModal("deleteBoardModal", { boardId });
   }
 
@@ -43,25 +43,42 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
               className="block ml-4 md:hidden"
               activeBoardId={boardId}
             />
-            <div className="flex items-center gap-2">
-              <AddTaskButton onClick={handleAddTaskClicked} />
-              <SettingsMenu>
-                <SettingsMenu.Entry onClick={handleEditBoardClicked}>
-                  <PenIcon className="h-4 mr-1" />
-                  <span>Edit Board</span>
-                </SettingsMenu.Entry>
-                <SettingsMenu.Entry onClick={handleDelteBoardClicked}>
-                  <TrashIcon className="text-danger-400 h-4 mr-1" />
-                  <span className="text-danger-400">Delete Board</span>
-                </SettingsMenu.Entry>
-              </SettingsMenu>
-            </div>
+            {boardQuery.isSuccess && (
+              <div className="flex items-center gap-2">
+                <AddTaskButton onClick={handleAddTaskClick} />
+                <BoardSettingsMenu
+                  onEditBoardClick={handleEditBoardClick}
+                  onDeleteBoardClick={handleDeleteBoardClick}
+                />
+              </div>
+            )}
           </div>
         }
         sideBarContent={<KanbanBoardsNav activeBoardId={boardId} />}
         mainContent={<KanbanBoard boardId={boardId} />}
       />
     </>
+  );
+}
+
+function BoardSettingsMenu({
+  onEditBoardClick,
+  onDeleteBoardClick,
+}: {
+  onEditBoardClick: () => void;
+  onDeleteBoardClick: () => void;
+}) {
+  return (
+    <SettingsMenu>
+      <SettingsMenu.Entry onClick={onEditBoardClick}>
+        <PenIcon className="h-4 mr-1" />
+        <span>Edit Board</span>
+      </SettingsMenu.Entry>
+      <SettingsMenu.Entry onClick={onDeleteBoardClick}>
+        <TrashIcon className="text-danger-400 h-4 mr-1" />
+        <span className="text-danger-400">Delete Board</span>
+      </SettingsMenu.Entry>
+    </SettingsMenu>
   );
 }
 
