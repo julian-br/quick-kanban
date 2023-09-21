@@ -10,7 +10,7 @@ interface AppShellProps {
 
 export default function AppShell(props: AppShellProps) {
   return (
-    <div className="h-screen w-screen flex flex-col font-nunito bg-slate-950">
+    <div className="h-screen w-screen flex flex-col bg-slate-950">
       <Navbar>{props.navBarContent}</Navbar>
       <div className="w-full flex items-stretch flex-grow h-0">
         {props.sideBarContent && <SideBar>{props.sideBarContent} </SideBar>}

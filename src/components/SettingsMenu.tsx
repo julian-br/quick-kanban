@@ -21,7 +21,7 @@ function SettingsMenu({ children }: SettingsMenuProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="z-50 absolute right-0 py-3 w-56 border border-slate-600 rounded-xl bg-slate-900 shadow-lg">
+        <Menu.Items className="z-50 absolute right-0 py-3 w-56 border border-slate-700 rounded-xl bg-slate-900 shadow-lg">
           {children}
         </Menu.Items>
       </Transition>

@@ -5,6 +5,7 @@
 html {
   font-size: 14px;
   line-height: 23px;
+  @apply font-nunito text-slate-100
 }
 
 /* custom scrollbar */

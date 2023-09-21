@@ -64,7 +64,7 @@ export default function KanbanBoardTask({
               } bg-slate-900 w-full px-5 py-4 rounded-xl group hover:scale-[1.025] border-slate-700/70 border mb-4`}
               onClick={handleTaskClicked}
             >
-              <h4 className="text-lg font-bold text-slate-200 group-hover:text-primary-300">
+              <h4 className="text-lg font-bold text-slate-300 group-hover:text-primary-300">
                 {taskQuery.data.title}
               </h4>
               <p className="text-slate-400 text-sm font-bold mb-2">
