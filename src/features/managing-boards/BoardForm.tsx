@@ -1,9 +1,9 @@
-import { KanbanBoard, KanbanBoardColumn } from "../../api/types";
 import Form from "../../components/Form";
 import TextInput from "../../components/Input/TextInput";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
 import { Controller, FieldValues, useForm } from "react-hook-form";
+import { KanbanBoard, KanbanBoardColumn } from "../../api/local-db";
 
 export type CreatedBoard = Omit<KanbanBoard, "id">;
 

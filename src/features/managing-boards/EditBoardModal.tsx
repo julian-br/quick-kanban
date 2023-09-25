@@ -2,28 +2,30 @@ import {
   useKanbanBoardQuery,
   useKanbanBoardMutation,
 } from "../../api/kanbanBoard";
+import { KanbanBoard } from "../../api/local-db";
 import Modal from "../../components/Modal";
-import { KanbanBoard } from "../../api/types";
 import BoardForm from "./BoardForm";
 
 interface EditBoardModalProps {
-  boardId: string;
+  boardId: number;
   onClose: () => void;
 }
 
-export default function EditBoardModal(props: EditBoardModalProps) {
-  const boardQuery = useKanbanBoardQuery(props.boardId);
-  const boardPutMutation = useKanbanBoardMutation().put;
+export default function EditBoardModal({
+  boardId,
+  onClose,
+}: EditBoardModalProps) {
+  const boardQuery = useKanbanBoardQuery(boardId);
+  const boardMutation = useKanbanBoardMutation();
 
   function updateBoardData(editedBoard: KanbanBoard) {
-    boardPutMutation.mutate(editedBoard, { onSuccess: () => props.onClose });
-    props.onClose();
+    boardMutation.put(editedBoard).then(onClose);
   }
 
   return (
-    <Modal onClose={props.onClose} header="Edit Board">
-      {boardQuery.isSuccess && (
-        <BoardForm board={boardQuery.data} onSubmit={updateBoardData} />
+    <Modal onClose={onClose} header="Edit Board">
+      {boardQuery !== undefined && (
+        <BoardForm board={boardQuery} onSubmit={updateBoardData} />
       )}
     </Modal>
   );

@@ -1,77 +1,51 @@
-import { useEffect, useRef, useState } from "react";
 import { useTaskQuery, useTaskMutation } from "../../api/task";
 import Modal from "../../components/Modal";
 import SubtaskList from "./SubtaskList";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import SettingsMenu from "../../components/SettingsMenu";
 import { useAppModalManager } from "../../appModalManager";
-import { Subtask, Task } from "../../api/types";
 import { PenIcon, TrashIcon } from "lucide-react";
+import { Subtask } from "../../api/local-db";
 
 interface ViewTaskModalProps {
-  taskId: string;
+  taskId: number;
   onClose: () => void;
 }
 
 export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
   const taskQuery = useTaskQuery(taskId);
-  const [taskDataToEdit, setTaskDataToEdit] = useState<Task>();
-
-  const taskUpdateMutation = useTaskMutation().put;
-
-  useEffect(() => {
-    setTaskDataToEdit(taskQuery.data);
-  }, [taskQuery.data]);
-
-  const taskIsModified = useRef(false);
+  const taskMutation = useTaskMutation();
 
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
-    if (taskDataToEdit === undefined) {
+    if (taskQuery === undefined) {
       return;
     }
-    taskDataToEdit.subtasks.map((subtask) => {
+
+    const updatedSubtasks = taskQuery.subtasks.map((subtask) => {
       if (clickedSubtask.title === subtask.title) {
         subtask.isCompleted = !subtask.isCompleted;
       }
+
+      return subtask;
     });
 
-    setTaskDataToEdit({ ...taskDataToEdit });
-    taskIsModified.current = true;
+    taskMutation.put({ ...taskQuery, subtasks: updatedSubtasks });
   }
-
-  function handleModalClose() {
-    if (taskDataToEdit === undefined || taskIsModified.current === false) {
-      onClose();
-      return;
-    }
-    taskUpdateMutation.mutate(taskDataToEdit, { onSuccess: onClose });
-  }
-
-  const isLoading = taskUpdateMutation.isLoading || taskQuery.isLoading;
 
   return (
     <Modal
-      onClose={handleModalClose}
+      onClose={onClose}
       header={
-        taskQuery.isSuccess && (
-          <ViewTaskModalHeader
-            taskId={taskId}
-            taskTitle={taskQuery.data.title}
-          />
+        taskQuery !== undefined && (
+          <ViewTaskModalHeader taskId={taskId} taskTitle={taskQuery.title} />
         )
       }
     >
-      {isLoading && (
-        <div className="h-72 flex justify-center pt-20">
-          <LoadingSpinner />
-        </div>
-      )}
-      {!isLoading && taskDataToEdit !== undefined && (
+      {taskQuery !== undefined && (
         <div className="w-full flex flex-col gap-6 mb-3">
-          <p className="text-slate-300">{taskDataToEdit.description}</p>
+          <p className="text-slate-300">{taskQuery.description}</p>
           <SubtaskList
             onSubtaskClick={toggleSubtaskStatus}
-            subtasks={taskDataToEdit.subtasks}
+            subtasks={taskQuery.subtasks}
           />
         </div>
       )}
@@ -83,37 +57,34 @@ function ViewTaskModalHeader({
   taskId,
   taskTitle,
 }: {
-  taskId: string;
+  taskId: number;
   taskTitle: string;
 }) {
   const { showModal } = useAppModalManager();
-  const taskQuery = useTaskQuery(taskId);
 
   return (
     <>
-      {taskQuery.isSuccess && (
-        <div className="flex justify-between items-center">
-          <h3>{taskTitle}</h3>
-          <SettingsMenu>
-            <SettingsMenu.Entry
-              onClick={() =>
-                showModal("editTaskModal", {
-                  taskId,
-                })
-              }
-            >
-              <PenIcon className="h-4 mr-1" />
-              <span>Edit Task</span>
-            </SettingsMenu.Entry>
-            <SettingsMenu.Entry
-              onClick={() => showModal("deleteTaskModal", { taskId })}
-            >
-              <TrashIcon className="text-danger-400 h-4 mr-1" />
-              <span className="text-danger-400">Delete Task</span>
-            </SettingsMenu.Entry>
-          </SettingsMenu>
-        </div>
-      )}
+      <div className="flex justify-between items-center">
+        <h3>{taskTitle}</h3>
+        <SettingsMenu>
+          <SettingsMenu.Entry
+            onClick={() =>
+              showModal("editTaskModal", {
+                taskId,
+              })
+            }
+          >
+            <PenIcon className="h-4 mr-1" />
+            <span>Edit Task</span>
+          </SettingsMenu.Entry>
+          <SettingsMenu.Entry
+            onClick={() => showModal("deleteTaskModal", { taskId })}
+          >
+            <TrashIcon className="text-danger-400 h-4 mr-1" />
+            <span className="text-danger-400">Delete Task</span>
+          </SettingsMenu.Entry>
+        </SettingsMenu>
+      </div>
     </>
   );
 }

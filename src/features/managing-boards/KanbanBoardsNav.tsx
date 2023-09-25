@@ -5,33 +5,31 @@ import { ColumnsIcon } from "lucide-react";
 
 import { useAppModalManager } from "../../appModalManager";
 import ContextMenu from "../../components/ContextMenu";
-import { MouseEvent } from "react";
 
 interface KanbanBoardsNavProps {
-  activeBoardId: string;
+  activeBoardId?: number;
 }
 
 export default function KanbanBoardsNav({
   activeBoardId,
 }: KanbanBoardsNavProps) {
-  const boards = useKanbanBoardsQuery();
+  const boardsQuery = useKanbanBoardsQuery();
   const [_, setLocation] = useLocation();
 
-  function handleNavEntryClicked(boardId: string) {
+  function handleNavEntryClicked(boardId: number) {
     setLocation("/board/" + boardId);
   }
 
-  const amountOfCreatedBoards = boards.data?.length ?? 0;
-
+  const amountOfCreatedBoards = boardsQuery?.length ?? 0;
   return (
     <div>
       <div>
         <h2 className="uppercase font-semibold text-slate-300 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
-        {boards.isSuccess && amountOfCreatedBoards > 0 && (
+        {boardsQuery !== undefined && amountOfCreatedBoards > 0 && (
           <div className="mb-6 mx-4 flex-col flex gap-3">
-            {boards.data.map((board) => (
+            {boardsQuery.map((board) => (
               <BoardNavEntry
                 key={board.id}
                 boardId={board.id}
@@ -73,16 +71,16 @@ function BoardNavEntry({
 }: {
   title: string;
   isActive: boolean;
-  boardId: string;
+  boardId: number;
   onClick: () => void;
 }) {
   const { showModal } = useAppModalManager();
 
-  function handleEditBoardClick(e: MouseEvent) {
+  function handleEditBoardClick() {
     showModal("editBoardModal", { boardId });
   }
 
-  function handleDelteBoardClick() {
+  function handleDeleteBoardClick() {
     showModal("deleteBoardModal", { boardId });
   }
 
@@ -107,7 +105,7 @@ function BoardNavEntry({
           <ContextMenu.Item onClick={handleEditBoardClick}>
             Edit Board
           </ContextMenu.Item>
-          <ContextMenu.Item onClick={handleDelteBoardClick}>
+          <ContextMenu.Item onClick={handleDeleteBoardClick}>
             Delete Board
           </ContextMenu.Item>
         </ContextMenu.Content>

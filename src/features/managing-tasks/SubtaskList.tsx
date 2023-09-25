@@ -1,5 +1,5 @@
+import { Subtask } from "../../api/local-db";
 import Button from "../../components/Button";
-import { Subtask } from "../../api/types";
 import { CheckIcon } from "lucide-react";
 interface Props {
   subtasks: Subtask[];

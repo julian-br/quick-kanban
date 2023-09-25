@@ -12,10 +12,10 @@ export default function NoCreatedBoardsPage() {
   const { showModal } = useAppModalManager();
 
   useEffect(() => {
-    if (boardsQuery.isSuccess && boardsQuery.data.at(0) !== undefined) {
-      setLocation(`/board/${boardsQuery.data[0].id}`);
+    if (boardsQuery !== undefined && boardsQuery.at(0) !== undefined) {
+      setLocation(`/board/${boardsQuery[0].id}`);
     }
-  }, [boardsQuery.data]);
+  }, [boardsQuery]);
 
   function handleCreateNewBoardClicked() {
     showModal("createBoardModal");
@@ -26,7 +26,7 @@ export default function NoCreatedBoardsPage() {
       <AppShell
         sideBarContent={
           <div className="mt-7">
-            <KanbanBoardsNav activeBoardId="" />
+            <KanbanBoardsNav />
           </div>
         }
         mainContent={

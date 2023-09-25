@@ -4,13 +4,11 @@ import {
   useKanbanBoardsQuery,
 } from "../../api/kanbanBoard";
 import { Fragment } from "react";
-import { ChevronDownIcon, ColumnsIcon } from "lucide-react";
-import { KanbanBoard } from "../../api/types";
-import { Link } from "wouter";
+import { ChevronDownIcon } from "lucide-react";
 import KanbanBoardsNav from "./KanbanBoardsNav";
 
 interface ActiveKanabanBoardSelectProps {
-  activeBoardId: string;
+  activeBoardId: number;
   className?: string;
 }
 
@@ -22,10 +20,10 @@ export default function ActiveKanabanBoardSelect({
   const boardsQuery = useKanbanBoardsQuery();
   return (
     <>
-      {boardQuery.isSuccess && boardsQuery.isSuccess && (
+      {boardQuery !== undefined && boardsQuery !== undefined && (
         <Menu as="nav" className={"relative" + className}>
           <Menu.Button className="flex items-center truncate text-white hover:text-slate-300">
-            <div className="text-xl">{boardQuery.data.name}</div>
+            <div className="text-xl">{boardQuery.name}</div>
             <ChevronDownIcon className="h-5 ml-1 text-slate-400" />
           </Menu.Button>
           <Transition

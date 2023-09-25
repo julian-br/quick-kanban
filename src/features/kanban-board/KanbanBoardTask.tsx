@@ -5,7 +5,7 @@ import ContextMenu from "../../components/ContextMenu";
 import { MouseEvent } from "react";
 
 interface KanbanBoardTaskProps {
-  taskId: string;
+  taskId: number;
   rowIndex: number;
 }
 
@@ -16,7 +16,7 @@ export default function KanbanBoardTask({
   const taskQuery = useTaskQuery(taskId);
   const { showModal } = useAppModalManager();
 
-  if (!taskQuery.isSuccess) {
+  if (taskQuery === undefined) {
     return <></>;
   }
 
@@ -39,15 +39,15 @@ export default function KanbanBoardTask({
     });
   }
 
-  const amountOfSubtasks = taskQuery.data.subtasks.length;
-  const amountOfCompletedSubtasks = taskQuery.data.subtasks.filter(
+  const amountOfSubtasks = taskQuery.subtasks.length;
+  const amountOfCompletedSubtasks = taskQuery.subtasks.filter(
     (subtaskData) => subtaskData.isCompleted
   ).length;
 
   return (
     <ContextMenu>
       <ContextMenu.Trigger>
-        <Draggable draggableId={taskQuery.data.id} index={rowIndex}>
+        <Draggable draggableId={taskQuery.id.toString()} index={rowIndex}>
           {(providedDraggable) => (
             <div
               ref={providedDraggable.innerRef}
@@ -57,7 +57,7 @@ export default function KanbanBoardTask({
               onClick={handleTaskClicked}
             >
               <h4 className="text-lg font-bold text-slate-300 group-hover:text-primary-300">
-                {taskQuery.data.title}
+                {taskQuery.title}
               </h4>
               <p className="text-slate-400 text-sm font-bold mb-2">
                 {amountOfCompletedSubtasks} of {amountOfSubtasks} subtasks

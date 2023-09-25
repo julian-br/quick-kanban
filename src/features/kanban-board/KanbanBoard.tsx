@@ -10,12 +10,12 @@ import { FileXIcon } from "lucide-react";
 import { Link } from "wouter";
 
 interface KanbanBoardProps {
-  boardId: string;
+  boardId: number;
 }
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
   const boardQuery = useKanbanBoardQuery(boardId);
-  const boardPutMutation = useKanbanBoardMutation().put;
+  const boardMutation = useKanbanBoardMutation();
   const { showModal } = useAppModalManager();
 
   function handleCreateColumnClick() {
@@ -27,10 +27,10 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     destination,
     source,
   }: DropResult) {
-    if (!destination || !source || !boardQuery.isSuccess) {
+    if (!destination || !source || boardQuery === undefined) {
       return;
     }
-    const columns = structuredClone(boardQuery.data.columns);
+    const columns = structuredClone(boardQuery.columns);
 
     columns.forEach((column) => {
       const isSourceColumn = column.title === source.droppableId;
@@ -41,24 +41,23 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
       }
 
       if (isDestinationColumn) {
-        column.taskIds.splice(destination.index, 0, draggedTaskId);
+        column.taskIds.splice(destination.index, 0, parseInt(draggedTaskId));
       }
     });
 
-    boardPutMutation.mutate({ ...boardQuery.data, columns });
+    boardMutation.put({ ...boardQuery, columns });
   }
 
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
-      {boardQuery.isSuccess && (
+      {boardQuery !== undefined && (
         <div className="pt-7 flex px-4 select-none">
-          {boardQuery.data.columns.map((column) => (
+          {boardQuery.columns.map((column) => (
             <KanbanBoardColumn key={column.title} column={column} />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />
         </div>
       )}
-      {boardQuery.isError && <ErrorMessage />}
     </DragDropContext>
   );
 }

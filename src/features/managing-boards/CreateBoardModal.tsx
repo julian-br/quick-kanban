@@ -5,14 +5,12 @@ import BoardForm, { CreatedBoard } from "./BoardForm";
 
 export default function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const [_, setLocation] = useLocation();
-  const boardPostMutation = useKanbanBoardMutation().post;
+  const boardMutation = useKanbanBoardMutation();
 
   function postNewBoard(newBoard: CreatedBoard) {
-    boardPostMutation.mutate(newBoard, {
-      onSuccess: (newBoard) => {
-        setLocation(`/board/${newBoard.id}`);
-        onClose();
-      },
+    boardMutation.post(newBoard).then((createdBoardId) => {
+      setLocation(`/board/${createdBoardId}`);
+      onClose();
     });
   }
 
