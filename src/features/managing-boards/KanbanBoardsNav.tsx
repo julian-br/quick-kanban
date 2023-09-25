@@ -5,6 +5,7 @@ import { ColumnsIcon } from "lucide-react";
 
 import { useAppModalManager } from "../../appModalManager";
 import ContextMenu from "../../components/ContextMenu";
+import { KanbanBoard } from "../../api/local-db";
 
 interface KanbanBoardsNavProps {
   activeBoardId?: number;
@@ -14,11 +15,6 @@ export default function KanbanBoardsNav({
   activeBoardId,
 }: KanbanBoardsNavProps) {
   const boardsQuery = useKanbanBoardsQuery();
-  const [_, setLocation] = useLocation();
-
-  function handleNavEntryClicked(boardId: number) {
-    setLocation("/board/" + boardId);
-  }
 
   const amountOfCreatedBoards = boardsQuery?.length ?? 0;
   return (
@@ -32,9 +28,7 @@ export default function KanbanBoardsNav({
             {boardsQuery.map((board) => (
               <BoardNavEntry
                 key={board.id}
-                boardId={board.id}
-                onClick={() => handleNavEntryClicked(board.id)}
-                title={board.name}
+                board={board}
                 isActive={board.id === activeBoardId}
               />
             ))}
@@ -64,24 +58,25 @@ function CreateNewBoardButton() {
 }
 
 function BoardNavEntry({
-  title,
   isActive,
-  boardId,
-  onClick,
+  board,
 }: {
-  title: string;
   isActive: boolean;
-  boardId: number;
-  onClick: () => void;
+  board: KanbanBoard;
 }) {
   const { showModal } = useAppModalManager();
+  const [_, setLocation] = useLocation();
 
   function handleEditBoardClick() {
-    showModal("editBoardModal", { boardId });
+    showModal("editBoardModal", { board });
   }
 
   function handleDeleteBoardClick() {
-    showModal("deleteBoardModal", { boardId });
+    showModal("deleteBoardModal", { boardId: board.id });
+  }
+
+  function handleNavEntryClick() {
+    setLocation("/board/" + board.id);
   }
 
   return (
@@ -89,7 +84,7 @@ function BoardNavEntry({
       <ContextMenu.Trigger>
         <Button
           variant="custom"
-          onClick={onClick}
+          onClick={handleNavEntryClick}
           className={`w-full py-2 font-semibold text-lg  rounded-lg px-4 flex ${
             isActive
               ? "text-slate-100 bg-primary-500"
@@ -98,7 +93,7 @@ function BoardNavEntry({
         >
           <div className="flex items-center gap-1">
             <ColumnsIcon className="h-5" />
-            <span>{title}</span>
+            <span>{board.name}</span>
           </div>
         </Button>
         <ContextMenu.Content>

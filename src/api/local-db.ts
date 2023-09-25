@@ -29,7 +29,7 @@ export class DBWithTypeScriptSchema extends Dexie {
 
   constructor() {
     super("kanban-board-db");
-    this.version(2).stores({
+    this.version(4).stores({
       boards: "++id, name",
       tasks: "++id",
     });

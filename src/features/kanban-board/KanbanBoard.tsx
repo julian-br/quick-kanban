@@ -14,12 +14,14 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
-  const boardQuery = useKanbanBoardQuery(boardId);
+  const board = useKanbanBoardQuery(boardId);
   const boardMutation = useKanbanBoardMutation();
   const { showModal } = useAppModalManager();
 
   function handleCreateColumnClick() {
-    showModal("editBoardModal", { boardId });
+    if (board !== undefined) {
+      showModal("editBoardModal", { board });
+    }
   }
 
   function handleTaskDragEnd({
@@ -27,10 +29,10 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     destination,
     source,
   }: DropResult) {
-    if (!destination || !source || boardQuery === undefined) {
+    if (!destination || !source || board === undefined) {
       return;
     }
-    const columns = structuredClone(boardQuery.columns);
+    const columns = structuredClone(board.columns);
 
     columns.forEach((column) => {
       const isSourceColumn = column.title === source.droppableId;
@@ -45,14 +47,14 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
       }
     });
 
-    boardMutation.put({ ...boardQuery, columns });
+    boardMutation.put({ ...board, columns });
   }
 
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
-      {boardQuery !== undefined && (
+      {board !== undefined && (
         <div className="pt-7 flex px-4 select-none">
-          {boardQuery.columns.map((column) => (
+          {board.columns.map((column) => (
             <KanbanBoardColumn key={column.title} column={column} />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />

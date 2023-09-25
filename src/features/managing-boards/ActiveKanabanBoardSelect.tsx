@@ -16,14 +16,14 @@ export default function ActiveKanabanBoardSelect({
   activeBoardId,
   className,
 }: ActiveKanabanBoardSelectProps) {
-  const boardQuery = useKanbanBoardQuery(activeBoardId);
-  const boardsQuery = useKanbanBoardsQuery();
+  const board = useKanbanBoardQuery(activeBoardId);
+  const boards = useKanbanBoardsQuery();
   return (
     <>
-      {boardQuery !== undefined && boardsQuery !== undefined && (
+      {board !== undefined && boards !== undefined && (
         <Menu as="nav" className={"relative" + className}>
           <Menu.Button className="flex items-center truncate text-white hover:text-slate-300">
-            <div className="text-xl">{boardQuery.name}</div>
+            <div className="text-xl">{board.name}</div>
             <ChevronDownIcon className="h-5 ml-1 text-slate-400" />
           </Menu.Button>
           <Transition

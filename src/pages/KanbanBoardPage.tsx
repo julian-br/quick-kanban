@@ -17,7 +17,7 @@ interface KanbanBoardPageProps {
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   const { boardId: urlBoardId } = urlParams;
   const boardId = parseInt(urlBoardId);
-  const boardQuery = useKanbanBoardQuery(boardId);
+  const board = useKanbanBoardQuery(boardId);
   const { showModal } = useAppModalManager();
 
   function handleAddTaskClick() {
@@ -25,7 +25,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   }
 
   function handleEditBoardClick() {
-    showModal("editBoardModal", { boardId });
+    if (board !== undefined) {
+      showModal("editBoardModal", { board });
+    }
   }
 
   function handleDeleteBoardClick() {
@@ -38,13 +40,13 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         navBarContent={
           <div className="flex items-center  justify-between w-full">
             <div className="text-xl ml-4 pl-4 border-l border-slate-300/30 text-white hidden md:block">
-              {boardQuery?.name}
+              {board?.name}
             </div>
             <ActiveKanabanBoardSelect
               className="block ml-4 md:hidden"
               activeBoardId={boardId}
             />
-            {boardQuery !== undefined && (
+            {board !== undefined && (
               <div className="flex items-center gap-2">
                 <AddTaskButton onClick={handleAddTaskClick} />
                 <BoardSettingsMenu
