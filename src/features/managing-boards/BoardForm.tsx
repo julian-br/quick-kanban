@@ -40,8 +40,6 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
       return;
     }
 
-    console.log(data);
-
     onSubmit({ ...board, name: data.boardName, columns: data.boardColumns });
   }
 

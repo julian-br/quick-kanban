@@ -4,7 +4,7 @@ import SubtaskList from "./SubtaskList";
 import SettingsMenu from "../../components/SettingsMenu";
 import { useAppModalManager } from "../../appModalManager";
 import { PenIcon, TrashIcon } from "lucide-react";
-import { Subtask, Task } from "../../api/local-db";
+import { Subtask } from "../../api/local-db";
 
 interface ViewTaskModalProps {
   taskId: number;
