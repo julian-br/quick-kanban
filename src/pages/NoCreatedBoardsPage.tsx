@@ -2,17 +2,27 @@ import { useEffect } from "react";
 import Button from "../components/Button";
 import KanbanBoardsNav from "../features/managing-boards/KanbanBoardsNav";
 import { useLocation } from "wouter";
-import { useKanbanBoardsQuery } from "../api/kanbanBoard";
+import {
+  createExampleBoardWithTasks,
+  useKanbanBoardsQuery,
+} from "../api/kanbanBoard";
 import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
+import useUserInfo from "../lib/useUserInfo";
 
 export default function NoCreatedBoardsPage() {
   const [_, setLocation] = useLocation();
   const boardsQuery = useKanbanBoardsQuery();
   const { showModal } = useAppModalManager();
+  const userInfo = useUserInfo();
 
+  if (userInfo.isFirstTimeVisitor) {
+    createExampleBoardWithTasks().then(() =>
+      console.log("populated db with example data")
+    );
+  }
   useEffect(() => {
-    if (boardsQuery !== undefined && boardsQuery.at(0) !== undefined) {
+    if (boardsQuery?.at(0) !== undefined) {
       setLocation(`/board/${boardsQuery[0].id}`);
     }
   }, [boardsQuery]);

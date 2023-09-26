@@ -36,7 +36,9 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
     <Modal
       onClose={onClose}
       header={
-        <ViewTaskModalHeader taskId={taskId} taskTitle={task?.title ?? ""} />
+        task !== undefined && (
+          <ViewTaskModalHeader taskId={taskId} taskTitle={task.title} />
+        )
       }
     >
       {task !== undefined && (

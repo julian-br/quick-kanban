@@ -14,7 +14,6 @@ export default function KanbanBoardTask({
   rowIndex,
 }: KanbanBoardTaskProps) {
   const task = useTaskQuery(taskId);
-  console.log(task);
   const { showModal } = useAppModalManager();
 
   function handleTaskClicked() {

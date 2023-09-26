@@ -6,7 +6,8 @@ import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
 import ActiveKanabanBoardSelect from "../features/managing-boards/ActiveKanabanBoardSelect";
 import { useKanbanBoardQuery } from "../api/kanbanBoard";
-import { PenIcon, TrashIcon } from "lucide-react";
+import { FileXIcon, PenIcon, TrashIcon } from "lucide-react";
+import { Link } from "wouter";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -26,7 +27,7 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
 
   function handleEditBoardClick() {
     if (board !== undefined) {
-      showModal("editBoardModal", { board });
+      showModal("editBoardModal", { boardId });
     }
   }
 
@@ -60,7 +61,11 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         sideBarContent={<KanbanBoardsNav activeBoardId={boardId} />}
         mainContent={
           <div>
-            <KanbanBoard boardId={boardId} />
+            {board !== undefined ? (
+              <KanbanBoard boardId={boardId} />
+            ) : (
+              <NoMatchingBoardErrorMessage />
+            )}
           </div>
         }
       />
@@ -112,5 +117,24 @@ function AddTaskButton({ onClick }: { onClick: () => void }) {
         </div>
       </Button>
     </>
+  );
+}
+
+function NoMatchingBoardErrorMessage() {
+  return (
+    <div className="mt-32 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-5">
+        <FileXIcon size={"2.6rem"} className="text-danger-400" />
+        <div className="text-lg text-slate-400">
+          Board does not exist or could not be loaded.
+        </div>
+        <Link
+          className="text-lg text-slate-300 underline hover:text-primary-400"
+          href="/"
+        >
+          Return to Home
+        </Link>
+      </div>
+    </div>
   );
 }

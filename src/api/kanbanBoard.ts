@@ -1,5 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { KanbanBoard, db } from "./local-db";
+import { KanbanBoard, Task, db } from "./local-db";
+import exampleData from "./exampleData.json";
 
 export function useKanbanBoardQuery(boardId: number) {
   const kanbanBoardQuery = useLiveQuery(
@@ -38,4 +39,13 @@ export function useKanbanBoardMutation() {
     put: putKanabanBoardMutation,
     delete: deleteKanbanBoardMutation,
   };
+}
+
+export function createExampleBoardWithTasks() {
+  return db.transaction("rw", db.boards, db.tasks, async () => {
+    const exampleBoard = exampleData.board as any as KanbanBoard;
+    const exampleTasks = exampleData.tasks as Task[];
+    await db.boards.add(exampleBoard);
+    await db.tasks.bulkAdd(exampleTasks);
+  });
 }
