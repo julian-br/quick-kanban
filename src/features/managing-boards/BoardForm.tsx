@@ -83,12 +83,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
           />
         )}
       />
-      <Button
-        className="mt-6 w-full"
-        variant="primary"
-        size="large"
-        type="submit"
-      >
+      <Button className="mt-6 w-full" size="large" type="submit">
         {isEditingBoard ? "Save Changes" : "Create New Board"}
       </Button>
     </Form>

@@ -3,7 +3,7 @@ import InputLabel from "./InputLabel";
 import TextInput from "./TextInput";
 import { XIcon } from "lucide-react";
 
-interface Props {
+interface ListInputProps {
   values: string[];
   label?: string;
   addButtonText: string;
@@ -25,7 +25,7 @@ export default function ListInput({
   onDelete,
   errorMessage,
   className,
-}: Props) {
+}: ListInputProps) {
   function addInputField() {
     onAdd();
   }

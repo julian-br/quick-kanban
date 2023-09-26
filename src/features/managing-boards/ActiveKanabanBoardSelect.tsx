@@ -35,7 +35,7 @@ export default function ActiveKanabanBoardSelect({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="z-50 absolute left-16 top-20 py-6 w-72 rounded-xl bg-slate-900 border border-slate-300/20 shadow-lg">
+            <Menu.Items className="z-40 absolute left-16 top-20 py-6 w-72 rounded-xl bg-slate-900 border border-slate-300/20 shadow-lg">
               <KanbanBoardsNav activeBoardId={activeBoardId} />
             </Menu.Items>
           </Transition>

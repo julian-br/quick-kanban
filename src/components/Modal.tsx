@@ -18,7 +18,7 @@ export default function Modal({ children, onClose, header }: ModalProps) {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-30" static onClose={onClose}>
+      <Dialog as="div" className="relative z-40" static onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-75"
