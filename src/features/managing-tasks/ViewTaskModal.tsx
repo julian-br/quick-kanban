@@ -7,14 +7,20 @@ import { PenIcon, TrashIcon } from "lucide-react";
 import { Subtask, Task } from "../../api/local-db";
 
 interface ViewTaskModalProps {
-  task: Task;
+  taskId: number;
   onClose: () => void;
 }
 
-export default function ViewTaskModal({ task, onClose }: ViewTaskModalProps) {
+export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
+  const task = useTaskQuery(taskId);
   const taskMutation = useTaskMutation();
 
+  console.log("render");
+
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
+    if (task === undefined) {
+      return;
+    }
     const updatedSubtasks = task.subtasks.map((subtask) => {
       if (clickedSubtask.title === subtask.title) {
         subtask.isCompleted = !subtask.isCompleted;
@@ -27,30 +33,43 @@ export default function ViewTaskModal({ task, onClose }: ViewTaskModalProps) {
   }
 
   return (
-    <Modal onClose={onClose} header={<ViewTaskModalHeader task={task} />}>
-      <div className="w-full flex flex-col gap-6 mb-3">
-        <p className="text-slate-300">{task.description}</p>
-        <SubtaskList
-          onSubtaskClick={toggleSubtaskStatus}
-          subtasks={task.subtasks}
-        />
-      </div>
+    <Modal
+      onClose={onClose}
+      header={
+        <ViewTaskModalHeader taskId={taskId} taskTitle={task?.title ?? ""} />
+      }
+    >
+      {task !== undefined && (
+        <div className="w-full flex flex-col gap-6 mb-3">
+          <p className="text-slate-300">{task.description}</p>
+          <SubtaskList
+            onSubtaskClick={toggleSubtaskStatus}
+            subtasks={task.subtasks}
+          />
+        </div>
+      )}
     </Modal>
   );
 }
 
-function ViewTaskModalHeader({ task }: { task: Task }) {
+function ViewTaskModalHeader({
+  taskId,
+  taskTitle,
+}: {
+  taskId: number;
+  taskTitle: string;
+}) {
   const { showModal } = useAppModalManager();
 
   return (
     <>
       <div className="flex justify-between items-center">
-        <h3>{task.title}</h3>
+        <h3>{taskTitle}</h3>
         <SettingsMenu>
           <SettingsMenu.Entry
             onClick={() =>
               showModal("editTaskModal", {
-                task,
+                taskId,
               })
             }
           >
@@ -58,7 +77,7 @@ function ViewTaskModalHeader({ task }: { task: Task }) {
             <span>Edit Task</span>
           </SettingsMenu.Entry>
           <SettingsMenu.Entry
-            onClick={() => showModal("deleteTaskModal", { taskId: task.id })}
+            onClick={() => showModal("deleteTaskModal", { taskId })}
           >
             <TrashIcon className="text-danger-400 h-4 mr-1" />
             <span className="text-danger-400">Delete Task</span>

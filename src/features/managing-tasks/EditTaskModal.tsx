@@ -1,14 +1,15 @@
 import { Task } from "../../api/local-db";
-import { useTaskMutation } from "../../api/task";
+import { useTaskMutation, useTaskQuery } from "../../api/task";
 import Modal from "../../components/Modal";
 import TaskForm from "./TaskForm";
 
 interface EditTaskModalProps {
-  task: Task;
+  taskId: number;
   onClose: () => void;
 }
 
-export default function EditTaskModal({ task, onClose }: EditTaskModalProps) {
+export default function EditTaskModal({ taskId, onClose }: EditTaskModalProps) {
+  const task = useTaskQuery(taskId);
   const taskMutation = useTaskMutation();
 
   function handleSubmit(editedTask: Task) {
@@ -17,7 +18,7 @@ export default function EditTaskModal({ task, onClose }: EditTaskModalProps) {
 
   return (
     <Modal onClose={onClose} header="Edit Task">
-      <TaskForm task={task} onSubmit={handleSubmit} />
+      {task !== undefined && <TaskForm task={task} onSubmit={handleSubmit} />}
     </Modal>
   );
 }

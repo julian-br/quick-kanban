@@ -20,7 +20,7 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
 
   function handleCreateColumnClick() {
     if (board !== undefined) {
-      showModal("editBoardModal", { board });
+      showModal("editBoardModal", { boardId });
     }
   }
 

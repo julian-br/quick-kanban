@@ -7,14 +7,15 @@ import Modal from "../../components/Modal";
 import BoardForm from "./BoardForm";
 
 interface EditBoardModalProps {
-  board: KanbanBoard;
+  boardId: number;
   onClose: () => void;
 }
 
 export default function EditBoardModal({
-  board,
+  boardId,
   onClose,
 }: EditBoardModalProps) {
+  const board = useKanbanBoardQuery(boardId);
   const boardMutation = useKanbanBoardMutation();
 
   function updateBoardData(editedBoard: KanbanBoard) {
@@ -23,7 +24,9 @@ export default function EditBoardModal({
 
   return (
     <Modal onClose={onClose} header="Edit Board">
-      <BoardForm board={board} onSubmit={updateBoardData} />
+      {board !== undefined && (
+        <BoardForm board={board} onSubmit={updateBoardData} />
+      )}
     </Modal>
   );
 }

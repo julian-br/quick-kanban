@@ -68,7 +68,7 @@ function BoardNavEntry({
   const [_, setLocation] = useLocation();
 
   function handleEditBoardClick() {
-    showModal("editBoardModal", { board });
+    showModal("editBoardModal", { boardId: board.id });
   }
 
   function handleDeleteBoardClick() {

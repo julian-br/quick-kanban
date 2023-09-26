@@ -14,22 +14,19 @@ export default function KanbanBoardTask({
   rowIndex,
 }: KanbanBoardTaskProps) {
   const task = useTaskQuery(taskId);
+  console.log(task);
   const { showModal } = useAppModalManager();
 
   function handleTaskClicked() {
-    if (task !== undefined) {
-      showModal("viewTaskModal", {
-        task,
-      });
-    }
+    showModal("viewTaskModal", {
+      taskId,
+    });
   }
   function handleEditTaskClick(e: MouseEvent) {
     e.stopPropagation();
-    if (task !== undefined) {
-      showModal("editTaskModal", {
-        task,
-      });
-    }
+    showModal("editTaskModal", {
+      taskId,
+    });
   }
 
   function handleDeleteTaskClick(e: MouseEvent) {
