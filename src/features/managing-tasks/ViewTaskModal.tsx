@@ -15,8 +15,6 @@ export default function ViewTaskModal({ taskId, onClose }: ViewTaskModalProps) {
   const task = useTaskQuery(taskId);
   const taskMutation = useTaskMutation();
 
-  console.log("render");
-
   function toggleSubtaskStatus(clickedSubtask: Subtask) {
     if (task === undefined) {
       return;

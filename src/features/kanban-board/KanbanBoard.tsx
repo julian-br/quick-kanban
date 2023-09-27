@@ -30,19 +30,22 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     if (!destination || !source || board === undefined) {
       return;
     }
-    const columns = structuredClone(board.columns);
+    const columns = [...board.columns];
 
     columns.forEach((column) => {
       const isSourceColumn = column.title === source.droppableId;
       const isDestinationColumn = column.title === destination.droppableId;
+      const taskIds = [...column.taskIds];
 
       if (isSourceColumn) {
-        column.taskIds.splice(source.index, 1);
+        taskIds.splice(source.index, 1);
       }
 
       if (isDestinationColumn) {
-        column.taskIds.splice(destination.index, 0, parseInt(draggedTaskId));
+        taskIds.splice(destination.index, 0, parseInt(draggedTaskId));
       }
+
+      column.taskIds = taskIds;
     });
 
     boardMutation.put({ ...board, columns });

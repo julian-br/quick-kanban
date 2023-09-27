@@ -1,6 +1,6 @@
 # Quick-Kanban
 
-A simple kanban board, inspired by a [Frontend Mentor Challenge](https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB). This project was created with the primary goal of learning.
+A simple kanban board, inspired by a [Frontend Mentor Challenge](https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB). This project was created with the primary goal of learning. Data gets stored in the local browser storage.
 
 [Live Demo](https://fhir-questionnaire-graph.vercel.app/)
 

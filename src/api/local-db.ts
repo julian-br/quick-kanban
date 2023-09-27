@@ -23,7 +23,7 @@ export interface Subtask {
   isCompleted: boolean;
 }
 
-export class DBWithTypeScriptSchema extends Dexie {
+class DBWithTypeScriptSchema extends Dexie {
   boards!: Table<KanbanBoard>;
   tasks!: Table<Task>;
 
