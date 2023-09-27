@@ -1,124 +1,58 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { boardsData, tasksData } from "../mock-data/mockData";
-import { Task } from "./types";
-import { kanbanBoardQueryKey, taskQueryKey } from "./queryKeys";
+import { useLiveQuery } from "dexie-react-hooks";
+import { Task, db } from "./local-db";
 
-export function useTaskQuery(taskId: string) {
-  const taskQuery = useQuery({
-    queryKey: taskQueryKey(taskId),
-    queryFn: () => fetchTask(taskId),
-  });
-
+export function useTaskQuery(taskId: number) {
+  const taskQuery = useLiveQuery(
+    () => db.tasks.where("id").equals(taskId).first(),
+    [taskId]
+  );
   return taskQuery;
 }
 
 export function useTaskMutation() {
-  const queryClient = useQueryClient();
+  const postTaskMutation = (newTask: Omit<Task, "id">, forBoardId: number) =>
+    db.transaction("rw", db.tasks, db.boards, async () => {
+      const taskId = await db.tasks.add(newTask as Task);
+      const boardToAddTaskTo = await db.boards
+        .where("id")
+        .equals(forBoardId)
+        .first();
 
-  const postTaskMutation = useMutation({
-    mutationFn: postTask,
-    onSuccess: async (postedTask, { boardId }) => {
-      queryClient.removeQueries({
-        queryKey: taskQueryKey(postedTask.id),
-      });
-      queryClient.invalidateQueries({
-        queryKey: kanbanBoardQueryKey(boardId),
-      });
-    },
-  });
+      boardToAddTaskTo?.columns[0].taskIds.push(taskId as number);
+      await db.boards.put(boardToAddTaskTo!);
+      return taskId;
+    });
 
-  const putTaskMutation = useMutation({
-    mutationFn: putTask,
-    onSuccess: (mutatedTask) =>
-      queryClient.invalidateQueries({
-        queryKey: taskQueryKey(mutatedTask.id),
-      }),
-  });
+  const putTaskMutation = (updatedTask: Task) => db.tasks.put(updatedTask);
 
-  const deleteTaskMutation = useMutation({
-    mutationFn: deleteTask,
-    onSuccess: (boardOfDeltedTask, taskId) => {
-      queryClient.invalidateQueries({
-        queryKey: kanbanBoardQueryKey(boardOfDeltedTask),
-      });
-      queryClient.removeQueries({
-        queryKey: taskQueryKey(taskId),
-      });
-    },
-  });
+  //TODO: refactor
+  const deleteTaskMutation = (taskToDeleteId: number) =>
+    db.transaction("rw", db.tasks, db.boards, async () => {
+      await db.tasks.delete(taskToDeleteId);
+      const boardWhereTaskIsReferenced = await db.boards
+        .filter(
+          (board) =>
+            board.columns.find((column) =>
+              column.taskIds.includes(taskToDeleteId)
+            ) !== undefined
+        )
+        .first();
 
+      for (let column of boardWhereTaskIsReferenced!.columns) {
+        if (column.taskIds.includes(taskToDeleteId)) {
+          column.taskIds = column.taskIds.filter(
+            (taskId) => taskId !== taskToDeleteId
+          );
+          break;
+        }
+      }
+
+      await db.boards.put(boardWhereTaskIsReferenced!);
+      return taskToDeleteId;
+    });
   return {
     post: postTaskMutation,
     put: putTaskMutation,
     delete: deleteTaskMutation,
   };
-}
-
-async function fetchTask(taskId: string) {
-  const matchingTask = tasksData.find((task) => task.id === taskId);
-  if (matchingTask === undefined) {
-    throw new Error(`No Task with the id: ${taskId}`);
-  }
-
-  return structuredClone(matchingTask);
-}
-
-type TaskPostBody = Omit<Task, "id" | "columnIndex" | "rowIndex">;
-
-async function postTask({
-  taskPostBody,
-  boardId,
-}: {
-  taskPostBody: TaskPostBody;
-  boardId: string;
-}) {
-  const newTaskId = findNextAvailableTaskId();
-  const newTask = {
-    ...taskPostBody,
-    id: newTaskId.toString(),
-  };
-
-  const matchingBoard = boardsData.find((board) => board.id === boardId);
-  if (matchingBoard === undefined) {
-    throw new Error("no board with the id: " + boardId);
-  }
-
-  matchingBoard.columns[0].taskIds.push(newTaskId);
-  tasksData.push(newTask);
-
-  return newTask;
-}
-
-async function putTask(taskToUpdate: Task) {
-  const oldTaskData = tasksData.find((task) => task.id === taskToUpdate.id);
-  if (oldTaskData === undefined) {
-    throw new Error("no task with this id: " + taskToUpdate.id);
-  }
-
-  const indexOfTaskToUpdate = tasksData.findIndex(
-    (taskData) => taskData.id === taskToUpdate.id
-  );
-
-  tasksData[indexOfTaskToUpdate] = taskToUpdate;
-
-  return taskToUpdate;
-}
-
-async function deleteTask(taskId: string) {
-  for (const board of boardsData) {
-    for (const column of board.columns) {
-      const indexOfTaskId = column.taskIds.indexOf(taskId);
-      if (indexOfTaskId !== -1) {
-        column.taskIds.splice(indexOfTaskId, 1);
-        return board.id;
-      }
-    }
-  }
-
-  throw new Error("task could not be deleted");
-}
-
-function findNextAvailableTaskId() {
-  const lastTaskId = tasksData.at(-1);
-  return lastTaskId ? (parseInt(lastTaskId.id) + 1).toString() : "1";
 }

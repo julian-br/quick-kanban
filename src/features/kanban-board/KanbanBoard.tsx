@@ -6,20 +6,20 @@ import KanbanBoardColumn from "./KanbanBoardColumn";
 import Button from "../../components/Button";
 import { useAppModalManager } from "../../appModalManager";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { FileXIcon } from "lucide-react";
-import { Link } from "wouter";
 
 interface KanbanBoardProps {
-  boardId: string;
+  boardId: number;
 }
 
 export default function KanbanBoard({ boardId }: KanbanBoardProps) {
-  const boardQuery = useKanbanBoardQuery(boardId);
-  const boardPutMutation = useKanbanBoardMutation().put;
+  const board = useKanbanBoardQuery(boardId);
+  const boardMutation = useKanbanBoardMutation();
   const { showModal } = useAppModalManager();
 
   function handleCreateColumnClick() {
-    showModal("editBoardModal", { boardId });
+    if (board !== undefined) {
+      showModal("editBoardModal", { boardId });
+    }
   }
 
   function handleTaskDragEnd({
@@ -27,10 +27,10 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
     destination,
     source,
   }: DropResult) {
-    if (!destination || !source || !boardQuery.isSuccess) {
+    if (!destination || !source || board === undefined) {
       return;
     }
-    const columns = structuredClone(boardQuery.data.columns);
+    const columns = structuredClone(board.columns);
 
     columns.forEach((column) => {
       const isSourceColumn = column.title === source.droppableId;
@@ -41,24 +41,23 @@ export default function KanbanBoard({ boardId }: KanbanBoardProps) {
       }
 
       if (isDestinationColumn) {
-        column.taskIds.splice(destination.index, 0, draggedTaskId);
+        column.taskIds.splice(destination.index, 0, parseInt(draggedTaskId));
       }
     });
 
-    boardPutMutation.mutate({ ...boardQuery.data, columns });
+    boardMutation.put({ ...board, columns });
   }
 
   return (
     <DragDropContext onDragEnd={handleTaskDragEnd}>
-      {boardQuery.isSuccess && (
+      {board !== undefined && (
         <div className="pt-7 flex px-4 select-none">
-          {boardQuery.data.columns.map((column) => (
+          {board.columns.map((column) => (
             <KanbanBoardColumn key={column.title} column={column} />
           ))}
           <CreateNewColumnButton onClick={handleCreateColumnClick} />
         </div>
       )}
-      {boardQuery.isError && <ErrorMessage />}
     </DragDropContext>
   );
 }
@@ -74,25 +73,6 @@ function CreateNewColumnButton({ onClick }: { onClick: () => void }) {
         <span className="font-bold text-2xl mr-1">+</span>
         <span className="text-2xl font-bold ">New Column</span>
       </Button>
-    </div>
-  );
-}
-
-function ErrorMessage() {
-  return (
-    <div className="h-[50%]  flex items-center justify-center">
-      <div className="flex flex-col items-center gap-5">
-        <FileXIcon size={"2.6rem"} className="text-danger-400" />
-        <div className="text-lg text-slate-400">
-          Board does not exist or could not be loaded.
-        </div>
-        <Link
-          className="text-lg text-slate-300 underline hover:text-primary-400"
-          href="/"
-        >
-          Return to Home
-        </Link>
-      </div>
     </div>
   );
 }

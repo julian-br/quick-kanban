@@ -1,0 +1,140 @@
+{
+  "board": {
+    "name": "Example Board",
+    "columns": [
+      { "title": "Todo", "taskIds": [1, 2, 3] },
+      { "title": "Doing", "taskIds": [4, 5, 6] },
+      { "title": "Done", "taskIds": [7, 8] }
+    ]
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Build settings UI",
+      "description": "We need to design and implement a user-friendly settings user interface (UI) for our application. The settings UI should provide an intuitive way for users to customize various aspects of their experience within the app.",
+      "subtasks": [
+        {
+          "title": "Account page",
+          "isCompleted": false
+        },
+        {
+          "title": "Billing page",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Build UI for onboarding flow",
+      "description": "We need to create an engaging and user-friendly user interface (UI) for the onboarding flow of our application. The onboarding UI plays a crucial role in introducing new users to our product and guiding them through the initial setup process.",
+      "subtasks": [
+        {
+          "title": "Sign up page",
+          "isCompleted": true
+        },
+        {
+          "title": "Sign in page",
+          "isCompleted": false
+        },
+        {
+          "title": "Welcome page",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "QA and test all major user journeys",
+      "description": "Once we feel version one is ready, we need to rigorously test it both internally and externally to identify any major gaps.",
+      "subtasks": [
+        {
+          "title": "Internal testing",
+          "isCompleted": false
+        },
+        {
+          "title": "External testing",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Add search enpoints",
+      "description": "In order to improve the search functionality of our application, we need to implement new search endpoints that enable users to search for specific content efficiently. This task involves adding server-side endpoints to support various search queries and filters.",
+      "subtasks": [
+        {
+          "title": "Add search endpoint",
+          "isCompleted": true
+        },
+        {
+          "title": "Define search filters",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Add authentication endpoints",
+      "description": "To enhance the security and access control of our application, we need to implement authentication endpoints that enable users to securely log in, log out, and manage their authentication tokens. This task involves adding server-side endpoints for user authentication",
+      "subtasks": [
+        {
+          "title": "Define user model",
+          "isCompleted": true
+        },
+        {
+          "title": "Add auth endpoints",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Research pricing points of various competitors and trial different business models",
+      "description": "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
+      "subtasks": [
+        {
+          "title": "Research competitor pricing and business models",
+          "isCompleted": true
+        },
+        {
+          "title": "Outline a business model that works for our solution",
+          "isCompleted": false
+        },
+        {
+          "title": "Talk to potential customers about our proposed solution and ask for fair price expectancy",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Create paper prototypes and conduct 10 usability tests with potential customers",
+      "description": "Create paper prototypes and conduct 10 usability tests with potential customers. Create paper prototypes and conduct 10 usability tests with potential customers",
+      "subtasks": [
+        {
+          "title": "Create paper prototypes for version one",
+          "isCompleted": true
+        },
+        {
+          "title": "Complete 10 usability tests",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Research the market",
+      "description": "We need to get a solid overview of the market to ensure we have up-to-date estimates of market size and demand.",
+      "subtasks": [
+        {
+          "title": "Write up research analysis",
+          "isCompleted": true
+        },
+        {
+          "title": "Calculate TAM",
+          "isCompleted": true
+        }
+      ]
+    }
+  ]
+}

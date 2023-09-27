@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { cn } from "../lib/utils";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: keyof typeof variantClassMap;
+  variant?: keyof typeof variantClassMap;
   size?: keyof typeof sizeClassMap;
   children?: ReactNode;
 }
@@ -23,8 +23,8 @@ const sizeClassMap = {
 } as const;
 
 export default function Button({
-  variant,
-  size,
+  variant = "primary",
+  size = "medium",
   children,
   className,
   ...reactButtonProps
@@ -32,8 +32,7 @@ export default function Button({
   const variantClasses = variantClassMap[variant];
 
   // apply no sizing if the variant is custom
-  const sizeClasses =
-    variant === "custom" ? "" : sizeClassMap[size ?? "medium"];
+  const sizeClasses = variant === "custom" ? "" : sizeClassMap[size];
 
   return (
     <button

@@ -6,7 +6,8 @@ import AppShell from "../components/AppShell";
 import { useAppModalManager } from "../appModalManager";
 import ActiveKanabanBoardSelect from "../features/managing-boards/ActiveKanabanBoardSelect";
 import { useKanbanBoardQuery } from "../api/kanbanBoard";
-import { PenIcon, TrashIcon } from "lucide-react";
+import { FileXIcon, PenIcon, TrashIcon } from "lucide-react";
+import { Link } from "wouter";
 
 interface KanbanBoardPageProps {
   urlParams: {
@@ -15,8 +16,9 @@ interface KanbanBoardPageProps {
 }
 
 export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
-  const { boardId } = urlParams;
-  const boardQuery = useKanbanBoardQuery(boardId);
+  const { boardId: urlBoardId } = urlParams;
+  const boardId = parseInt(urlBoardId);
+  const board = useKanbanBoardQuery(boardId);
   const { showModal } = useAppModalManager();
 
   function handleAddTaskClick() {
@@ -24,7 +26,9 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
   }
 
   function handleEditBoardClick() {
-    showModal("editBoardModal", { boardId });
+    if (board !== undefined) {
+      showModal("editBoardModal", { boardId });
+    }
   }
 
   function handleDeleteBoardClick() {
@@ -37,13 +41,13 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
         navBarContent={
           <div className="flex items-center  justify-between w-full">
             <div className="text-xl ml-4 pl-4 border-l border-slate-300/30 text-white hidden md:block">
-              {boardQuery.data?.name}
+              {board?.name}
             </div>
             <ActiveKanabanBoardSelect
               className="block ml-4 md:hidden"
               activeBoardId={boardId}
             />
-            {boardQuery.isSuccess && (
+            {board !== undefined && (
               <div className="flex items-center gap-2">
                 <AddTaskButton onClick={handleAddTaskClick} />
                 <BoardSettingsMenu
@@ -55,7 +59,15 @@ export default function KanbanBoardPage({ urlParams }: KanbanBoardPageProps) {
           </div>
         }
         sideBarContent={<KanbanBoardsNav activeBoardId={boardId} />}
-        mainContent={<KanbanBoard boardId={boardId} />}
+        mainContent={
+          <div>
+            {board !== undefined ? (
+              <KanbanBoard boardId={boardId} />
+            ) : (
+              <NoMatchingBoardErrorMessage />
+            )}
+          </div>
+        }
       />
     </>
   );
@@ -105,5 +117,24 @@ function AddTaskButton({ onClick }: { onClick: () => void }) {
         </div>
       </Button>
     </>
+  );
+}
+
+function NoMatchingBoardErrorMessage() {
+  return (
+    <div className="mt-32 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-5">
+        <FileXIcon size={"2.6rem"} className="text-danger-400" />
+        <div className="text-lg text-slate-400">
+          Board does not exist or could not be loaded.
+        </div>
+        <Link
+          className="text-lg text-slate-300 underline hover:text-primary-400"
+          href="/"
+        >
+          Return to Home
+        </Link>
+      </div>
+    </div>
   );
 }

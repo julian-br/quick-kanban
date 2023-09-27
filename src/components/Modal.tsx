@@ -1,4 +1,11 @@
-import { Fragment, ReactNode, useEffect, useState } from "react";
+import {
+  Fragment,
+  MutableRefObject,
+  ReactNode,
+  Ref,
+  useEffect,
+  useState,
+} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 interface ModalProps {
@@ -6,9 +13,15 @@ interface ModalProps {
   header: ReactNode;
   children: ReactNode;
   onClose: () => void;
+  initialFocus?: MutableRefObject<HTMLElement | null>;
 }
 
-export default function Modal({ children, onClose, header }: ModalProps) {
+export default function Modal({
+  children,
+  onClose,
+  header,
+  initialFocus,
+}: ModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // show transition on open
@@ -18,7 +31,13 @@ export default function Modal({ children, onClose, header }: ModalProps) {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-30" static onClose={onClose}>
+      <Dialog
+        initialFocus={initialFocus}
+        as="div"
+        className="relative z-40"
+        static
+        onClose={onClose}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-75"

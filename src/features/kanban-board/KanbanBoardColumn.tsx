@@ -1,6 +1,6 @@
 import { Droppable } from "react-beautiful-dnd";
 import KanbanBoardTask from "./KanbanBoardTask";
-import { KanbanBoardColumn as KanbanBoardColumnData } from "../../api/types";
+import { KanbanBoardColumn as KanbanBoardColumnData } from "../../api/local-db";
 
 interface KanbanBoardColumnProps {
   column: KanbanBoardColumnData;

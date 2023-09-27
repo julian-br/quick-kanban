@@ -5,38 +5,30 @@ import { ColumnsIcon } from "lucide-react";
 
 import { useAppModalManager } from "../../appModalManager";
 import ContextMenu from "../../components/ContextMenu";
-import { MouseEvent } from "react";
+import { KanbanBoard } from "../../api/local-db";
 
 interface KanbanBoardsNavProps {
-  activeBoardId: string;
+  activeBoardId?: number;
 }
 
 export default function KanbanBoardsNav({
   activeBoardId,
 }: KanbanBoardsNavProps) {
-  const boards = useKanbanBoardsQuery();
-  const [_, setLocation] = useLocation();
+  const boardsQuery = useKanbanBoardsQuery();
 
-  function handleNavEntryClicked(boardId: string) {
-    setLocation("/board/" + boardId);
-  }
-
-  const amountOfCreatedBoards = boards.data?.length ?? 0;
-
+  const amountOfCreatedBoards = boardsQuery?.length ?? 0;
   return (
     <div>
       <div>
         <h2 className="uppercase font-semibold text-slate-300 tracking-widest ml-7 mb-6">
           all boards ({amountOfCreatedBoards})
         </h2>
-        {boards.isSuccess && amountOfCreatedBoards > 0 && (
+        {boardsQuery !== undefined && amountOfCreatedBoards > 0 && (
           <div className="mb-6 mx-4 flex-col flex gap-3">
-            {boards.data.map((board) => (
+            {boardsQuery.map((board) => (
               <BoardNavEntry
                 key={board.id}
-                boardId={board.id}
-                onClick={() => handleNavEntryClicked(board.id)}
-                title={board.name}
+                board={board}
                 isActive={board.id === activeBoardId}
               />
             ))}
@@ -66,24 +58,25 @@ function CreateNewBoardButton() {
 }
 
 function BoardNavEntry({
-  title,
   isActive,
-  boardId,
-  onClick,
+  board,
 }: {
-  title: string;
   isActive: boolean;
-  boardId: string;
-  onClick: () => void;
+  board: KanbanBoard;
 }) {
   const { showModal } = useAppModalManager();
+  const [_, setLocation] = useLocation();
 
-  function handleEditBoardClick(e: MouseEvent) {
-    showModal("editBoardModal", { boardId });
+  function handleEditBoardClick() {
+    showModal("editBoardModal", { boardId: board.id });
   }
 
-  function handleDelteBoardClick() {
-    showModal("deleteBoardModal", { boardId });
+  function handleDeleteBoardClick() {
+    showModal("deleteBoardModal", { boardId: board.id });
+  }
+
+  function handleNavEntryClick() {
+    setLocation("/board/" + board.id);
   }
 
   return (
@@ -91,7 +84,7 @@ function BoardNavEntry({
       <ContextMenu.Trigger>
         <Button
           variant="custom"
-          onClick={onClick}
+          onClick={handleNavEntryClick}
           className={`w-full py-2 font-semibold text-lg  rounded-lg px-4 flex ${
             isActive
               ? "text-slate-100 bg-primary-500"
@@ -100,14 +93,14 @@ function BoardNavEntry({
         >
           <div className="flex items-center gap-1">
             <ColumnsIcon className="h-5" />
-            <span>{title}</span>
+            <span>{board.name}</span>
           </div>
         </Button>
         <ContextMenu.Content>
           <ContextMenu.Item onClick={handleEditBoardClick}>
             Edit Board
           </ContextMenu.Item>
-          <ContextMenu.Item onClick={handleDelteBoardClick}>
+          <ContextMenu.Item onClick={handleDeleteBoardClick}>
             Delete Board
           </ContextMenu.Item>
         </ContextMenu.Content>

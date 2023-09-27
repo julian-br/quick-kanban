@@ -1,9 +1,9 @@
-import { KanbanBoard, KanbanBoardColumn } from "../../api/types";
 import Form from "../../components/Form";
 import TextInput from "../../components/Input/TextInput";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
 import { Controller, FieldValues, useForm } from "react-hook-form";
+import { KanbanBoard, KanbanBoardColumn } from "../../api/local-db";
 
 export type CreatedBoard = Omit<KanbanBoard, "id">;
 
@@ -39,8 +39,6 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
       onSubmit({ name: data.boardName, columns: data.boardColumns });
       return;
     }
-
-    console.log(data);
 
     onSubmit({ ...board, name: data.boardName, columns: data.boardColumns });
   }
@@ -83,12 +81,7 @@ export default function BoardForm<T extends KanbanBoard | undefined>({
           />
         )}
       />
-      <Button
-        className="mt-6 w-full"
-        variant="primary"
-        size="large"
-        type="submit"
-      >
+      <Button className="mt-6 w-full" size="large" type="submit">
         {isEditingBoard ? "Save Changes" : "Create New Board"}
       </Button>
     </Form>

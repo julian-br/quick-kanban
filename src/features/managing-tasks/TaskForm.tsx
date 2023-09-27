@@ -1,11 +1,10 @@
-import { Subtask, Task } from "../../api/types";
 import Form from "../../components/Form";
 import TextInput from "../../components/Input/TextInput";
 import TextArea from "../../components/Input/TextArea";
 import ListInput from "../../components/Input/ListInput";
 import Button from "../../components/Button";
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import Modal from "../../components/Modal";
+import { Subtask, Task } from "../../api/local-db";
 
 export type CreatedTask = Omit<Task, "id">;
 

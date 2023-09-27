@@ -1,31 +1,25 @@
 import { useTaskMutation } from "../../api/task";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import Modal from "../../components/Modal";
 import TaskForm, { CreatedTask } from "./TaskForm";
 
 interface CreateTaskModalProps {
   onClose: () => void;
-  boardId: string;
+  boardId: number;
 }
 
-export default function CreateTaskModal(props: CreateTaskModalProps) {
-  const taskPostMutation = useTaskMutation().post;
+export default function CreateTaskModal({
+  boardId,
+  onClose,
+}: CreateTaskModalProps) {
+  const taskMutation = useTaskMutation();
 
   function handleSubmit(createdTask: CreatedTask) {
-    taskPostMutation.mutate(
-      { taskPostBody: createdTask, boardId: props.boardId },
-      { onSuccess: props.onClose }
-    );
+    taskMutation.post(createdTask, boardId).then(onClose);
   }
 
   return (
-    <Modal onClose={props.onClose} header="Add New Task">
-      {taskPostMutation.isLoading && (
-        <div className="h-52 mb-16 flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
-      {taskPostMutation.isIdle && <TaskForm onSubmit={handleSubmit} />}
+    <Modal onClose={onClose} header="Add New Task">
+      <TaskForm onSubmit={handleSubmit} />
     </Modal>
   );
 }
