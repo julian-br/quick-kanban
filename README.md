@@ -4,7 +4,9 @@ A simple kanban board, inspired by a [Frontend Mentor Challenge](https://www.fro
 
 [Live Demo](https://fhir-questionnaire-graph.vercel.app/)
 
-![image of the user interface](./src/assets/screenshot_fhir_questionnaire_viewer.PNG)
+<img alt="image of the user interface for desktop" src="./screenshots/example-screenshot-desktop.PNG" alt="drawing" width="1000"/>
+
+<img alt="image of the user interface for mobile" src="./screenshots/example-screenshot-mobile.PNG" alt="drawing" width="200"/>
 
 ## Getting Started
 
